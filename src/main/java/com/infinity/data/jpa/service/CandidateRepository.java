@@ -24,8 +24,7 @@ public interface CandidateRepository extends Repository<Candidate, Long> {
     Candidate findById(Long id);
 
 
-
-	void save(Candidate c1);
+    void save(Candidate c1);
     
     
 
