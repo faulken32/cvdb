@@ -9,10 +9,16 @@
         <title>JSP Page</title>
     </head>
     <body>  
-        <h1>ajoutez un candidat</h1>
-
-
-        <div id="container">
+        
+         <h1>ajoutez un candidat</h1>
+         
+         <a href="/site" >Home</a>
+        <c:choose>
+            <c:when test="${succes == true}">
+                Submit 
+            </c:when>
+            <c:otherwise>
+                 <div id="container">
             <div id="form">
                 <form method="post">
                     <p>
@@ -43,11 +49,8 @@
                 </form>
 
             </div>  
-
-
-
-
-
         </div>
-    </body>
+            </c:otherwise>
+        </c:choose>
+      </body>
 </html>

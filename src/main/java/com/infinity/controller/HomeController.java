@@ -1,6 +1,5 @@
 package com.infinity.controller;
 
-
 import com.infinity.data.jpa.domain.Candidate;
 import com.infinity.data.jpa.service.CandidateRepository;
 import com.infinity.data.jpa.service.UsersRepository;
@@ -72,7 +71,7 @@ public class HomeController {
         mv.addObject("candidate", findOne);
 
         return mv;
-    }   
+    }
 
     @RequestMapping(value = "/addone", method = RequestMethod.GET)
     public ModelAndView AddCandidate() {
@@ -81,20 +80,38 @@ public class HomeController {
 
         return mv;
     }
-    
+
+    /**
+     * save candidat form 1
+     *
+     * @param candidate
+     * @param result
+     * @param model
+     * @return
+     */
     @Transactional
     @RequestMapping(value = "/addone", method = RequestMethod.POST)
     public ModelAndView AddCandidate(@ModelAttribute("candidate") Candidate candidate, BindingResult result, Model model) {
 
         boolean hasErrors = result.hasErrors();
-        String toString = Boolean.toString(hasErrors);
-        LOG.debug(toString);
-        LOG.debug(candidate.getName());
-        LOG.debug(candidate.getBirthDate().toString());
-        candidate.setCreationdate(Date.from(Instant.now()));
-        candidateRepository.save(candidate);
+        boolean succes = false;
+        if (!hasErrors) {
+           
+            candidate.setCreationdate(Date.from(Instant.now()));
+            
+            try {
+                candidateRepository.save(candidate);
+                succes = true;
+            } catch (Exception e) {
+                LOG.error(e.toString());
+                
+            }
+            
+            
+        }
+        
         ModelAndView mv = new ModelAndView("addone");
-
+        mv.addObject("succes", succes);
         return mv;
     }
 }
