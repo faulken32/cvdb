@@ -13,6 +13,8 @@ import com.infinity.data.jpa.service.UsersRepository;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +31,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
+import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
 
 @Configuration
@@ -43,14 +47,14 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 
     private static final Logger LOG = LoggerFactory.getLogger(MvcConfiguration.class);
 
-//    private static final List<String> DEFAULT_TILES_DEFINITIONS = new LinkedList<> ();
-//    static 
-//    {
-//        
-//        DEFAULT_TILES_DEFINITIONS.add("/WEB-INF/tiles.xml");
-//        DEFAULT_TILES_DEFINITIONS.add("/WEB-INF/view.xml");
-//    }
-//    
+    private static final List<String> DEFAULT_TILES_DEFINITIONS = new LinkedList<> ();
+    static 
+    {
+        
+        DEFAULT_TILES_DEFINITIONS.add("/WEB-INF/tiles.xml");
+        DEFAULT_TILES_DEFINITIONS.add("/WEB-INF/view.xml");
+    }
+    
     @Value("${createData}")
     private String createData;
 
@@ -160,28 +164,32 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
         return toto;
     }
 
-//    @Bean
-//    public TilesViewResolver tilesViewResolver(){
-//        return new TilesViewResolver();
-//    }
+    @Bean
+    public TilesViewResolver tilesViewResolver(){
+        return new TilesViewResolver();
+    }
+    
+    
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
     }
 
-    @Bean
-    public InternalResourceViewResolver getInternalResourceViewResolver() {
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-
-        resolver.setPrefix("/WEB-INF/views/");
-        resolver.setSuffix(".jsp");
-        return resolver;
-    }
+//    @Bean
+//    public InternalResourceViewResolver getInternalResourceViewResolver() {
+//        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+//
+//        resolver.setPrefix("/WEB-INF/views/");
+//        resolver.setSuffix(".jsp");
+//        return resolver;
+//    }
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
     }
+    
+    
 //    
 //    @Bean
 //    public ServletContextTemplateResolver templateResolver(){
@@ -212,12 +220,12 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 //    }
     
 
-//    @Bean 
-//    public TilesConfigurer tilesConfigurer(){
-//    
-//        TilesConfigurer tilesConfigurer = new TilesConfigurer();
-//        tilesConfigurer.setDefinitions(DEFAULT_TILES_DEFINITIONS.toArray(new String[DEFAULT_TILES_DEFINITIONS.size()]));
-//        
-//        return  tilesConfigurer;
-//    }
+    @Bean 
+    public TilesConfigurer tilesConfigurer(){
+    
+        TilesConfigurer tilesConfigurer = new TilesConfigurer();
+        tilesConfigurer.setDefinitions(DEFAULT_TILES_DEFINITIONS.toArray(new String[DEFAULT_TILES_DEFINITIONS.size()]));
+        
+        return  tilesConfigurer;
+    }
 }
