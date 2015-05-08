@@ -1,15 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title>JSP Page</title>
-    </head>
-    <body>  
-        
          <h1>ajoutez un candidat</h1>
          
          <a href="/site" >Home</a>
@@ -52,5 +43,4 @@
         </div>
             </c:otherwise>
         </c:choose>
-      </body>
-</html>
+  

@@ -19,6 +19,7 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 
 /**
@@ -27,7 +28,7 @@ import javax.validation.constraints.Size;
  */
 
 @Entity
-@Table(name = "candidate")
+@Table(name = "candidate", uniqueConstraints=  @UniqueConstraint(columnNames = {"name", "email"}) )
 
 public class Candidate implements Serializable {
     

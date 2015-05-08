@@ -4,7 +4,9 @@
        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
   <definition name="default" template="/WEB-INF/layout/template.jsp">
+    <put-attribute name="title" value=""/>  
     <put-attribute name="header" value="/WEB-INF/tiles/header.jsp" />
+    <put-attribute name="nav" value="/WEB-INF/tiles/nav.jsp" />
     <put-attribute name="body" value="" />   
   </definition>
 </tiles-definitions>

@@ -11,13 +11,14 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
-        <title>TEST</title>
+        <title><tiles:insertAttribute name="title"/> </title>
         
 <!--        <link rel="stylesheet" href="<c:url value="/resources/main.css"/>" />-->
     </head>
     
       <body>
 	<tiles:insertAttribute name="header"/>
+        <tiles:insertAttribute name="nav"/>
 	
 	<div class="container">
             <tiles:insertAttribute name="body" />

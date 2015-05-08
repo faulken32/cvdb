@@ -57,6 +57,7 @@ public class HomeController {
         List<Candidate> findAll = candidateRepository.findAll();
 
         ModelAndView mv = new ModelAndView("index");
+        mv.addObject("title", "indexTitre");
         mv.addObject("candidate", findAll);
 
         return mv;

@@ -9,12 +9,12 @@
         <title>JSP Page</title>
     </head>
     <body>  
-        <h1>Liste des candidats</h1>
+     
         
         
-        <div id="container">
+   
             
-          
+             <h1>Liste des candidats</h1>
             <c:out value="Bonjour" /><br/>
               <c:forEach var="var" items="${candidate}">
                   <div>${var.name}</div>
