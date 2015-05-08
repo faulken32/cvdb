@@ -90,7 +90,7 @@ public class HomeController {
      * @param model
      * @return
      */
-    @Transactional
+//    @Transactional
     @RequestMapping(value = "/addone", method = RequestMethod.POST)
     public ModelAndView AddCandidate(@ModelAttribute("candidate") Candidate candidate, BindingResult result, Model model) {
 
