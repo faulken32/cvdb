@@ -44,6 +44,7 @@ public class Candidate implements Serializable {
     @Column(name = "birthDate")
     @Temporal(TemporalType.DATE)
     private Date birthDate;
+    
     @Column(name = "cv")
     @Lob
     private Blob cv;
@@ -60,6 +61,9 @@ public class Candidate implements Serializable {
     @Size(max = 45)
     @Column(name = "city")
     private String city;
+    @Size(max = 45)
+    @Column(name = "telephone")
+    private String telephone;
     
     
     
@@ -126,5 +130,15 @@ public class Candidate implements Serializable {
     public void setCity(String city) {
         this.city = city;
     }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+    
+    
     
 }

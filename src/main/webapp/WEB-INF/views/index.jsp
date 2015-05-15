@@ -19,11 +19,7 @@
               <c:forEach var="var" items="${candidate}">
                   <div>${var.name}</div>
             </c:forEach>
-           <div class="seedstarterlist">
-                <div></div>
-            </div>
-            
-            <div></div>
+           
         </div>
     </body>
 </html>

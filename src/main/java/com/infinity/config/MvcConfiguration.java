@@ -27,13 +27,14 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
-
 
 @Configuration
 @EnableWebMvc
@@ -42,19 +43,18 @@ import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 @EnableJpaRepositories("com.infinity.data.jpa.service")
 @PropertySource("classpath:application.properties")
 
-
 public class MvcConfiguration extends WebMvcConfigurerAdapter {
 
     private static final Logger LOG = LoggerFactory.getLogger(MvcConfiguration.class);
 
-    private static final List<String> DEFAULT_TILES_DEFINITIONS = new LinkedList<> ();
-    static 
-    {
-        
+    private static final List<String> DEFAULT_TILES_DEFINITIONS = new LinkedList<>();
+
+    static {
+
         DEFAULT_TILES_DEFINITIONS.add("/WEB-INF/tiles.xml");
         DEFAULT_TILES_DEFINITIONS.add("/WEB-INF/view.xml");
     }
-    
+
     @Value("${createData}")
     private String createData;
 
@@ -77,13 +77,12 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
     public String setTestData() {
 
         String toto = "toto";
-      
-        
-     Boolean res =   createData.equals("true");
-     LOG.debug(res.toString());
+
+        Boolean res = createData.equals("true");
+        LOG.debug(res.toString());
         if (res) {
-        	
-        	  LOG.debug("DATA CREATION");
+
+            LOG.debug("DATA CREATION");
             LOG.debug("create data {}", createData);
 
             Users users = new Users();
@@ -107,6 +106,7 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
             c1.setBirthDate(calendar.getTime());
             c1.setCreationdate(new Date());
             c1.setEmail("nicolas@gmail.com");
+            c1.setTelephone("0630626334");
             candidateRepository.save(c1);
 
             calendar.set(1980, 12, 12);
@@ -117,6 +117,7 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
             c2.setBirthDate(calendar.getTime());
             c2.setCreationdate(new Date());
             c2.setEmail("nicolasssss@gmail.com");
+            c2.setTelephone("0662094137");
             candidateRepository.save(c2);
 
             Technologies java = new Technologies();
@@ -163,69 +164,37 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 
         return toto;
     }
-
+    
+   
+    
     @Bean
-    public TilesViewResolver tilesViewResolver(){
+    public TilesViewResolver tilesViewResolver() {
         return new TilesViewResolver();
     }
-    
-    
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
     }
 
-//    @Bean
-//    public InternalResourceViewResolver getInternalResourceViewResolver() {
-//        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-//
-//        resolver.setPrefix("/WEB-INF/views/");
-//        resolver.setSuffix(".jsp");
-//        return resolver;
-//    }
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
     }
-    
-    
-//    
-//    @Bean
-//    public ServletContextTemplateResolver templateResolver(){
-//    
-//        ServletContextTemplateResolver servletContextTemplateResolver = new ServletContextTemplateResolver();
-//        servletContextTemplateResolver.setSuffix(".jsp");
-//        servletContextTemplateResolver.setPrefix("/WEB-INF/views/");
-//        
-//        
-//        return servletContextTemplateResolver;
-//        
-//    }
-//    
-//    @Bean
-//    public ThymeleafViewResolver setThymeleaf(){
-//        
-//     
-//        SpringTemplateEngine springTemplateEngine = new SpringTemplateEngine();
-//        springTemplateEngine.setTemplateResolver(this.templateResolver());
-//        
-//        ThymeleafViewResolver thymeleafViewResolver = new ThymeleafViewResolver();
-//        thymeleafViewResolver.setTemplateEngine(springTemplateEngine);
-//        thymeleafViewResolver.setCache(false);
-//       
-//        
-//        
-//        return thymeleafViewResolver;
-//    }
-    
 
-    @Bean 
-    public TilesConfigurer tilesConfigurer(){
-    
+    @Bean(name = "multipartResolver")
+    public StandardServletMultipartResolver multipartResolver() {
+        
+        return new StandardServletMultipartResolver();
+    }
+
+    @Bean
+    public TilesConfigurer tilesConfigurer() {
+
         TilesConfigurer tilesConfigurer = new TilesConfigurer();
         tilesConfigurer.setDefinitions(DEFAULT_TILES_DEFINITIONS.toArray(new String[DEFAULT_TILES_DEFINITIONS.size()]));
-        
-        return  tilesConfigurer;
+
+        return tilesConfigurer;
     }
 }

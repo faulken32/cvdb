@@ -1,6 +1,7 @@
 package com.infinity.config;
 
 import com.infinity.data.jpa.JpaConfig;
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
@@ -22,10 +23,13 @@ public class AppInitializer implements WebApplicationInitializer {
         AnnotationConfigWebApplicationContext dispatcherServlet = new AnnotationConfigWebApplicationContext();
         dispatcherServlet.register(MvcConfiguration.class ,JpaConfig.class);
 
+        
+        
         servletContext.addListener(new ContextLoaderListener(dispatcherServlet));
         ServletRegistration.Dynamic dispatcher = servletContext.addServlet(
                 DISPATCHER_SERVLET_NAME, new DispatcherServlet(dispatcherServlet));
         dispatcher.setLoadOnStartup(1);
+        dispatcher.setMultipartConfig(new MultipartConfigElement("/", 1024*1024*5, 1024*1024*5*5, 1024*1024));
         dispatcher.addMapping(DISPATCHER_SERVLET_MAPPING);
 
     }
