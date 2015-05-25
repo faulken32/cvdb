@@ -39,11 +39,11 @@ public class HomeController {
     private static final Logger LOG = LoggerFactory
             .getLogger(HomeController.class);
 
-    @Autowired
-    private UsersRepository services;
-
-    @Autowired
-    private CandidateRepository candidateRepository;
+//    @Autowired
+//    private UsersRepository services;
+//
+//    @Autowired
+//    private CandidateRepository candidateRepository;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -62,23 +62,23 @@ public class HomeController {
     @RequestMapping(value = {"/"})
     public ModelAndView getIndex() {
 
-        List<Candidate> findAll = candidateRepository.findAll();
+//        List<Candidate> findAll = candidateRepository.findAll();
 
         ModelAndView mv = new ModelAndView("index");
-        mv.addObject("title", "indexTitre");
-        mv.addObject("candidate", findAll);
+//        mv.addObject("title", "indexTitre");
+//        mv.addObject("candidate", findAll);
 
         return mv;
     }
 
     @RequestMapping(value = {"/find/{id}"})
     public ModelAndView getIndex(@PathVariable Long id) {
-
-        Candidate findOne = candidateRepository.findOne(id);
-
+//
+//        Candidate findOne = candidateRepository.findOne(id);
+//
         ModelAndView mv = new ModelAndView("findOne");
-        mv.addObject("candidate", findOne);
-
+//        mv.addObject("candidate", findOne);
+//
         return mv;
     }
 
@@ -105,54 +105,54 @@ public class HomeController {
     @RequestMapping(value = "/addone", method = RequestMethod.POST)
     public ModelAndView AddCandidate(
             @ModelAttribute("candidate") Candidate candidate, BindingResult result) {
-
-        boolean hasErrors = result.hasErrors();
-        
-        result.rejectValue("cv", "toto");
-        boolean succes = false;
-        boolean errorMessage = false;
-//        try {
-//            InputStream inputStream = file.getInputStream();
-//        } catch (Exception e) {
-//            LOG.error(e.getMessage());
-//            
+//
+//        boolean hasErrors = result.hasErrors();
+//        
+//        result.rejectValue("cv", "toto");
+//        boolean succes = false;
+//        boolean errorMessage = false;
+////        try {
+////            InputStream inputStream = file.getInputStream();
+////        } catch (Exception e) {
+////            LOG.error(e.getMessage());
+////            
+////        }
+//
+//        if (!hasErrors) {
+//
+//            candidate.setCreationdate(Date.from(Instant.now()));
+//            try {
+//                candidateRepository.save(candidate);
+//                succes = true;
+//
+//            } catch (Throwable e) {
+//                Throwable ex = e;
+//                while (ex.getCause() != null) {
+//
+//                    ex = ex.getCause();
+//                    if (ex instanceof ConstraintViolationException) {
+//
+//                        ConstraintViolationException sqle = (ConstraintViolationException) ex;
+//
+//                        if ("23000".equals(sqle.getSQLState())) {
+//                            errorMessage = true;
+//                        }
+//                    }
+//                }
+//            }
+//        } else {
+//
+//            List<ObjectError> allErrors = result.getAllErrors();
+//            for (ObjectError allError : allErrors) {
+//
+//                LOG.debug(allError.toString());
+//
+//            }
 //        }
-
-        if (!hasErrors) {
-
-            candidate.setCreationdate(Date.from(Instant.now()));
-            try {
-                candidateRepository.save(candidate);
-                succes = true;
-
-            } catch (Throwable e) {
-                Throwable ex = e;
-                while (ex.getCause() != null) {
-
-                    ex = ex.getCause();
-                    if (ex instanceof ConstraintViolationException) {
-
-                        ConstraintViolationException sqle = (ConstraintViolationException) ex;
-
-                        if ("23000".equals(sqle.getSQLState())) {
-                            errorMessage = true;
-                        }
-                    }
-                }
-            }
-        } else {
-
-            List<ObjectError> allErrors = result.getAllErrors();
-            for (ObjectError allError : allErrors) {
-
-                LOG.debug(allError.toString());
-
-            }
-        }
         ModelAndView mv = new ModelAndView("addone");
 
-        mv.addObject("succes", succes);
-        mv.addObject("errorMsg", errorMessage);
+//        mv.addObject("succes", succes);
+//        mv.addObject("errorMsg", errorMessage);
         return mv;
     }
 }

@@ -21,7 +21,7 @@ public class AppInitializer implements WebApplicationInitializer {
             throws ServletException {
 
         AnnotationConfigWebApplicationContext dispatcherServlet = new AnnotationConfigWebApplicationContext();
-        dispatcherServlet.register(MvcConfiguration.class ,JpaConfig.class);
+        dispatcherServlet.register(MvcConfiguration.class);
 
         
         

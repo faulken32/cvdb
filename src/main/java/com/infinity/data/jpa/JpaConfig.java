@@ -26,68 +26,68 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  *
  * @author faulken
  */
-@Configuration
-@EnableJpaRepositories
-@EnableTransactionManagement
-@ComponentScan(basePackages ={"com.infinity.data.jpa.service"})
-@EnableSpringDataWebSupport
+//@Configuration
+//@EnableJpaRepositories
+//@EnableTransactionManagement
+//@ComponentScan(basePackages ={"com.infinity.data.jpa.service"})
+//@EnableSpringDataWebSupport
 
 
 public class JpaConfig {
 
-    @Value("${createTable}")
-    private String createTable;
-    
-    
-    @Bean(name="dataSopurce")
-    public DataSource dataSource() {
-
-        DataSource dataSource = new DataSource();
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver"); 
-        dataSource.setUrl("jdbc:mysql://localhost:3306/cv");
-        dataSource.setUsername("root");
-        dataSource.setPassword("root");
-
-        return dataSource;
-
-    }
-
-    @Bean
-    public EntityManagerFactory entityManagerFactory() {
-
-        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        vendorAdapter.setGenerateDdl(true);
-        
-        Properties properties = new Properties();
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
-//        properties.setProperty("hibernate.hbm2ddl.auto", createTable);
-//        properties.setProperty("showSql", "false");
-        InstrumentationLoadTimeWeaver instrumentationLoadTimeWeaver = new InstrumentationLoadTimeWeaver();
-        
-        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-        factory.setLoadTimeWeaver(instrumentationLoadTimeWeaver);
-        factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("com.infinity.data.jpa.domain");
-        factory.setDataSource(dataSource());
-        factory.setJpaProperties(properties);
-        factory.afterPropertiesSet();
-        
-        
-        return factory.getObject();
-
-    }
-    
-    
-    @Bean 
-    public JpaTransactionManager transactionManager(){
-        
-        JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
-        jpaTransactionManager.setEntityManagerFactory(entityManagerFactory());
-        
-        
-        return jpaTransactionManager;
-    
-    } 
+//    @Value("${createTable}")
+//    private String createTable;
+//    
+//    
+//    @Bean(name="dataSopurce")
+//    public DataSource dataSource() {
+//
+//        DataSource dataSource = new DataSource();
+//        dataSource.setDriverClassName("com.mysql.jdbc.Driver"); 
+//        dataSource.setUrl("jdbc:mysql://localhost:3306/cv");
+//        dataSource.setUsername("root");
+//        dataSource.setPassword("root");
+//
+//        return dataSource;
+//
+//    }
+//
+//    @Bean
+//    public EntityManagerFactory entityManagerFactory() {
+//
+//        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+//        vendorAdapter.setGenerateDdl(true);
+//        
+//        Properties properties = new Properties();
+//        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+////        properties.setProperty("hibernate.hbm2ddl.auto", createTable);
+////        properties.setProperty("showSql", "false");
+//        InstrumentationLoadTimeWeaver instrumentationLoadTimeWeaver = new InstrumentationLoadTimeWeaver();
+//        
+//        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+//        factory.setLoadTimeWeaver(instrumentationLoadTimeWeaver);
+//        factory.setJpaVendorAdapter(vendorAdapter);
+//        factory.setPackagesToScan("com.infinity.data.jpa.domain");
+//        factory.setDataSource(dataSource());
+//        factory.setJpaProperties(properties);
+//        factory.afterPropertiesSet();
+//        
+//        
+//        return factory.getObject();
+//
+//    }
+//    
+//    
+//    @Bean 
+//    public JpaTransactionManager transactionManager(){
+//        
+//        JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
+//        jpaTransactionManager.setEntityManagerFactory(entityManagerFactory());
+//        
+//        
+//        return jpaTransactionManager;
+//    
+//    } 
     
     
     

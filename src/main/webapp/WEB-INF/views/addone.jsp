@@ -52,7 +52,6 @@
 
                     <input type="submit" value="Envoyer">
                 </form>
-
             </div>  
         </div>
     </c:otherwise>
