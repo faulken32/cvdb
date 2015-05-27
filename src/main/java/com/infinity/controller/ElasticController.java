@@ -30,14 +30,13 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class ElasticController {
-    
-     private static final Logger LOG = LoggerFactory
+
+    private static final Logger LOG = LoggerFactory
             .getLogger(ElasticController.class);
-    
-    
+
     @Autowired
     private CandidatService candidatService;
-    
+
     @Autowired
     private ExpService expService;
 
@@ -46,34 +45,44 @@ public class ElasticController {
 
         Candidat byId = candidatService.getById(id);
         byId.setId(id);
-        
-        ArrayList<Experiences> byId1 = expService.getById(id);
-        
-        
+
+        ArrayList<Experiences> byId1 = expService.getByIdSearhText(id);
+
         ModelAndView mv = new ModelAndView("elastic");
+        if (!byId1.isEmpty()) {
+            mv.addObject("exp", byId1);
+        } else {
+            LOG.error("no exp found for {}", id);
+        }
         mv.addObject("candidat", byId);
         return mv;
     }
-    
-    
-    @RequestMapping(value = {"/elastic/update"} , method = RequestMethod.POST)
+
+    @RequestMapping(value = {"/elastic/update"}, method = RequestMethod.POST)
     public ModelAndView updateCandidat(@ModelAttribute("candidat") Candidat candidat, BindingResult result) throws IOException, InterruptedException, ExecutionException {
-        
-        
-      
+
         long updateOneById = candidatService.updateOneById(candidat);
-       
-         String valueOf = String.valueOf(updateOneById);
-        
-               
-        
-//                boolean hasErrors = result.hasErrors();
-                
+
+        String valueOf = String.valueOf(updateOneById);
+
         LOG.debug(valueOf);
-        
+
         ModelAndView mv = new ModelAndView("elastic");
-        String totot ="titi";
+
         return mv;
     }
 
+    
+    
+    @RequestMapping(value = {"/elastic/exp/update/{id}"}, method = RequestMethod.GET)        
+    public ModelAndView updateFormExp(@PathVariable String id) {
+        
+        
+        Experiences byId = expService.getById(id);
+        
+        ModelAndView modelAndView = new ModelAndView("updateExp");
+        modelAndView.addObject("exp", byId);
+
+        return modelAndView;
+    }
 }

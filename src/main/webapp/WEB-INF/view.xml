@@ -13,6 +13,9 @@
          <put-attribute name="title" value="Candidat"/>
         <put-attribute name="body" value="/WEB-INF/views/elastic.jsp" />
     </definition>
-   
+    <definition name="updateExp" extends="default">
+         <put-attribute name="title" value="Candidat"/>
+        <put-attribute name="body" value="/WEB-INF/views/updateExp.jsp" />
+    </definition>
     
 </tiles-definitions>
