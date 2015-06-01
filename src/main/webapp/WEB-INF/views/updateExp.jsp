@@ -26,13 +26,13 @@
             <label for="start">
                 Début
             </label>
-            <input  id="start" name="start" type="date" value="${exp.start}"/>  
+            <input  id="start" name="start" type="text" value="${exp.start}"/>  
         </div> 
         <div>
             <label for="end">
                 Fin
             </label>
-            <input  id="end" name="end" type="date" value="${exp.end}"/>  
+            <input  id="end" name="end" type="text" value="${exp.end}"/>  
         </div>
         <div>
             <label for="expContend">

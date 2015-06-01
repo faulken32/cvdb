@@ -7,6 +7,7 @@ package com.infinity.controller;
 
 import com.api.dto.Candidat;
 import com.api.dto.Experiences;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import com.infinity.service.CandidatService;
 import com.infinity.service.ExpService;
@@ -78,6 +79,22 @@ public class ElasticController {
     public ModelAndView updateFormExp(@PathVariable String id) {
         
         
+        Experiences byId = expService.getById(id);
+        
+        ModelAndView modelAndView = new ModelAndView("updateExp");
+        modelAndView.addObject("exp", byId);
+
+        return modelAndView;
+    }
+    
+    
+     @RequestMapping(value = {"/elastic/exp/update/{id}"}, method = RequestMethod.POST)        
+    public ModelAndView updateFormExp(@PathVariable Experiences exp) throws InterruptedException, JsonProcessingException, ExecutionException {
+        
+        expService.updateById(exp);
+        
+        
+        String id = exp.getId();
         Experiences byId = expService.getById(id);
         
         ModelAndView modelAndView = new ModelAndView("updateExp");

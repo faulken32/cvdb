@@ -6,11 +6,15 @@
 package com.infinity.service;
 
 import com.api.dto.Experiences;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -35,13 +39,6 @@ public class ExpService {
     private ElasticClientConf elasticClientConf;
     private TransportClient client;
 
-    
-   
-    
-
-    
-    
-    
     
     public ArrayList<Experiences> getByIdSearhText(String id) throws IOException {
 
@@ -98,5 +95,25 @@ public class ExpService {
         return  readValue;
         
     }
-
+    
+  public long updateById(Experiences exp) throws InterruptedException, JsonProcessingException, ExecutionException{    
+    
+        client = elasticClientConf.getClient();
+        ObjectMapper mapper = new ObjectMapper();
+        
+        
+        byte[] json  = mapper.writeValueAsBytes(exp);
+        
+        UpdateRequest updateRequest = new UpdateRequest();
+        updateRequest.index("cvdb");
+        updateRequest.type("exp");
+        updateRequest.id(exp.getId());
+        updateRequest.doc(json);
+        
+        UpdateResponse get = client.update(updateRequest).get();
+        long version = get.getVersion();
+        return version;
+  
+  
+  }
 }
