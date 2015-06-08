@@ -1,8 +1,8 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html>
 
-<body>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+
+
     candidat :  
     <!--        candidat-->
 
@@ -39,11 +39,9 @@
 
     
     <c:forEach items="${exp}" var="exp">
-
-
         <div>
             <div>
-                <a href="<c:url value="/elastic/exp/update/${exp.id}"/>" target="_blank">Modifiez</a>
+                <a href="<c:url value="/elastic/exp/update/${exp.id}"/>">Modifiez</a>
             </div>
             <div>           
                 ${exp.title}

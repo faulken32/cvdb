@@ -9,6 +9,9 @@ import com.api.dto.Experiences;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import org.elasticsearch.action.get.GetResponse;
@@ -96,19 +99,25 @@ public class ExpService {
         
     }
     
-  public long updateById(Experiences exp) throws InterruptedException, JsonProcessingException, ExecutionException{    
+  public long updateById(Experiences exp) throws InterruptedException, JsonProcessingException, ExecutionException, UnsupportedEncodingException{    
     
         client = elasticClientConf.getClient();
         ObjectMapper mapper = new ObjectMapper();
         
-        
-        byte[] json  = mapper.writeValueAsBytes(exp);
-        
+        final Charset utf8 = Charset.forName("UTF-8");
+        byte [] json  = mapper.writeValueAsBytes(exp);
+          
+
+      
+       
+        String convert = new String(json, utf8);
+        byte[] ptext = convert.getBytes("UTF-8");
+        LOG.debug(ptext.toString());
         UpdateRequest updateRequest = new UpdateRequest();
         updateRequest.index("cvdb");
         updateRequest.type("exp");
         updateRequest.id(exp.getId());
-        updateRequest.doc(json);
+        updateRequest.doc(ptext);
         
         UpdateResponse get = client.update(updateRequest).get();
         long version = get.getVersion();

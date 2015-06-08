@@ -3,7 +3,9 @@
 
 
 <div>
-    <form id="updateExp">
+    <form id="updateExp" method="post">
+        
+        <input type="hidden" name="candiatId" value="${exp.candidat.id}">
         <div>
             <label for="id">
                 Id
@@ -40,7 +42,7 @@
             </label>
 
 
-            <textarea id="expContend" form="updateExp">${exp.expContend}</textarea>
+            <textarea name="expContend" form="updateExp">${exp.expContend}</textarea>
         </div>
         <input type="submit" value="Validez" />
     </form>

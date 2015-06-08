@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infinity.service.CandidatService;
 import com.infinity.service.ExpService;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import org.slf4j.Logger;
@@ -89,16 +90,23 @@ public class ElasticController {
     
     
      @RequestMapping(value = {"/elastic/exp/update/{id}"}, method = RequestMethod.POST)        
-    public ModelAndView updateFormExp(@PathVariable Experiences exp) throws InterruptedException, JsonProcessingException, ExecutionException {
+    public ModelAndView updateFormExp(@ModelAttribute("exp") Experiences exp, String candiatId) throws InterruptedException, JsonProcessingException, ExecutionException, UnsupportedEncodingException {
         
+        LOG.debug(candiatId);
+        
+        
+        Candidat candidat = new Candidat();
+        candidat.setId(candiatId);
+        
+        exp.setCandidat(candidat);
         expService.updateById(exp);
         
         
-        String id = exp.getId();
-        Experiences byId = expService.getById(id);
+//        String id = exp.getId();
+//        Experiences byId = expService.getById(id);
         
         ModelAndView modelAndView = new ModelAndView("updateExp");
-        modelAndView.addObject("exp", byId);
+        modelAndView.addObject("exp", exp);
 
         return modelAndView;
     }
