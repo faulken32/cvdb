@@ -10,11 +10,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
@@ -33,19 +33,16 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ExpService {
-    
-    
-       private static final Logger LOG = LoggerFactory.getLogger(ExpService.class);
 
-    
+    private static final Logger LOG = LoggerFactory.getLogger(ExpService.class);
+
     @Autowired
     private ElasticClientConf elasticClientConf;
     private TransportClient client;
 
-    
     public ArrayList<Experiences> getByIdSearhText(String id) throws IOException {
 
-        client = elasticClientConf.getClient(); 
+        client = elasticClientConf.getClient();
         QueryBuilder qb = QueryBuilders.queryStringQuery(id);
         SearchResponse response = client.prepareSearch("cvdb")
                 .setTypes("exp")
@@ -68,17 +65,17 @@ public class ExpService {
         return candidateExp;
 
     }
-    
+
     /**
-     * 
+     *
      * @param id
-     * @return 
-     * @throws java.io.IOException 
+     * @return
+     * @throws java.io.IOException
      */
-    public Experiences getById(String id){
-        
-       client = elasticClientConf.getClient();   
-      GetResponse response = client.
+    public Experiences getById(String id) {
+
+        client = elasticClientConf.getClient();
+        GetResponse response = client.
                 prepareGet("cvdb", "exp", id)
                 .execute()
                 .actionGet();
@@ -86,30 +83,26 @@ public class ExpService {
         ObjectMapper mapper = new ObjectMapper();
         Experiences readValue = null;
         try {
-            
-                readValue = mapper.readValue(response.getSourceAsString(), Experiences.class);
-                readValue.setId(id);
+
+            readValue = mapper.readValue(response.getSourceAsString(), Experiences.class);
+            readValue.setId(id);
         } catch (IOException e) {
-            
+
             LOG.error(e.getMessage());
         }
-     
-        
-        return  readValue;
-        
+
+        return readValue;
+
     }
-    
-  public long updateById(Experiences exp) throws InterruptedException, JsonProcessingException, ExecutionException, UnsupportedEncodingException{    
-    
+
+    public long updateById(Experiences exp) throws InterruptedException, JsonProcessingException, ExecutionException, UnsupportedEncodingException {
+
         client = elasticClientConf.getClient();
         ObjectMapper mapper = new ObjectMapper();
-        
-        final Charset utf8 = Charset.forName("UTF-8");
-        byte [] json  = mapper.writeValueAsBytes(exp);
-          
 
-      
-       
+        final Charset utf8 = Charset.forName("UTF-8");
+        byte[] json = mapper.writeValueAsBytes(exp);
+
         String convert = new String(json, utf8);
         byte[] ptext = convert.getBytes("UTF-8");
         LOG.debug(ptext.toString());
@@ -118,11 +111,29 @@ public class ExpService {
         updateRequest.type("exp");
         updateRequest.id(exp.getId());
         updateRequest.doc(ptext);
-        
+
         UpdateResponse get = client.update(updateRequest).get();
         long version = get.getVersion();
         return version;
-  
-  
-  }
+
+    }
+
+    public long addExp(Experiences exp) throws JsonProcessingException {
+
+        client = elasticClientConf.getClient();
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        byte[] json = mapper.writeValueAsBytes(exp);
+
+        IndexResponse response = client.prepareIndex("cvdb", "exp")
+        .setSource(json)
+        .execute()
+        .actionGet();
+        
+
+        
+        long version = response.getVersion();
+        return version;
+    }
 }

@@ -39,7 +39,7 @@ public class CandidatService {
 
         ObjectMapper mapper = new ObjectMapper();
         Candidat readValue = mapper.readValue(response.getSourceAsString(), Candidat.class);
-
+        
         return readValue;
     }
 

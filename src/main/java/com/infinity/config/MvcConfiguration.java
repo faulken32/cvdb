@@ -1,6 +1,5 @@
 package com.infinity.config;
 
-import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,13 +11,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
-import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
@@ -67,18 +63,25 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
         return new StandardServletMultipartResolver();
     }
     
-    @Bean
-    public RequestMappingHandlerAdapter annotationMethodHandlerAdapter(){
-        
-        
-        RequestMappingHandlerAdapter requestMappingHandlerAdapter = new RequestMappingHandlerAdapter();
-        
-        StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter(Charset.forName("UTF-8"));
-        requestMappingHandlerAdapter.getMessageConverters().add(stringHttpMessageConverter);
-                       
-        
-        return requestMappingHandlerAdapter;
-    }
+    
+//      @Override
+//    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+//        converters.add(converter());
+//        super.configureMessageConverters(converters);
+//    }
+    
+//    @Bean
+//    public RequestMappingHandlerAdapter annotationMethodHandlerAdapter(){
+//        
+//        
+//        RequestMappingHandlerAdapter requestMappingHandlerAdapter = new RequestMappingHandlerAdapter();
+//        
+//        StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter(Charset.forName("UTF-8"));
+//        requestMappingHandlerAdapter.getMessageConverters().add(stringHttpMessageConverter);
+//                       
+//        
+//        return requestMappingHandlerAdapter;
+//    }
     
     @Bean
     public TilesConfigurer tilesConfigurer() {

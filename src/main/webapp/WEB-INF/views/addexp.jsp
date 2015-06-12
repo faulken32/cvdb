@@ -1,41 +1,41 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 
-<a  href="<c:url value="/elastic/get/${exp.candidatid}"/>"> retour au candidat </a>
+<a  href="<c:url value="/elastic/get/${candidat.id}"/>"> retour au candidat </a>
   
 <div>
-    <form id="updateExp" method="post">
+    <form id="addexp" method="post">
         
-        <input type="hidden" name="candiatId" value="${exp.candidatid}">
+        <input type="hidden" name="candidatid" value="${candidat.id}">
         <div>
             <label for="id">
                 Id
             </label>
-            <input id="id" name="id" type="text" value="${exp.id}" readonly/>  
+            <input id="id" name="id" type="text" value="${candidat.id}" readonly/>  
         </div> 
         <div>
             <label for="compagny">
                 Compagnie
             </label>
-            <input  id="compagny" name="compagny" type="text" value="${exp.compagny}"/>  
+            <input  id="compagny" name="compagny" type="text" />  
         </div>
         <div>
             <label for="title">
                 Titre
             </label>
-            <input  id="title" name="title" type="text" value="${exp.title}"/>  
+            <input  id="title" name="title" type="text" />  
         </div> 
         <div>
             <label for="start">
                 Début
             </label>
-            <input  id="start" name="start" type="text" value="${exp.start}"/>  
+            <input  id="start" name="start" type="text" />  
         </div> 
         <div>
             <label for="end">
                 Fin
             </label>
-            <input  id="end" name="end" type="text" value="${exp.end}"/>  
+            <input  id="end" name="end" type="text"/>  
         </div>
         <div>
             <label for="expContend">
@@ -43,7 +43,7 @@
             </label>
 
 
-            <textarea name="expContend" form="updateExp">${exp.expContend}</textarea>
+            <textarea name="expContend" form="addexp">${exp.expContend}</textarea>
         </div>
         <input type="submit" value="Validez" />
     </form>

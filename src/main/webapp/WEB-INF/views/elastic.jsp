@@ -60,14 +60,17 @@
                 ${exp.expContend}
             </div>
             <div>
-                ${exp.candidat.id}
+                ${exp.candidatid}
             </div>
 
 
         </div>    
     </c:forEach>
+    
+    
+    <a href="<c:url value="/elastic/exp/add/${candidat.id}"/>">Ajouter une exp </a>
 
-
+    
 
 
 
