@@ -67,7 +67,11 @@ public class ElasticController {
 
     @RequestMapping(value = {"/elastic/update"}, method = RequestMethod.POST)
     public ModelAndView updateCandidat(@ModelAttribute("candidat") Candidat candidat, BindingResult result) throws IOException, InterruptedException, ExecutionException {
-
+        
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        
+        candidat.setUpdateDate(simpleDateFormat.format(date));
         long updateOneById = candidatService.updateOneById(candidat);
 
         String valueOf = String.valueOf(updateOneById);

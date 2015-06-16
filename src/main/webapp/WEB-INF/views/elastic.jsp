@@ -3,8 +3,10 @@
 
 
 
-    candidat :  
-    <!--        candidat-->
+candidat : <br> 
+    
+    
+    profiled  : ${candidat.profiled}
 
 
     <form id="candidat" method="post" action="/site/elastic/update">
@@ -12,21 +14,33 @@
         <div>           
             <input type="text" name="id"  value="${candidat.id}" readonly/>            
         </div>
+        
         <div>
+            age
             <input type="number" name="age" value="${candidat.age}" />
         </div>
+        
         <div>
+            nom
             <input type="text" name="name" value="${candidat.name}" />
         </div>
         <div>
-            <input type="text" name="phone" value="${candidat.phone}"/> 
+            tel
+            <input type="text" name="phone" value="${candidat.phone} "/> 
         </div>
         <div>
+            prénom
             <input type="text" name="surname"  value="${candidat.surname}"/> 
         </div>
         <div>
+            email
             <input type="text" name="email"  value="${candidat.email}"/> 
         </div>
+        <div>
+            préavis
+            <input type="text" name="preavis"  value="${candidat.preavis}"/> 
+        </div>
+       
         <div>
             <textarea name="cvContends" form="candidat" value="">${candidat.cvContends}</textarea>
         </div>
@@ -35,9 +49,7 @@
 
     EXP :
 
-
-
-    
+   
     <c:forEach items="${exp}" var="exp">
         <div>
             <div>
