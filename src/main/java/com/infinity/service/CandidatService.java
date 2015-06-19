@@ -59,6 +59,7 @@ public class CandidatService {
         
         UpdateResponse get = client.update(updateRequest).get();
         long version = get.getVersion();
+       
         return version;
     }
 

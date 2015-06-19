@@ -77,8 +77,11 @@ public class ElasticController {
         String valueOf = String.valueOf(updateOneById);
 
         LOG.debug(valueOf);
-
-        ModelAndView mv = new ModelAndView("elastic");
+        
+       
+        
+        
+        ModelAndView mv = new ModelAndView("redirect:get/" + candidat.getId());
 
         return mv;
     }
@@ -110,9 +113,7 @@ public class ElasticController {
         exp.setCandidatid(candiatId);
         expService.updateById(exp);
         
-        
-//        String id = exp.getId();
-//        Experiences byId = expService.getById(id);
+
         
         ModelAndView modelAndView = new ModelAndView("updateExp");
         modelAndView.addObject("exp", exp);
@@ -137,11 +138,9 @@ public class ElasticController {
     
     
     @RequestMapping(value = {"/elastic/exp/add/{id}"}, method = RequestMethod.POST)
-    public ModelAndView addExp(@ModelAttribute("exp") Experiences exp, String candidatid) throws IOException, InterruptedException, ExecutionException, ParseException {
+    public String addExp(@ModelAttribute("exp") Experiences exp, String candidatid) throws IOException, InterruptedException, ExecutionException, ParseException {
 
         
-        Candidat candidat = new Candidat();
-        candidat.setId(candidatid);
         String start = exp.getStart();
         
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -149,6 +148,7 @@ public class ElasticController {
         Calendar c = GregorianCalendar.getInstance();
         Date parse = format1.parse(start);
         c.setTime(parse);
+        
         exp.setStart(format1.format(c.getTime()));
        
         
@@ -159,15 +159,11 @@ public class ElasticController {
         
         
         exp.setEnd(format1.format(c.getTime()));
-        
+        exp.setCandidatid(candidatid);
         
         expService.addExp(exp);
-        
-        
-        
-
-        ModelAndView mv = new ModelAndView("addexp");
-
-        return mv;
+            
+      
+        return "redirect:/elastic/get/" + candidatid;
     }
 }
