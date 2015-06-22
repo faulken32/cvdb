@@ -17,8 +17,8 @@
             </div>
 
             <div class="form-group">
-                Date d'entré dans la base  :
-                <input  class="form-control" type="text" name="enterDate"  value="${candidat.nbYearExp}" readonly/>            
+                 Nombre d'année d'exprérience (champs calculé)
+                 <input  class="form-control" type="number" name="nbYearExp"  value="${candidat.nbYearExp}" readonly/>            
             </div>
 
 

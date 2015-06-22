@@ -31,8 +31,8 @@ public class ElasticClientConf {
 
         client = new TransportClient()
                 .addTransportAddress(new InetSocketTransportAddress("172.31.4.150", 9300))
-                .addTransportAddress(new InetSocketTransportAddress("172.31.4.150", 9301))
-                .addTransportAddress(new InetSocketTransportAddress("172.31.4.150", 9302));
+                .addTransportAddress(new InetSocketTransportAddress("172.31.4.150", 9301));
+//                .addTransportAddress(new InetSocketTransportAddress("172.31.4.150", 9302));
         
         
         LOG.info("client créated");
