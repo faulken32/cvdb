@@ -1,51 +1,46 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 
-<a  href="<c:url value="/elastic/get/${candidat.id}"/>"> retour au candidat </a>
+<a  href="<c:url value="/elastic/get/${exp.candidatid}"/>"> retour au candidat </a>
   
-<div>
+<div div="row">
     <form id="addexp" method="post">
         
-        <input type="hidden" name="candidatid" value="${candidat.id}">
-        <div>
-            <label for="id">
-                Id
-            </label>
-            <input id="id" name="id" type="text" value="${candidat.id}" readonly/>  
-        </div> 
-        <div>
+        <input type="hidden" name="candidatid" value="${exp.candidatid}">
+        
+        <div class="form-group">
             <label for="compagny">
                 Compagnie
             </label>
-            <input  id="compagny" name="compagny" type="text" />  
+            <input  class="form-control"  id="compagny" name="compagny" type="text" value="${exp.compagny}"/>  
         </div>
-        <div>
+        <div class="form-group">
             <label for="title">
                 Titre
             </label>
-            <input  id="title" name="title" type="text" />  
+            <input  class="form-control"  id="title" name="title" type="text" value="${exp.title}"/>  
         </div> 
-        <div>
+        <div  class="form-group">
             <label for="start">
                 Début
             </label>
-            <input  id="start" name="start" type="text" />  
+            <input  class="form-control"  id="start" name="start" type="text" value="${exp.start}"/>  
         </div> 
-        <div>
+        <div  class="form-group">
             <label for="end">
                 Fin
             </label>
-            <input  id="end" name="end" type="text"/>  
+            <input  class="form-control"  id="end" name="end" type="text" value="${exp.end}"/>  
         </div>
-        <div>
+        <div class="form-group">
             <label for="expContend">
                 Contenue
             </label>
 
 
-            <textarea name="expContend" form="addexp">${exp.expContend}</textarea>
+            <textarea  class="form-control" name="expContend" form="addexp" row="10">${exp.expContend}</textarea>
         </div>
-        <input type="submit" value="Validez" />
+        <input  class="btn btn-default"  type="submit" value="Validez" />
     </form>
 
 

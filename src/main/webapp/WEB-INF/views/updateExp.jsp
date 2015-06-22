@@ -2,50 +2,60 @@
 
 
 <a  href="<c:url value="/elastic/get/${exp.candidatid}"/>"> retour au candidat </a>
-  
-<div>
+
+<div div="row">
     <form id="updateExp" method="post">
-        
+
         <input type="hidden" name="candiatId" value="${exp.candidatid}">
-        <div>
+        <div class="form-group">
             <label for="id">
                 Id
             </label>
-            <input id="id" name="id" type="text" value="${exp.id}" readonly/>  
+            <input class="form-control"  id="id" name="id" type="text" value="${exp.id}" readonly/>  
         </div> 
-        <div>
+        <div  class="form-group">
             <label for="compagny">
                 Compagnie
             </label>
-            <input  id="compagny" name="compagny" type="text" value="${exp.compagny}"/>  
+            <input  class="form-control"  id="compagny" name="compagny" type="text" value="${exp.compagny}"/>  
         </div>
-        <div>
+        <div class="form-group">
             <label for="title">
                 Titre
             </label>
-            <input  id="title" name="title" type="text" value="${exp.title}"/>  
+            <input  class="form-control"  id="title" name="title" type="text" value="${exp.title}"/>  
         </div> 
-        <div>
+        <div  class="form-group">
             <label for="start">
                 Début
             </label>
-            <input  id="start" name="start" type="text" value="${exp.start}"/>  
+            <input  class="form-control"  id="start" name="start" type="text" value="${exp.start}"/>  
         </div> 
-        <div>
+        <div  class="form-group">
             <label for="end">
                 Fin
             </label>
-            <input  id="end" name="end" type="text" value="${exp.end}"/>  
+            <input  class="form-control"  id="end" name="end" type="text" value="${exp.end}"/>  
         </div>
-        <div>
+        <div class="form-group">
             <label for="expContend">
                 Contenue
             </label>
 
 
-            <textarea name="expContend" form="updateExp">${exp.expContend}</textarea>
+            <textarea  class="form-control" name="expContend" form="updateExp" row="10">${exp.expContend}</textarea>
         </div>
-        <input type="submit" value="Validez" />
+            <c:forEach items="${exp.tecnoList}" var="techno">
+            <div  class="form-group">
+                <label for="">
+                    technologie
+                </label>
+                <input  class="form-control"  id="tecno" name="tecnoList" type="text" value="${techno}"/>  
+            </div>
+        </c:forEach>
+
+
+        <input  class="btn btn-default"  type="submit" value="Validez" />
     </form>
 
 

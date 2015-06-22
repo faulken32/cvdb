@@ -58,7 +58,7 @@ public class ElasticController {
         if (!byId1.isEmpty()) {
             mv.addObject("exp", byId1);
         } else {
-            LOG.error("no exp found for {}", id);
+            LOG.debug("no exp found for {}", id);
         }
         mv.addObject("candidat", byId);
         return mv;
@@ -101,7 +101,7 @@ public class ElasticController {
     
     
      @RequestMapping(value = {"/elastic/exp/update/{id}"}, method = RequestMethod.POST)        
-    public ModelAndView updateFormExp(@ModelAttribute("exp") Experiences exp, String candiatId) throws InterruptedException, JsonProcessingException, ExecutionException, UnsupportedEncodingException {
+    public String updateFormExp(@ModelAttribute("exp") Experiences exp, String candiatId) throws InterruptedException, JsonProcessingException, ExecutionException, UnsupportedEncodingException {
         
         LOG.debug(candiatId);
         
@@ -114,10 +114,9 @@ public class ElasticController {
         
 
         
-        ModelAndView modelAndView = new ModelAndView("updateExp");
-        modelAndView.addObject("exp", exp);
+   
 
-        return modelAndView;
+        return "redirect:/elastic/get/" + candiatId;
     }
     
     
@@ -126,12 +125,11 @@ public class ElasticController {
 
         LOG.debug("id candidat {}" ,id);
         
-        Candidat byId = candidatService.getById(id);
-        byId.setId(id);
-        
+        Experiences experiences = new Experiences();
+        experiences.setCandidatid(id);
         
         ModelAndView mv = new ModelAndView("addexp");
-        mv.addObject("candidat", byId);
+        mv.addObject("exp",experiences);
         return mv;
     }
     

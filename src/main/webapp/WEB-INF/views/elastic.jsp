@@ -81,7 +81,11 @@
                         <p>Duré</p>
                         <p>${exp.start} /  ${exp.end} </p>
                     </div>
-                    <div>                       
+                    <div>
+                        <c:forEach items="${exp.tecnoList}" var="techno">
+                            <span>${techno}</span>
+                            
+                        </c:forEach>   
                     </div>
                     <div>
                         <p><b>Contenue</b></p>
