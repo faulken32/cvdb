@@ -88,7 +88,7 @@ public class ElasticController {
     
     
     @RequestMapping(value = {"/elastic/exp/update/{id}"}, method = RequestMethod.GET)        
-    public ModelAndView updateFormExp(@PathVariable String id) {
+    public ModelAndView getUpdateFormExp(@PathVariable String id) {
         
         
         Experiences byId = expService.getById(id);
@@ -101,15 +101,14 @@ public class ElasticController {
     
     
      @RequestMapping(value = {"/elastic/exp/update/{id}"}, method = RequestMethod.POST)        
-    public String updateFormExp(@ModelAttribute("exp") Experiences exp, String candiatId) throws InterruptedException, JsonProcessingException, ExecutionException, UnsupportedEncodingException {
+    public String updateFormExp(@ModelAttribute("exp") Experiences exp, String candiatId) throws InterruptedException, JsonProcessingException, ExecutionException, UnsupportedEncodingException, IOException {
         
         LOG.debug(candiatId);
         
+        Candidat byId = candidatService.getById(candiatId);
+       
         
-        Candidat candidat = new Candidat();
-        candidat.setId(candiatId);
-        
-        exp.setCandidatid(candiatId);
+        exp.setCandidat(byId);
         expService.updateById(exp);
         
 
@@ -124,9 +123,10 @@ public class ElasticController {
     public ModelAndView addExp(@PathVariable String id) throws IOException, InterruptedException, ExecutionException {
 
         LOG.debug("id candidat {}" ,id);
+        Candidat byId = candidatService.getById(id);
         
         Experiences experiences = new Experiences();
-        experiences.setCandidatid(id);
+        experiences.setCandidat(byId);
         
         ModelAndView mv = new ModelAndView("addexp");
         mv.addObject("exp",experiences);
@@ -137,6 +137,8 @@ public class ElasticController {
     @RequestMapping(value = {"/elastic/exp/add/{id}"}, method = RequestMethod.POST)
     public String addExp(@ModelAttribute("exp") Experiences exp, String candidatid) throws IOException, InterruptedException, ExecutionException, ParseException {
 
+        
+           Candidat byId = candidatService.getById(candidatid);
         
         String start = exp.getStart();
         
@@ -156,7 +158,7 @@ public class ElasticController {
         
         
         exp.setEnd(format1.format(c.getTime()));
-        exp.setCandidatid(candidatid);
+        exp.setCandidat(byId);
         
         expService.addExp(exp);
             

@@ -1,12 +1,12 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 
-<a  href="<c:url value="/elastic/get/${exp.candidatid}"/>"> retour au candidat </a>
+<a  href="<c:url value="/elastic/get/${exp.candidat.id}"/>"> retour au candidat </a>
 
 <div div="row">
     <form id="updateExp" method="post">
 
-        <input type="hidden" name="candiatId" value="${exp.candidatid}">
+        <input type="hidden" name="candiatId" value="${exp.candidat.id}">
         <div class="form-group">
             <label for="id">
                 Id
