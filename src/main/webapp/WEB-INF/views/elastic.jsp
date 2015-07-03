@@ -17,8 +17,8 @@
             </div>
 
             <div class="form-group">
-                 Nombre d'année d'exprérience (champs calculé)
-                 <input  class="form-control" type="number" name="nbYearExp"  value="${candidat.nbYearExp}" readonly/>            
+                Nombre d'année d'exprérience (champs calculé)
+                <input  class="form-control" type="number" name="nbYearExp"  value="${candidat.nbYearExp}" readonly/>            
             </div>
 
 
@@ -51,6 +51,13 @@
                 préavis en mois 
                 <input class="form-control" type="text" name="preavis"  value="${candidat.preavis}"/> 
             </div>
+            
+            <c:forEach items="${candidat.mobilite}" var="mobil">
+                <div class="form-group">
+                    
+                    <input class="form-control" type="text" name="mobilite"  value="${mobil}"/> 
+                </div>
+            </c:forEach>
 
             <div class="form-group">
                 <textarea class="form-control" rows="10" name="cvContends" form="candidat" value="">${candidat.cvContends}</textarea>
@@ -84,7 +91,7 @@
                     <div>
                         <c:forEach items="${exp.tecnoList}" var="techno">
                             <span>${techno}</span>
-                            
+
                         </c:forEach>   
                     </div>
                     <div>
