@@ -6,6 +6,7 @@
 package com.infinity.service;
 
 
+import javax.annotation.PreDestroy;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.slf4j.Logger;
@@ -46,5 +47,9 @@ public class ElasticClientConf {
     public void setClient(TransportClient client) {
         this.client = client;
     }
-
+    
+    @PreDestroy
+    public void close(){
+        client.close();
+    }
 }

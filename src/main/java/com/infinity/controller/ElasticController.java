@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +70,15 @@ public class ElasticController {
         
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
-        
+        List <String>mobilite = candidat.getMobilite();
+        List<String> remove = new ArrayList<>();
+        for (String value : mobilite) {
+            if (value.isEmpty()) {
+                remove.add(value);
+                
+            }
+        }
+        mobilite.removeAll(remove);
         candidat.setUpdateDate(simpleDateFormat.format(date));
         long updateOneById = candidatService.updateOneById(candidat);
 

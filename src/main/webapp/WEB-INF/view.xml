@@ -6,7 +6,7 @@
         <put-attribute name="body" value="/WEB-INF/views/index.jsp" />
     </definition>
     <definition name="addone" extends="default">
-         <put-attribute name="title" value="ajouté un"/>
+         <put-attribute name="title" value="ajouter"/>
         <put-attribute name="body" value="/WEB-INF/views/addone.jsp" />
     </definition>
     <definition name="elastic" extends="default">
@@ -19,8 +19,12 @@
     </definition>
     
      <definition name="addexp" extends="default">
-         <put-attribute name="title" value="ajouté une expérience"/>
+         <put-attribute name="title" value="ajouter une expérience"/>
         <put-attribute name="body" value="/WEB-INF/views/addexp.jsp" />
+    </definition>
+     <definition name="comments" extends="default">
+         <put-attribute name="title" value="ajouter un commentaire"/>
+        <put-attribute name="body" value="/WEB-INF/views/comments.jsp" />
     </definition>
     
 </tiles-definitions>

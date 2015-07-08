@@ -103,7 +103,7 @@ public class ExpService {
 
         String convert = new String(json, utf8);
         byte[] ptext = convert.getBytes("UTF-8");
-        LOG.debug(ptext.toString());
+    
         UpdateRequest updateRequest = new UpdateRequest();
         updateRequest.index("cvdb");
         updateRequest.type("exp");
