@@ -52,20 +52,20 @@
                 <input class="form-control" type="text" name="preavis"  value="${candidat.preavis}"/> 
             </div>
             <div class="form-group">
-                 mobilité par département
-                 <div class="btn btn-default" id="add">Ajouter</div>
+                mobilité par département
+                <div class="btn btn-default" id="add">Ajouter</div>
             </div>
             <div class="containerM">
-               
-            <c:forEach items="${candidat.mobilite}" var="mobil">
-              
-                <div class="form-group">
 
-                    <input class="form-control" type="text" name="mobilite" value="${mobil}"/> 
-                    <!--<button class="btn btn-default" id="del" value="effacer">effacer</button>-->
-                </div>
-            </c:forEach>
-             </div>   
+                <c:forEach items="${candidat.mobilite}" var="mobil">
+
+                    <div class="form-group">
+
+                        <input class="form-control" type="text" name="mobilite" value="${mobil}"/> 
+                        <!--<button class="btn btn-default" id="del" value="effacer">effacer</button>-->
+                    </div>
+                </c:forEach>
+            </div>   
             <div class="form-group">
                 <textarea class="form-control" rows="10" name="cvContends" form="candidat" value="">${candidat.cvContends}</textarea>
             </div>
@@ -113,14 +113,38 @@
 
         <a href="<c:url value="/elastic/exp/add/${candidat.id}"/>">Ajouter une exp </a>
     </div>
+    <div class="col-md-10">
+        <h2>Commentaire</h2>
+        <div>
+            <a href="<c:url value="/comments/add/${candidat.id}"/>">Ajouter un commentaire</a>
+        </div>
+        <c:forEach items="${comments}" var="comments">
+
+            <div>
+                <label>
+                    Date du commentaire :
+                </label>
+                <p>
+                    ${comments.commentDate}
+                </p>
+            </div>
+            <div>
+                <label> Commentaire :</label>
+                <p>
+                    ${comments.comment}
+                </p>
+            </div>
+            <a href="<c:url value="/comments/get/${comments.id}"/>">Modifier</a>
+        </c:forEach>
+    </div>
 </div>
 <script>
-$(document).ready(function (){
-    
-    $('#add').click(function (){
-        $('.containerM').append('<input class="form-control" type="text" name="mobilite" />');
-    });
+    $(document).ready(function () {
 
-    
-});
+        $('#add').click(function () {
+            $('.containerM').append('<input class="form-control" type="text" name="mobilite" />');
+        });
+
+
+    });
 </script>

@@ -5,7 +5,6 @@
  */
 package com.infinity.controller;
 
-
 import com.api.dto.Candidat;
 import com.api.dto.Comments;
 import com.api.dto.PartialCandidat;
@@ -30,57 +29,75 @@ import org.springframework.web.servlet.ModelAndView;
  *
  * @author t311372
  */
-
 @Controller
 public class CommentsController {
-    
-    private static final Logger LOG = LoggerFactory
-            .getLogger(CommentsController.class);
-    
-    
+
+    private static final Logger LOG = LoggerFactory.getLogger(CommentsController.class);
+
     @Autowired
     private CommentsService commentsService;
-    
+
     @Autowired
     private CandidatService candidatService;
-    
-    
-    
-     @RequestMapping(value = {"/comments/get/{id}"})
+
+    @RequestMapping(value = {"/comments/get/{id}"}, method = RequestMethod.GET)
     public ModelAndView getComments(@PathVariable String id) throws IOException {
 
-        ArrayList<Comments> byIdSearhText = commentsService.getByIdSearhText(id);
-    
-
-    
+        Comments byId = commentsService.getById(id);
 
         ModelAndView mv = new ModelAndView("comments");
-        if (!byIdSearhText.isEmpty()) {
-            mv.addObject("comments", byIdSearhText);
-        } else {
-            LOG.error("no comments found for {}", id);
-        }
-     
+
+        mv.addObject("comments", byId);
+
+        return mv;
+    }
+
+    @RequestMapping(value = {"/comments/update/{id}"}, method = RequestMethod.POST)
+    public String updateFormComments(@ModelAttribute("comments") Comments comments, String id) throws IOException, InterruptedException, ExecutionException {
+
+        Candidat byId = candidatService.getById(comments.getPartialCandidat().getId());
+
+        PartialCandidat partialCandidat = comments.getPartialCandidat();
+
+        partialCandidat.setName(byId.getName());
+
+        comments.setId(id);
+        comments.setPartialCandidat(partialCandidat);
+
+        commentsService.updateOneById(comments);
+
+        return "redirect:/elastic/get/" + comments.getPartialCandidat().getId();
+    }
+
+    @RequestMapping(value = {"/comments/add/{id}"}, method = RequestMethod.GET)
+    public ModelAndView addComments(@PathVariable String id) throws IOException {
+
+        ModelAndView mv = new ModelAndView("addComments");
+        Candidat byId = candidatService.getById(id);
+        
+        PartialCandidat partialCandidat = new PartialCandidat();
+        partialCandidat.setId(byId.getId());
+        partialCandidat.setName(byId.getName());
+        
+        Comments comments = new Comments();
+        comments.setPartialCandidat(partialCandidat);
+        
+        mv.addObject("comments", comments);
         return mv;
     }
     
-    
-    @RequestMapping(value = {"/comments/update/{id}"}, method = RequestMethod.POST)        
-    public String updateFormComments(@ModelAttribute("comments") Comments exp, String candiatId) throws InterruptedException, JsonProcessingException, ExecutionException, UnsupportedEncodingException, IOException {
-        
-        LOG.debug(candiatId);
-        
-        Candidat byId = candidatService.getById(candiatId);
-        PartialCandidat partialCandidat = new PartialCandidat();
-        partialCandidat.setId(candiatId);
+    @RequestMapping(value = {"/comments/add"}, method = RequestMethod.POST)
+    public String addFormComments(@ModelAttribute("comments") Comments comments) throws IOException, InterruptedException, ExecutionException {
+
+        Candidat byId = candidatService.getById(comments.getPartialCandidat().getId());
+        PartialCandidat partialCandidat = comments.getPartialCandidat();
         partialCandidat.setName(byId.getName());
-        
-      
-        
+  
+        comments.setPartialCandidat(partialCandidat);
 
-        
-   
+        commentsService.addComments(comments);
 
-        return "redirect:/elastic/get/" + candiatId;
+        return "redirect:/elastic/get/" + comments.getPartialCandidat().getId();
     }
+
 }
