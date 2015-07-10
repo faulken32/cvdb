@@ -7,7 +7,7 @@
         </a>
     </li>
      <li>
-        <a href="<spring:url value="/addone"></spring:url>">
+        <a href="<spring:url value="/candidat"></spring:url>">
             Ajoutez un candidat    
         </a>
     </li>

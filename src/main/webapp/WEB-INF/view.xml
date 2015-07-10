@@ -26,9 +26,14 @@
         <put-attribute name="title" value="modifiez un commentaire"/>
         <put-attribute name="body" value="/WEB-INF/views/comments.jsp" />
     </definition>
-     <definition name="addComments" extends="default">
+    <definition name="addComments" extends="default">
         <put-attribute name="title" value="ajouter un commentaire"/>
         <put-attribute name="body" value="/WEB-INF/views/addComments.jsp" />
+    </definition>
+    
+    <definition name="addCandidat" extends="default">
+        <put-attribute name="title" value="ajouter un candidat"/>
+        <put-attribute name="body" value="/WEB-INF/views/addCandidat.jsp" />
     </definition>
     
 </tiles-definitions>

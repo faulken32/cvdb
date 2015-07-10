@@ -6,10 +6,13 @@
 package com.infinity.service;
 
 import com.api.dto.Candidat;
+import com.api.dto.Comments;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -27,6 +30,24 @@ public class CandidatService {
     @Autowired
     private ElasticClientConf elasticClientConf;
     private TransportClient client;
+    
+    
+     public String addCandidat(Candidat candidat) throws JsonProcessingException {
+
+        client = elasticClientConf.getClient();
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        byte[] json = mapper.writeValueAsBytes(candidat);
+
+        IndexResponse response = client.prepareIndex("cvdb", "candidat")
+                .setSource(json)
+                .execute()
+                .actionGet();
+
+        String id = response.getId();
+        return id;
+    }
 
     public Candidat getById(String id) throws IOException {
 
