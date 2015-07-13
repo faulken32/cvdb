@@ -36,4 +36,12 @@
         <put-attribute name="body" value="/WEB-INF/views/addCandidat.jsp" />
     </definition>
     
+    <definition name="updateSchool" extends="default">
+        <put-attribute name="title" value="ajouter une formation"/>
+        <put-attribute name="body" value="/WEB-INF/views/updateSchool.jsp" />
+    </definition>
+      <definition name="addSchool" extends="default">
+        <put-attribute name="title" value="ajouter une formation"/>
+        <put-attribute name="body" value="/WEB-INF/views/addSchool.jsp" />
+    </definition>    
 </tiles-definitions>

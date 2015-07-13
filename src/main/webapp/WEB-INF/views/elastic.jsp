@@ -150,7 +150,58 @@
                 <a href="<c:url value="/comments/get/${comments.id}"/>">Modifier</a>
             </c:forEach>
         </div>
+
+        <h2>Formations</h2>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseSchool" aria-expanded="false" aria-controls="collapseSchool">
+            Afficher les formations
+        </button>
+
+        <div id="collapseSchool" class="collapse">
+            <div>
+                <a href="<c:url value="/school/add/${candidat.id}" />">Ajouter une formartion</a>
+            </div>
+            <c:forEach items="${school}" var="school">
+
+                <div>
+                    <label>
+                        école
+                    </label>
+                    <p>
+                        ${school.school}
+                    </p>
+                </div>
+                <div>
+                    <label>
+                       Date
+                    </label>
+                    <p>
+                      De ${school.start} à ${school.end}
+                    </p>
+                </div>
+                <div>
+                    <label> Titre de la formation</label>
+                    <p>
+                        ${school.title}
+                    </p>
+                </div>
+                <div>
+                    <label>Desciption</label>
+                    <pre>
+                        ${school.sContend}
+                    </pre>
+                </div>
+                <a href="<c:url value="/school/get/${school.id}"/>">Modifier</a>
+            </c:forEach>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
     </div>
+
+
 </div>
 <div class="col-md-1"></div>
 <script>

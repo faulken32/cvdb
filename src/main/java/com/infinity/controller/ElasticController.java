@@ -8,11 +8,13 @@ package com.infinity.controller;
 import com.api.dto.Candidat;
 import com.api.dto.Comments;
 import com.api.dto.Experiences;
+import com.api.dto.School;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import com.infinity.service.CandidatService;
 import com.infinity.service.CommentsService;
 import com.infinity.service.ExpService;
+import com.infinity.service.SchoolService;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
@@ -50,6 +52,9 @@ public class ElasticController {
     @Autowired
     private CommentsService commentsService;
     
+    @Autowired
+    private SchoolService schoolService;
+    
     @RequestMapping(value = {"/elastic/get/{id}"})
     public ModelAndView getCandidat(@PathVariable String id) throws IOException {
         
@@ -60,6 +65,8 @@ public class ElasticController {
         
         ArrayList<Comments> commentsList = commentsService.getByCandidatId(id);
         
+        ArrayList<School> schoolList = schoolService.getByIdSearhText(id);
+        
         ModelAndView mv = new ModelAndView("elastic");
         
         if (!byId1.isEmpty()) {
@@ -69,6 +76,7 @@ public class ElasticController {
         }
         mv.addObject("candidat", byId);
         mv.addObject("comments", commentsList);
+        mv.addObject("school", schoolList);
         return mv;
     }
     
