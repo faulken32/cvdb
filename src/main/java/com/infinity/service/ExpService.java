@@ -41,7 +41,7 @@ public class ExpService {
         LOG.debug("id du candidat {} ",id);
         client = elasticClientConf.getClient();
 //        QueryBuilder qb = QueryBuilders.queryStringQuery(id);
-        QueryBuilder qb = QueryBuilders.matchQuery("candidat.id",id);
+        QueryBuilder qb = QueryBuilders.matchQuery("partialCandidat.id",id);
         SearchResponse response = client.prepareSearch("cvdb")
                 .setTypes("exp")
                 .setQuery(qb) // Query

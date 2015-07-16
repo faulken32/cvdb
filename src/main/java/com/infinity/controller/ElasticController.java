@@ -8,12 +8,15 @@ package com.infinity.controller;
 import com.api.dto.Candidat;
 import com.api.dto.Comments;
 import com.api.dto.Experiences;
+import com.api.dto.PartialCandidat;
 import com.api.dto.School;
+import com.api.dto.Techonologies;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import com.infinity.service.CandidatService;
 import com.infinity.service.CommentsService;
 import com.infinity.service.ExpService;
+import com.infinity.service.TimeExpService;
 import com.infinity.service.SchoolService;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -33,136 +36,195 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-/**
- *
- * @author Utilisateur
- */
+
 @Controller
 public class ElasticController {
-    
+
     private static final Logger LOG = LoggerFactory
             .getLogger(ElasticController.class);
-    
+
     @Autowired
     private CandidatService candidatService;
-    
+
     @Autowired
     private ExpService expService;
-    
+
     @Autowired
     private CommentsService commentsService;
-    
+
     @Autowired
     private SchoolService schoolService;
     
+    @Autowired
+    private TimeExpService timeExpService;
+
     @RequestMapping(value = {"/elastic/get/{id}"})
     public ModelAndView getCandidat(@PathVariable String id) throws IOException {
         
-        Candidat byId = candidatService.getById(id);
-        byId.setId(id);
-        
-        ArrayList<Experiences> byId1 = expService.getByIdSearhText(id);
-        
-        ArrayList<Comments> commentsList = commentsService.getByCandidatId(id);
-        
-        ArrayList<School> schoolList = schoolService.getByIdSearhText(id);
         
         ModelAndView mv = new ModelAndView("elastic");
-        
-        if (!byId1.isEmpty()) {
-            mv.addObject("exp", byId1);
+
+        Candidat byId = candidatService.getById(id);
+        if (byId == null) {
+             mv.addObject("noCandidat", true);
         } else {
-            LOG.debug("no exp found for {}", id);
+            
+            byId.setId(id);
+            float nbYearExp = 0;
+            ArrayList<Experiences> byId1 = expService.getByIdSearhText(id);
+            for (Experiences byId11 : byId1) {
+                float duration = byId11.getDuration();
+                nbYearExp += duration;
+            }
+            
+            byId.setNbYearExp(nbYearExp);
+            ArrayList<Comments> commentsList = commentsService.getByCandidatId(id);
+
+            ArrayList<School> schoolList = schoolService.getByIdSearhText(id);
+            ArrayList<Techonologies> timeExp = timeExpService.getTechoByCandidatId(id);
+            
+            if (timeExp == null) {
+                mv.addObject("noTimeExp", true);
+            } else {
+                mv.addObject("timeExp", timeExp);
+            }
+            
+
+            if (!byId1.isEmpty()) {
+                mv.addObject("exp", byId1);
+            } else {
+                LOG.debug("no exp found for {}", id);
+            }
+            mv.addObject("candidat", byId);
+            mv.addObject("comments", commentsList);
+            mv.addObject("school", schoolList);
         }
-        mv.addObject("candidat", byId);
-        mv.addObject("comments", commentsList);
-        mv.addObject("school", schoolList);
         return mv;
     }
-    
+
     @RequestMapping(value = {"/elastic/update"}, method = RequestMethod.POST)
     public ModelAndView updateCandidat(@ModelAttribute("candidat") Candidat candidat) throws IOException, InterruptedException, ExecutionException {
         
+        float nbYearExp = 0;
+            ArrayList<Experiences> byId1 = expService.getByIdSearhText(candidat.getId());
+            for (Experiences byId11 : byId1) {
+                float duration = byId11.getDuration();
+                nbYearExp += duration;
+            }
+        
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
-        List<String> mobilite = candidat.getMobilite();
-        List<String> remove = new ArrayList<>();
-        for (String value : mobilite) {
-            if (value.isEmpty()) {
-                remove.add(value);
-                
+        if (candidat.getMobilite() != null) {
+
+            List<String> mobilite = candidat.getMobilite();
+            List<String> remove = new ArrayList<>();
+            for (String value : mobilite) {
+                if (value.isEmpty()) {
+                    remove.add(value);
+
+                }
             }
+            mobilite.removeAll(remove);
         }
-        mobilite.removeAll(remove);
+        candidat.setNbYearExp(nbYearExp);
         candidat.setUpdateDate(simpleDateFormat.format(date));
         long updateOneById = candidatService.updateOneById(candidat);
-        
+
         String valueOf = String.valueOf(updateOneById);
-        
+
         LOG.debug(valueOf);
-        
-        ModelAndView mv = new ModelAndView("redirect:get/" + candidat.getId());
-        
+
+        ModelAndView mv = new ModelAndView("redirect:/elastic/get/" + candidat.getId());
+
         return mv;
     }
-    
+
     @RequestMapping(value = {"/elastic/exp/update/{id}"}, method = RequestMethod.GET)
     public ModelAndView getUpdateFormExp(@PathVariable String id) {
-        
+
         Experiences byId = expService.getById(id);
-        
+
         ModelAndView modelAndView = new ModelAndView("updateExp");
         modelAndView.addObject("exp", byId);
-        
+
         return modelAndView;
     }
-    
+
     @RequestMapping(value = {"/elastic/exp/update/{id}"}, method = RequestMethod.POST)
-    public String updateFormExp(@ModelAttribute("exp") Experiences exp, String candiatId) throws InterruptedException, JsonProcessingException, ExecutionException, UnsupportedEncodingException, IOException {
-        
+    public String updateFormExp(@ModelAttribute("exp") Experiences exp, String candiatId) throws InterruptedException, JsonProcessingException, ExecutionException, UnsupportedEncodingException, IOException, ParseException {
+
         LOG.debug(candiatId);
-        
-        Candidat byId = candidatService.getById(candiatId);
+
+        Candidat candidat = candidatService.getById(candiatId);
+        candidat.setId(candiatId);
+        PartialCandidat partialCandidat = new PartialCandidat();
+        partialCandidat.setId(candidat.getId());
+        partialCandidat.setName(candidat.getName());
         ArrayList<String> emptyTechno = new ArrayList<>();
         List<String> techno = exp.getTecnoList();
-        for (String technoToRemove : exp.getTecnoList()) {            
+        for (String technoToRemove : exp.getTecnoList()) {
             if (technoToRemove.isEmpty()) {
                 emptyTechno.add(technoToRemove);
             }
         }
-     
-       
-        techno.removeAll(emptyTechno);
-        exp.setTecnoList(techno);
-        exp.setCandidat(byId);
-        expService.updateById(exp);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date start = simpleDateFormat.parse(exp.getStart());
+        Date end = simpleDateFormat.parse(exp.getEnd());
+
+        long diff =  end.getTime() - start.getTime() ;
         
+        float aYear = 31536000000.0f;
+        float nbYear = diff / aYear ;
+        techno.removeAll(emptyTechno);
+        exp.setDuration(nbYear);
+        exp.setTecnoList(techno);
+        exp.setPartialCandidat(partialCandidat);
+        expService.updateById(exp);
+//        timeExpService.addTimeExpOrUpdate(candidat);
+
         return "redirect:/elastic/get/" + candiatId;
     }
-    
+
     @RequestMapping(value = {"/elastic/exp/add/{id}"}, method = RequestMethod.GET)
     public ModelAndView addExp(@PathVariable String id) throws IOException, InterruptedException, ExecutionException {
-        
+
         LOG.debug("id candidat {}", id);
         Candidat byId = candidatService.getById(id);
-        
+        PartialCandidat partialCandidat = new PartialCandidat();
+        partialCandidat.setId(id);
+        partialCandidat.setName(byId.getName());
+
         Experiences experiences = new Experiences();
-        experiences.setCandidat(byId);
-        
+        experiences.setPartialCandidat(partialCandidat);
+
         ModelAndView mv = new ModelAndView("addexp");
         mv.addObject("exp", experiences);
         return mv;
     }
-    
+
     @RequestMapping(value = {"/elastic/exp/add/{id}"}, method = RequestMethod.POST)
     public String addExp(@ModelAttribute("exp") Experiences exp, String candidatid) throws IOException, InterruptedException, ExecutionException, ParseException {
-        
-        Candidat byId = candidatService.getById(candidatid);
-        
-        exp.setCandidat(byId);
-        
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date start = simpleDateFormat.parse(exp.getStart());
+        Date end = simpleDateFormat.parse(exp.getEnd());
+
+        long diff =  end.getTime() - start.getTime() ;
+        float nbYear = diff / 31536000000.0f;
+
+        Candidat candidat = candidatService.getById(candidatid);
+        candidat.setId(candidatid);
+        PartialCandidat partialCandidat = new PartialCandidat();
+        partialCandidat.setId(candidat.getId());
+        partialCandidat.setName(candidat.getName());
+        exp.setDuration(nbYear);
+        exp.setPartialCandidat(partialCandidat);
+
         expService.addExp(exp);
+//        timeExpService.addTimeExpOrUpdate(candidat);
         
+
         return "redirect:/elastic/get/" + candidatid;
     }
 }

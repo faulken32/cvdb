@@ -6,7 +6,6 @@
 package com.infinity.service;
 
 import com.api.dto.Candidat;
-import com.api.dto.Comments;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -30,9 +29,8 @@ public class CandidatService {
     @Autowired
     private ElasticClientConf elasticClientConf;
     private TransportClient client;
-    
-    
-     public String addCandidat(Candidat candidat) throws JsonProcessingException {
+
+    public String addCandidat(Candidat candidat) throws JsonProcessingException {
 
         client = elasticClientConf.getClient();
 
@@ -52,15 +50,20 @@ public class CandidatService {
     public Candidat getById(String id) throws IOException {
 
         client = elasticClientConf.getClient();
+         Candidat readValue = null;
+        try {
 
-        GetResponse response = client.
-                prepareGet("cvdb", "candidat", id)
-                .execute()
-                .actionGet();
+            GetResponse response = client.
+                    prepareGet("cvdb", "candidat", id)
+                    .execute()
+                    .actionGet();
 
-        ObjectMapper mapper = new ObjectMapper();
-        Candidat readValue = mapper.readValue(response.getSourceAsString(), Candidat.class);
-        
+            ObjectMapper mapper = new ObjectMapper();
+            readValue = mapper.readValue(response.getSourceAsString(), Candidat.class);
+        } catch (NullPointerException e) {
+            
+            return  null;
+        }
         return readValue;
     }
 
@@ -68,19 +71,18 @@ public class CandidatService {
 
         client = elasticClientConf.getClient();
         ObjectMapper mapper = new ObjectMapper();
-        
-        
-        byte[] json  = mapper.writeValueAsBytes(candidat);
-        
+
+        byte[] json = mapper.writeValueAsBytes(candidat);
+
         UpdateRequest updateRequest = new UpdateRequest();
         updateRequest.index("cvdb");
         updateRequest.type("candidat");
         updateRequest.id(candidat.getId());
         updateRequest.doc(json);
-        
+
         UpdateResponse get = client.update(updateRequest).get();
         long version = get.getVersion();
-       
+
         return version;
     }
 
