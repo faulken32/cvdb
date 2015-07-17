@@ -80,17 +80,9 @@
                 <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExp" aria-expanded="false" aria-controls="collapseExp">
                     Afficher Exp
                 </button>
-                <div id="collapseExp" class="collapse">
-                    
-                        <c:if test="${noTimeExp != true}">
-                            <c:forEach items="${timeExp}" var="timeExp">
-                                <div>${timeExp.name}</div>
-                                <div>${timeExp.nbYears}</div>
-                            </c:forEach>
-                        </c:if>    
-                    
-                    
-                    
+
+                <div id="collapseExp" class="collapse">              
+                    <a href="<c:url value="/elastic/exp/add/${candidat.id}"/>">Ajouter une exp </a>
                     <c:forEach items="${exp}" var="exp">
 
                         <div class="row">
@@ -131,7 +123,7 @@
                         </div>
                     </c:forEach>
 
-                    <a href="<c:url value="/elastic/exp/add/${candidat.id}"/>">Ajouter une exp </a>
+
                 </div>
 
                 <h2>Commentaire</h2>
