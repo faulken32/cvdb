@@ -6,12 +6,42 @@
         <h4>Candidat</h4>
         <c:choose>
             <c:when test="${noCandidat != true}"> 
-                <p> profiled  : ${candidat.profiled} <br></p>
-                <p>Auto profiled  : ${candidat.autoMaticProfiled}</p>
 
 
 
-                <form id="candidat" method="post" action="/site/elastic/update">
+
+                <form id="candidat" class="form-horizontal" method="post" action="/site/elastic/update">
+
+                 <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input name="profiled" type="checkbox"
+                                   <c:if test="${candidat.profiled == true}">checked</c:if>
+                                   > Profiler
+                        </label>
+                    </div>
+                 </div>
+                    <div class="form-group">
+
+
+                        Statut
+                        <select name="status" class="form-control">
+                            <c:forEach items="${status}" var="status">
+
+                                <option value="${status.key}"
+
+                                        <c:if test="${candidat.status == status.key}">
+                                            selected
+                                        </c:if>
+
+                                        >${status.value}</option>
+                            </c:forEach>
+                        </select>
+
+                    </div>
+
+
+
                     <div class="form-group">
                         Date d'entré dans la base  :
                         <input  class="form-control" type="text" name="enterDate"  value="${candidat.enterDate}" readonly/>            
@@ -202,16 +232,19 @@
                 <br>
                 <br>
                 <br>
-            </div>
-        </div>
-    </c:when>
-    <c:otherwise>
-        <h2>Pas de candidat trouver pour cette id</h2>
-    </c:otherwise>  
-</c:choose>
 
 
-<div class="col-md-1"></div>
+
+
+            </c:when>
+            <c:otherwise>
+                <h2>Pas de candidat trouver pour cette id</h2>
+            </c:otherwise>  
+        </c:choose>
+
+    </div>
+    <div class="col-md-1"></div>
+</div>
 <script>
     $(document).ready(function () {
 

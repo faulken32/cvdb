@@ -55,15 +55,16 @@ public class ElasticController {
     @Autowired
     private SchoolService schoolService;
     
-    @Autowired
-    private TimeExpService timeExpService;
+    
 
     @RequestMapping(value = {"/elastic/get/{id}"})
     public ModelAndView getCandidat(@PathVariable String id) throws IOException {
         
         
         ModelAndView mv = new ModelAndView("elastic");
-
+        CandidatEnum candidatEnum = new CandidatEnum();
+        
+        
         Candidat byId = candidatService.getById(id);
         if (byId == null) {
              mv.addObject("noCandidat", true);
@@ -81,21 +82,15 @@ public class ElasticController {
             ArrayList<Comments> commentsList = commentsService.getByCandidatId(id);
 
             ArrayList<School> schoolList = schoolService.getByIdSearhText(id);
-            ArrayList<Techonologies> timeExp = timeExpService.getTechoByCandidatId(id);
             
-            if (timeExp == null) {
-                mv.addObject("noTimeExp", true);
-            } else {
-                mv.addObject("timeExp", timeExp);
-            }
             
-
             if (!byId1.isEmpty()) {
                 mv.addObject("exp", byId1);
             } else {
                 LOG.debug("no exp found for {}", id);
             }
             mv.addObject("candidat", byId);
+            mv.addObject("status", candidatEnum.getStatusList());
             mv.addObject("comments", commentsList);
             mv.addObject("school", schoolList);
         }
