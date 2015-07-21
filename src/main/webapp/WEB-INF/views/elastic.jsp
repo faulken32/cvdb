@@ -1,5 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+
+
 <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-10">
@@ -12,20 +14,20 @@
 
                 <form id="candidat" class="form-horizontal" method="post" action="/site/elastic/update">
 
-                 <div class="form-group">
-                    <div class="checkbox">
-                        <label>
-                            <input name="profiled" type="checkbox"
-                                   <c:if test="${candidat.profiled == true}">checked</c:if>
-                                   > Profiler
-                        </label>
-                    </div>
-                 </div>
                     <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input name="profiled" type="checkbox"
+                                       <c:if test="${candidat.profiled == true}">checked</c:if>
+                                           /> Profiler
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
 
 
-                        Statut
-                        <select name="status" class="form-control">
+                            Statut
+                            <select name="status" class="form-control">
                             <c:forEach items="${status}" var="status">
 
                                 <option value="${status.key}"
@@ -101,7 +103,8 @@
                         Afficher Cv
                     </button>
                     <div id="collapsecv" class="form-group collapse">
-                        <textarea class="form-control" rows="20" name="cvContends" form="candidat" value="">${candidat.cvContends}</textarea>
+
+                        <textarea id="editor1"  class="form-control" rows="20" name="cvContends" form="candidat" value="">${candidat.cvContends}</textarea>
                     </div>
                     <input class="btn btn-default" type="submit" value="Modifiez"/>
                 </form>
@@ -226,12 +229,12 @@
                         <a href="<c:url value="/school/get/${school.id}"/>">Modifier</a>
                     </c:forEach>
                 </div>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
 
 
 
@@ -245,13 +248,27 @@
     </div>
     <div class="col-md-1"></div>
 </div>
+
+
+<script src="<c:url value="/resources/ckeditor/ckeditor.js"/>"></script>
+
 <script>
     $(document).ready(function () {
+
+          CKEDITOR.replace('editor1');
+          
+       
+	
 
         $('#add').click(function () {
             $('.containerM').append('<input class="form-control" type="text" name="mobilite" />');
         });
 
-
+        
     });
+    
+  
+
+
+
 </script>
