@@ -4,7 +4,7 @@
 <a  href="<c:url value="/elastic/get/${exp.partialCandidat.id}"/>"> retour au candidat </a>
   
 <div div="row">
-    <form id="addexp" method="post">
+    <form id="addexp" method="post" action="<c:url value="/elastic/exp/add/${exp.partialCandidat.id}"/>">
         
         <input type="hidden" name="candidatid" value="${exp.partialCandidat.id}">
         

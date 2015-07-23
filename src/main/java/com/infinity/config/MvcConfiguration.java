@@ -14,6 +14,7 @@ import org.springframework.web.multipart.support.StandardServletMultipartResolve
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.ResourceBundleViewResolver;
 
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
@@ -62,12 +63,19 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
         return new StandardServletMultipartResolver();
     }
     
+    /**
+     *
+     * @return
+     */
+    @Bean
+    public ResourceBundleViewResolver resourceBundleViewResolver(){
     
-//      @Override
-//    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-//        converters.add(converter());
-//        super.configureMessageConverters(converters);
-//    }
+        ResourceBundleViewResolver resourceBundleViewResolver = new ResourceBundleViewResolver();
+        resourceBundleViewResolver.setBasename("views");
+        return resourceBundleViewResolver; 
+    }
+    
+
     
 //    @Bean
 //    public RequestMappingHandlerAdapter annotationMethodHandlerAdapter(){

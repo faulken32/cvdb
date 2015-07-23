@@ -17,9 +17,7 @@
                     <div class="form-group">
                         <div class="checkbox">
                             <label>
-                                <input name="profiled" type="checkbox"
-                                       <c:if test="${candidat.profiled == true}">checked</c:if>
-                                           /> Profiler
+                                <input name="profiled" type="checkbox"<c:if test="${candidat.profiled == true}">checked="checked"</c:if> /> Profiler
                                 </label>
                             </div>
                         </div>
@@ -33,7 +31,7 @@
                                 <option value="${status.key}"
 
                                         <c:if test="${candidat.status == status.key}">
-                                            selected
+                                            selected="selected"
                                         </c:if>
 
                                         >${status.value}</option>
@@ -46,17 +44,17 @@
 
                     <div class="form-group">
                         Date d'entré dans la base  :
-                        <input  class="form-control" type="text" name="enterDate"  value="${candidat.enterDate}" readonly/>            
+                        <input  class="form-control" type="text" name="enterDate"  value="${candidat.enterDate}" readonly="readonly"/>            
                     </div>
 
                     <div class="form-group">
                         Nombre d'année d'exprérience (champs calculé)
-                        <input  class="form-control" type="number" name="nbYearExp"  value="${candidat.nbYearExp}" readonly/>            
+                        <input  class="form-control" type="number" name="nbYearExp"  value="${candidat.nbYearExp}" readonly="readonly"/>            
                     </div>
 
 
                     <div class="form-group">           
-                        <input  class="form-control" type="text" name="id"  value="${candidat.id}" readonly/>            
+                        <input  class="form-control" type="text" name="id"  value="${candidat.id}"readonly="readonly"/>            
                     </div>
 
                     <div class="form-group">
@@ -98,7 +96,18 @@
                                 <!--<button class="btn btn-default" id="del" value="effacer">effacer</button>-->
                             </div>
                         </c:forEach>
-                    </div>   
+                    </div> 
+                    <div class="containerL">
+                          Langues
+                        <div class="glyphicon glyphicon-plus" id="addL"></div>
+                        <div class="form-group">
+                          
+                            <c:forEach items="${candidat.language}" var="lang">
+                                <input class="form-control" name="language" type="text" value="${lang}"/>
+                            </c:forEach>
+
+                        </div>
+                    </div>
                     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapsecv" aria-expanded="false" aria-controls="collapsecv">
                         Afficher Cv
                     </button>
@@ -255,19 +264,22 @@
 <script>
     $(document).ready(function () {
 
-          CKEDITOR.replace('editor1');
-          
-       
-	
+        CKEDITOR.replace('editor1');
+
+
+
 
         $('#add').click(function () {
             $('.containerM').append('<input class="form-control" type="text" name="mobilite" />');
         });
+          $('#addL').click(function () {
+            $('.containerL').append('<input class="form-control" type="text" name="language" />');
+        });
 
-        
+
     });
-    
-  
+
+
 
 
 

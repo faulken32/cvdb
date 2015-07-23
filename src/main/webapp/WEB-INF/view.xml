@@ -40,8 +40,12 @@
         <put-attribute name="title" value="ajouter une formation"/>
         <put-attribute name="body" value="/WEB-INF/views/updateSchool.jsp" />
     </definition>
-      <definition name="addSchool" extends="default">
+    <definition name="addSchool" extends="default">
         <put-attribute name="title" value="ajouter une formation"/>
         <put-attribute name="body" value="/WEB-INF/views/addSchool.jsp" />
+    </definition>
+    <definition name="addClient" extends="default">
+        <put-attribute name="title" value="ajouter un client"/>
+        <put-attribute name="body" value="/WEB-INF/views/addClient.jsp" />
     </definition>    
 </tiles-definitions>

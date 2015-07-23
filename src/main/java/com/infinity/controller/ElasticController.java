@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 
 @Controller
@@ -121,6 +122,21 @@ public class ElasticController {
             }
             mobilite.removeAll(remove);
         }
+        
+         if (candidat.getLanguage()!= null) {
+
+            List<String> lang = candidat.getLanguage();
+            List<String> remove = new ArrayList<>();
+            for (String value : lang) {
+                if (value.isEmpty()) {
+                    remove.add(value);
+
+                }
+            }
+            lang.removeAll(remove);
+        }
+        
+        
         candidat.setNbYearExp(nbYearExp);
         candidat.setUpdateDate(simpleDateFormat.format(date));
         long updateOneById = candidatService.updateOneById(candidat);
@@ -199,7 +215,7 @@ public class ElasticController {
     }
 
     @RequestMapping(value = {"/elastic/exp/add/{id}"}, method = RequestMethod.POST)
-    public String addExp(@ModelAttribute("exp") Experiences exp, String candidatid) throws IOException, InterruptedException, ExecutionException, ParseException {
+    public RedirectView addExp(@ModelAttribute("exp") Experiences exp, String candidatid) throws IOException, InterruptedException, ExecutionException, ParseException {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date start = simpleDateFormat.parse(exp.getStart());
@@ -218,8 +234,7 @@ public class ElasticController {
 
         expService.addExp(exp);
 //        timeExpService.addTimeExpOrUpdate(candidat);
-        
-
-        return "redirect:/elastic/get/" + candidatid;
+        RedirectView redirectView = new  RedirectView("/site/elastic/get/" + candidatid);
+        return redirectView;
     }
 }
