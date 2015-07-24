@@ -15,11 +15,10 @@
                 </a>
             </li>
             <li>
-                    <a href="<spring:url value="/client/add"></spring:url>">
-                    Ajoutez un client    
+                    <a href="<spring:url value="/client/all"></spring:url>">
+                    Clients    
                 </a>
             </li>
         </ul>
     </div>
-
 </nav>

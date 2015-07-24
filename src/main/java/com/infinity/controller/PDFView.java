@@ -27,7 +27,6 @@ public class PDFView extends AbstractPdfView {
         for (Object word : words) {
             dcmnt.add(new Paragraph((String) word));
         }
-
     }
 
 }

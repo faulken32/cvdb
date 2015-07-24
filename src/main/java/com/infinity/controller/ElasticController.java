@@ -10,13 +10,11 @@ import com.api.dto.Comments;
 import com.api.dto.Experiences;
 import com.api.dto.PartialCandidat;
 import com.api.dto.School;
-import com.api.dto.Techonologies;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import com.infinity.service.CandidatService;
 import com.infinity.service.CommentsService;
 import com.infinity.service.ExpService;
-import com.infinity.service.TimeExpService;
 import com.infinity.service.SchoolService;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
