@@ -15,8 +15,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.ResourceBundleViewResolver;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
+import org.springframework.web.servlet.view.tiles3.TilesView;
 import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
 @Configuration
@@ -37,10 +39,10 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
         DEFAULT_TILES_DEFINITIONS.add("/WEB-INF/view.xml");
     }
 
-    @Bean
-    public TilesViewResolver tilesViewResolver() {
-        return new TilesViewResolver();
-    }
+//    @Bean
+//    public TilesViewResolver tilesViewResolver() {
+//        return new TilesViewResolver();
+//    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -63,6 +65,16 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
         return new StandardServletMultipartResolver();
     }
     
+    @Bean
+    public UrlBasedViewResolver viewResolver(){
+    
+        UrlBasedViewResolver urlBasedViewResolver = new UrlBasedViewResolver();
+        urlBasedViewResolver.setViewClass(TilesView.class);
+        
+        return urlBasedViewResolver;
+    }
+    
+    
     /**
      *
      * @return
@@ -75,20 +87,8 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
         return resourceBundleViewResolver; 
     }
     
+   
 
-    
-//    @Bean
-//    public RequestMappingHandlerAdapter annotationMethodHandlerAdapter(){
-//        
-//        
-//        RequestMappingHandlerAdapter requestMappingHandlerAdapter = new RequestMappingHandlerAdapter();
-//        
-//        StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter(Charset.forName("UTF-8"));
-//        requestMappingHandlerAdapter.getMessageConverters().add(stringHttpMessageConverter);
-//                       
-//        
-//        return requestMappingHandlerAdapter;
-//    }
     
     @Bean
     public TilesConfigurer tilesConfigurer() {

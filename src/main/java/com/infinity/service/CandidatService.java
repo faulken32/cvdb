@@ -6,15 +6,21 @@
 package com.infinity.service;
 
 import com.api.dto.Candidat;
+import com.api.dto.Clients;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -84,6 +90,34 @@ public class CandidatService {
         long version = get.getVersion();
 
         return version;
+    }
+    
+    
+     public ArrayList<Candidat> getAll() throws IOException {
+
+        client = elasticClientConf.getClient();
+
+        QueryBuilder qb = QueryBuilders.matchAllQuery();
+        SearchResponse response = client.prepareSearch("cvdb")
+                .setTypes("candidat")
+                .setQuery(qb) // Query
+                .execute()
+                .actionGet();
+
+        SearchHit[] hits = response.getHits().getHits();
+        ObjectMapper mapper = new ObjectMapper();
+        ArrayList<Candidat> candidatList = new ArrayList<>();
+
+        if (hits.length > 0) {
+            for (int i = 0; i < hits.length; i++) {
+                Candidat readValue = mapper.readValue(hits[i].getSourceAsString(), Candidat.class);
+                readValue.setId(hits[i].getId());
+                candidatList.add(readValue);
+
+            }
+        }
+        return candidatList;
+
     }
 
 }

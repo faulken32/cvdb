@@ -21,6 +21,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -34,7 +35,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
-
 
 @Controller
 public class ElasticController {
@@ -53,22 +53,18 @@ public class ElasticController {
 
     @Autowired
     private SchoolService schoolService;
-    
-    
 
     @RequestMapping(value = {"/elastic/get/{id}"})
     public ModelAndView getCandidat(@PathVariable String id) throws IOException {
-        
-        
+
         ModelAndView mv = new ModelAndView("elastic");
         CandidatEnum candidatEnum = new CandidatEnum();
-        
-        
+
         Candidat byId = candidatService.getById(id);
         if (byId == null) {
-             mv.addObject("noCandidat", true);
+            mv.addObject("noCandidat", true);
         } else {
-            
+
             byId.setId(id);
             float nbYearExp = 0;
             ArrayList<Experiences> byId1 = expService.getByIdSearhText(id);
@@ -76,13 +72,12 @@ public class ElasticController {
                 float duration = byId11.getDuration();
                 nbYearExp += duration;
             }
-            
+
             byId.setNbYearExp(nbYearExp);
             ArrayList<Comments> commentsList = commentsService.getByCandidatId(id);
 
             ArrayList<School> schoolList = schoolService.getByIdSearhText(id);
-            
-            
+
             if (!byId1.isEmpty()) {
                 mv.addObject("exp", byId1);
             } else {
@@ -98,14 +93,14 @@ public class ElasticController {
 
     @RequestMapping(value = {"/elastic/update"}, method = RequestMethod.POST)
     public ModelAndView updateCandidat(@ModelAttribute("candidat") Candidat candidat) throws IOException, InterruptedException, ExecutionException {
-        
+
         float nbYearExp = 0;
-            ArrayList<Experiences> byId1 = expService.getByIdSearhText(candidat.getId());
-            for (Experiences byId11 : byId1) {
-                float duration = byId11.getDuration();
-                nbYearExp += duration;
-            }
-        
+        ArrayList<Experiences> byId1 = expService.getByIdSearhText(candidat.getId());
+        for (Experiences byId11 : byId1) {
+            float duration = byId11.getDuration();
+            nbYearExp += duration;
+        }
+
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
         if (candidat.getMobilite() != null) {
@@ -120,8 +115,8 @@ public class ElasticController {
             }
             mobilite.removeAll(remove);
         }
-        
-         if (candidat.getLanguage()!= null) {
+
+        if (candidat.getLanguage() != null) {
 
             List<String> lang = candidat.getLanguage();
             List<String> remove = new ArrayList<>();
@@ -133,8 +128,7 @@ public class ElasticController {
             }
             lang.removeAll(remove);
         }
-        
-        
+
         candidat.setNbYearExp(nbYearExp);
         candidat.setUpdateDate(simpleDateFormat.format(date));
         long updateOneById = candidatService.updateOneById(candidat);
@@ -160,7 +154,7 @@ public class ElasticController {
     }
 
     @RequestMapping(value = {"/elastic/exp/update/{id}"}, method = RequestMethod.POST)
-    public String updateFormExp(@ModelAttribute("exp") Experiences exp, String candiatId) throws InterruptedException, JsonProcessingException, ExecutionException, UnsupportedEncodingException, IOException, ParseException {
+    public ModelAndView updateFormExp(@ModelAttribute("exp") Experiences exp, String candiatId) throws InterruptedException, JsonProcessingException, ExecutionException, UnsupportedEncodingException, IOException, ParseException {
 
         LOG.debug(candiatId);
 
@@ -181,18 +175,19 @@ public class ElasticController {
         Date start = simpleDateFormat.parse(exp.getStart());
         Date end = simpleDateFormat.parse(exp.getEnd());
 
-        long diff =  end.getTime() - start.getTime() ;
-        
+        long diff = end.getTime() - start.getTime();
+
         float aYear = 31536000000.0f;
-        float nbYear = diff / aYear ;
+        float nbYear = diff / aYear;
         techno.removeAll(emptyTechno);
         exp.setDuration(nbYear);
         exp.setTecnoList(techno);
         exp.setPartialCandidat(partialCandidat);
         expService.updateById(exp);
-//        timeExpService.addTimeExpOrUpdate(candidat);
 
-        return "redirect:/elastic/get/" + candiatId;
+        ModelAndView modelAndView = new ModelAndView("updateExp");
+        modelAndView.addObject("exp", exp);
+        return modelAndView;
     }
 
     @RequestMapping(value = {"/elastic/exp/add/{id}"}, method = RequestMethod.GET)
@@ -213,26 +208,39 @@ public class ElasticController {
     }
 
     @RequestMapping(value = {"/elastic/exp/add/{id}"}, method = RequestMethod.POST)
-    public RedirectView addExp(@ModelAttribute("exp") Experiences exp, String candidatid) throws IOException, InterruptedException, ExecutionException, ParseException {
+    public ModelAndView addExp(@ModelAttribute("exp") Experiences exp, String candidatid, String technoListblock) throws IOException, InterruptedException, ExecutionException, ParseException {
 
+        if (!technoListblock.isEmpty()) {
+
+            String[] split = technoListblock.split(",");
+            List<String> tecnoList =new ArrayList<>();
+            tecnoList.addAll(Arrays.asList(split));
+            exp.setTecnoList(tecnoList);
+
+        }
+        exp.setId(null);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date start = simpleDateFormat.parse(exp.getStart());
         Date end = simpleDateFormat.parse(exp.getEnd());
 
-        long diff =  end.getTime() - start.getTime() ;
+        long diff = end.getTime() - start.getTime();
         float nbYear = diff / 31536000000.0f;
 
         Candidat candidat = candidatService.getById(candidatid);
         candidat.setId(candidatid);
+        
         PartialCandidat partialCandidat = new PartialCandidat();
         partialCandidat.setId(candidat.getId());
         partialCandidat.setName(candidat.getName());
+        
         exp.setDuration(nbYear);
         exp.setPartialCandidat(partialCandidat);
 
         expService.addExp(exp);
 //        timeExpService.addTimeExpOrUpdate(candidat);
-        RedirectView redirectView = new  RedirectView("/site/elastic/get/" + candidatid);
-        return redirectView;
+         ModelAndView mv = new ModelAndView("addexp");
+        mv.addObject("exp", exp);
+    
+        return mv;
     }
 }

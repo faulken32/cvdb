@@ -40,26 +40,13 @@
 
             <textarea  class="form-control" name="expContend" form="addexp" row="10">${exp.expContend}</textarea>
         </div>
-        
-        <div class="containerT">
-                <h2>Technologie</h2>
-                <div class="form-group">                    
-                    <div class="btn btn-default" id="add">Ajouter</div>
-                </div>
-                <c:forEach items="${exp.tecnoList}" var="techno">
-                    <div class="form-group">                    
-                        <input  class="form-control"  id="tecno" name="tecnoList" type="text" value=""/>  
-                    </div>
-                </c:forEach>
-            </div>
+        <div class="form-group">
+            <label> Technologie séparé par des virgules</label>
+            <input class="form-control" type="text" name="technoListblock" />
+        </div>
+     
         <input  class="btn btn-default"  type="submit" value="Validez" />
     </form>
-        <script>
-    $(document).ready(function () {
-        $('#add').click(function () {
-            $('.containerT').append('<input class="form-control" type="text" name="tecnoList" />');
-        });
-    });
-</script>
+    
 
 </div>

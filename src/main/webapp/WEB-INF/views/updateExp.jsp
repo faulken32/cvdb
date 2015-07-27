@@ -1,7 +1,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 
-<a  href="<c:url value="/elastic/get/${exp.partialCandidat.id}"/>"> retour au candidat </a>
+<p><a  href="<c:url value="/elastic/get/${exp.partialCandidat.id}"/>"> retour au candidat </a></p>
+<p><a  href="<c:url value="/exp/all/${exp.partialCandidat.id}"/>"> retour aux exp </a></p>
 
 <div div="row">
     <div class="col-md-1"></div>
