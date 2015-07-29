@@ -59,7 +59,9 @@
      <definition name="expList" extends="default">
         <put-attribute name="title" value="tous les clients"/>
         <put-attribute name="body" value="/WEB-INF/views/expList.jsp" />
+    </definition>
+     <definition name="allJobs" extends="default">
+        <put-attribute name="title" value="tous les clients"/>
+        <put-attribute name="body" value="/WEB-INF/views/allJobs.jsp" />
     </definition>       
-   
-    
 </tiles-definitions>

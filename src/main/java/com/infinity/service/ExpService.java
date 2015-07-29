@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
+import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
@@ -36,12 +37,11 @@ public class ExpService {
     private TransportClient client;
 
     public ArrayList<Experiences> getByIdSearhText(String id) throws IOException {
-        
-        
-        LOG.debug("id du candidat {} ",id);
+
+        LOG.debug("id du candidat {} ", id);
         client = elasticClientConf.getClient();
 //        QueryBuilder qb = QueryBuilders.queryStringQuery(id);
-        QueryBuilder qb = QueryBuilders.matchQuery("partialCandidat.id",id);
+        QueryBuilder qb = QueryBuilders.matchQuery("partialCandidat.id", id);
         SearchResponse response = client.prepareSearch("cvdb")
                 .setTypes("exp")
                 .setQuery(qb) // Query
@@ -103,7 +103,7 @@ public class ExpService {
 
         String convert = new String(json, utf8);
         byte[] ptext = convert.getBytes("UTF-8");
-    
+
         UpdateRequest updateRequest = new UpdateRequest();
         updateRequest.index("cvdb");
         updateRequest.type("exp");
@@ -125,13 +125,22 @@ public class ExpService {
         byte[] json = mapper.writeValueAsBytes(exp);
 
         IndexResponse response = client.prepareIndex("cvdb", "exp")
-        .setSource(json)
-        .execute()
-        .actionGet();
-        
+                .setSource(json)
+                .execute()
+                .actionGet();
 
-        
         long version = response.getVersion();
         return version;
+    }
+
+    public long deleteById(String id) {
+
+        DeleteResponse response = client.prepareDelete("cvdb", "exp", id)
+                .execute()
+                .actionGet();
+        
+       return  response.getVersion();
+        
+        
     }
 }

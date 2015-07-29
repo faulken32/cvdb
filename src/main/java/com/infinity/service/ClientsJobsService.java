@@ -5,6 +5,7 @@
  */
 package com.infinity.service;
 
+import com.api.dto.ClientOffers;
 import com.api.dto.Clients;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -29,21 +30,28 @@ import org.springframework.stereotype.Service;
  * @author t311372
  */
 @Service
-public class ClientsService {
+public class ClientsJobsService {
 
     @Autowired
     private ElasticClientConf elasticClientConf;
     private TransportClient client;
-
-    public String addClient(Clients clientDto) throws JsonProcessingException {
+    
+    
+    /**
+     * 
+     * @param clientOffers
+     * @return
+     * @throws JsonProcessingException 
+     */
+    public String addJobs(ClientOffers clientOffers) throws JsonProcessingException {
 
         client = elasticClientConf.getClient();
 
         ObjectMapper mapper = new ObjectMapper();
 
-        byte[] json = mapper.writeValueAsBytes(clientDto);
+        byte[] json = mapper.writeValueAsBytes(clientOffers);
 
-        IndexResponse response = client.prepareIndex("cvdb", "client")
+        IndexResponse response = client.prepareIndex("cvdb", "jobs")
                 .setSource(json)
                 .execute()
                 .actionGet();
@@ -51,18 +59,26 @@ public class ClientsService {
         String id = response.getId();
         return id;
     }
-
-    public long updateOneById(Clients clients) throws IOException, InterruptedException, ExecutionException {
+    
+    /**
+     * 
+     * @param jobs
+     * @return
+     * @throws IOException
+     * @throws InterruptedException
+     * @throws ExecutionException 
+     */
+    public long updateOneById(ClientOffers jobs) throws IOException, InterruptedException, ExecutionException {
 
         client = elasticClientConf.getClient();
         ObjectMapper mapper = new ObjectMapper();
 
-        byte[] json = mapper.writeValueAsBytes(clients);
+        byte[] json = mapper.writeValueAsBytes(jobs);
 
         UpdateRequest updateRequest = new UpdateRequest();
         updateRequest.index("cvdb");
-        updateRequest.type("client");
-        updateRequest.id(clients.getId());
+        updateRequest.type("jobs");
+        updateRequest.id(jobs.getId());
         updateRequest.doc(json);
 
         UpdateResponse get = client.update(updateRequest).get();
@@ -71,49 +87,50 @@ public class ClientsService {
         return version;
     }
 
-    public Clients getById(String id) throws IOException {
+//    public Clients getById(String id) throws IOException {
+//
+//        client = elasticClientConf.getClient();
+//        Clients readValue = null;
+//        try {
+//
+//            GetResponse response = client.
+//                    prepareGet("cvdb", "client", id)
+//                    .execute()
+//                    .actionGet();
+//
+//            ObjectMapper mapper = new ObjectMapper();
+//            readValue = mapper.readValue(response.getSourceAsString(), Clients.class);
+//        } catch (NullPointerException e) {
+//
+//            return null;
+//        }
+//        return readValue;
+//    }
 
-        client = elasticClientConf.getClient();
-        Clients readValue = null;
-        try {
-
-            GetResponse response = client.
-                    prepareGet("cvdb", "client", id)
-                    .execute()
-                    .actionGet();
-
-            ObjectMapper mapper = new ObjectMapper();
-            readValue = mapper.readValue(response.getSourceAsString(), Clients.class);
-        } catch (NullPointerException e) {
-
-            return null;
-        }
-        return readValue;
-    }
-
-    public ArrayList<Clients> getAll() throws IOException {
+    public ArrayList<ClientOffers> getAll() throws IOException {
 
         client = elasticClientConf.getClient();
 //        QueryBuilder qb = QueryBuilders.queryStringQuery(id);
         QueryBuilder qb = QueryBuilders.matchAllQuery();
         SearchResponse response = client.prepareSearch("cvdb")
-                .setTypes("client")
+                .setTypes("jobs")
                 .setQuery(qb) // Query
                 .execute()
                 .actionGet();
 
         SearchHit[] hits = response.getHits().getHits();
         ObjectMapper mapper = new ObjectMapper();
-        ArrayList<Clients> clientList = new ArrayList<>();
+        ArrayList<ClientOffers> ClientOffersList = new ArrayList<>();
 
         if (hits.length > 0) {
             for (int i = 0; i < hits.length; i++) {
-                Clients readValue = mapper.readValue(hits[i].getSourceAsString(), Clients.class);
+                ClientOffers readValue = mapper.readValue(hits[i].getSourceAsString(), ClientOffers.class);
                 readValue.setId(hits[i].getId());
-                clientList.add(readValue);
+                ClientOffersList.add(readValue);
+
             }
         }
-        return clientList;
+        return ClientOffersList;
 
     }
 }

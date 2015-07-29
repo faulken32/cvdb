@@ -101,6 +101,7 @@ public class CandidatService {
         SearchResponse response = client.prepareSearch("cvdb")
                 .setTypes("candidat")
                 .setQuery(qb) // Query
+                .setFrom(0).setSize(100).setExplain(true)
                 .execute()
                 .actionGet();
 

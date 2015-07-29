@@ -16,11 +16,12 @@
             </tr>
             <c:forEach items="${client}" var="client">
                 <tr>
-                    <td>  ${client.name}</td>
-                    <td> ${client.email}</td>
-                    <td>  ${client.phone}   </td>
+                    <td>${client.name}</td>
+                    <td>${client.email}</td>
+                    <td>${client.phone}</td>
                     <td>  <a class="glyphicon glyphicon-pencil" href="<c:url value="/client/update/${client.id}" />"></a></td>
                     <td>  <a class="glyphicon glyphicon-plus" href="<c:url value="/client/job/add/${client.id}" />"></a></td>
+                    <td>  <a class="glyphicon glyphicon-plus" href="<c:url value="/client/job/all/${client.id}" />"></a></td>
                 </tr>
 
             </c:forEach>

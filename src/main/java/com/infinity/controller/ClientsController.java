@@ -5,10 +5,14 @@
  */
 package com.infinity.controller;
 
+import com.api.dto.ClientOffers;
 import com.api.dto.Clients;
+import com.api.dto.PartialsClients;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.infinity.service.ClientsJobsService;
 import com.infinity.service.ClientsService;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +35,9 @@ public class ClientsController {
     @Autowired
     private ClientsService clientsService;
 
+    @Autowired
+    private ClientsJobsService clientsJobsService;
+
     @RequestMapping(value = {"/client/add"}, method = RequestMethod.GET)
     public ModelAndView addClient() {
 
@@ -46,11 +53,13 @@ public class ClientsController {
      * @throws com.fasterxml.jackson.core.JsonProcessingException
      */
     @RequestMapping(value = {"/client/add"}, method = RequestMethod.POST)
-    public String addClient(@ModelAttribute("clients") Clients clients) throws JsonProcessingException {
+    public ModelAndView addClient(@ModelAttribute("clients") Clients clients) throws JsonProcessingException, IOException, ExecutionException, InterruptedException {
 
-        clientsService.addClient(clients);
+        String addClient = clientsService.addClient(clients);
+        clients.setId(addClient);
+        clientsService.updateOneById(clients);
 
-        return "index";
+        return new ModelAndView("redirect:/client/all");
     }
 
     @RequestMapping(value = {"/client/update/{id}"}, method = RequestMethod.GET)
@@ -87,12 +96,57 @@ public class ClientsController {
      * @param clienId
      * @return
      */
-    @RequestMapping(value = {"/client/job/add/{id}"}, method = RequestMethod.GET)
-    public ModelAndView addJobs(@PathVariable String clienId)  {
-        
-        ModelAndView mv = new ModelAndView("addJob");
-       
+    @RequestMapping(value = {"/client/job/add/{clienId}"}, method = RequestMethod.GET)
+    public ModelAndView addJobs(@PathVariable String clienId) {
 
+        ModelAndView mv = new ModelAndView("addJob");
+
+        return mv;
+    }
+
+    /**
+     *
+     * @param clientOffers
+     * @param clienId
+     * @return
+     * @throws IOException
+     * @throws InterruptedException
+     * @throws ExecutionException
+     */
+    @RequestMapping(value = {"/client/job/add/{clienId}"}, method = RequestMethod.POST)
+    public ModelAndView addJobs(@ModelAttribute ClientOffers clientOffers, @PathVariable String clienId) throws IOException, InterruptedException, ExecutionException {
+
+        Clients c = clientsService.getById(clienId);
+        PartialsClients partialsClients = new PartialsClients();
+        partialsClients.setId(c.getId());
+        partialsClients.setName(c.getName());
+
+        clientOffers.setPartialsClients(partialsClients);
+
+        String jobsId = clientsJobsService.addJobs(clientOffers);
+        clientOffers.setId(jobsId);
+
+        clientsJobsService.updateOneById(clientOffers);
+
+        ModelAndView mv = new ModelAndView("redirect:/client/all");
+        return mv;
+    }
+    
+    /**
+     * 
+     * @param clienId
+     * @return 
+     * @throws java.io.IOException 
+     */
+    @RequestMapping(value = {"/client/job/all/{clienId}"}, method = RequestMethod.GET)
+    public ModelAndView getAllJobs(@PathVariable String clienId) throws IOException {
+        
+        ArrayList<ClientOffers> all = clientsJobsService.getAll();
+              
+        ModelAndView mv = new ModelAndView("allJobs");
+        mv.addObject("allJobs", all);
+        
+        
         return mv;
     }
 
