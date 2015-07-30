@@ -31,9 +31,9 @@ public class ElasticClientConf {
     public ElasticClientConf() {
 
         client = new TransportClient()
-                .addTransportAddress(new InetSocketTransportAddress("10.60.198.75", 9300));
-//                .addTransportAddress(new InetSocketTransportAddress("192.168.0.11", 9301));
-//                .addTransportAddress(new InetSocketTransportAddress("172.31.4.150", 9302));
+//                .addTransportAddress(new InetSocketTransportAddress("10.60.198.75", 9300));
+                .addTransportAddress(new InetSocketTransportAddress("192.168.0.12", 9301))
+                .addTransportAddress(new InetSocketTransportAddress("192.168.0.12", 9302));
         
         
         LOG.info("client créated");

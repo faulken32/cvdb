@@ -18,6 +18,8 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import static org.elasticsearch.search.sort.SortBuilders.fieldSort;
+import static org.elasticsearch.search.sort.SortOrder.DESC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +45,10 @@ public class ExpService {
 //        QueryBuilder qb = QueryBuilders.queryStringQuery(id);
         QueryBuilder qb = QueryBuilders.matchQuery("partialCandidat.id", id);
         SearchResponse response = client.prepareSearch("cvdb")
-                .setTypes("exp")
-                .setQuery(qb) // Query
+                .setTypes("exp")               
+                .setQuery(qb)
+                .setFrom(0).setSize(100).setExplain(true) 
+                 .addSort(fieldSort("end").order(DESC).missing("_last"))// Query
                 .execute()
                 .actionGet();
 
