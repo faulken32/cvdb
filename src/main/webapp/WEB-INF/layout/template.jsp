@@ -16,7 +16,7 @@
         <script src="/site/resources/js/jquery.min.js"></script>
         <link rel="stylesheet" href="/site/resources/bootstrap/css/bootstrap.min.css" type="text/css"/>
         <link rel="stylesheet" href="/site/resources/css/main.css" type="text/css"/>
-
+        <link rel="stylesheet" href="/site/resources/js/jquery-ui/jquery-ui.min.css" type="text/css"/>
 
 
 

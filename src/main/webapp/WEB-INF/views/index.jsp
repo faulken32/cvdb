@@ -10,6 +10,17 @@
                 <h1 class="">Liste des candidats</h1>       
             </div>
         </div>
+        <form id="search">
+            <div class="form-group col-md-3">
+                <label>Recherche par nom des candidats</label>
+                <input class="form-control" type="search" id="recherche" />
+<!--                <input  class="" type="submit" name="auto"/>-->
+            </div>
+        </form>
+
+        
+
+
 
 
 
@@ -26,7 +37,7 @@
 
             </tr>
             <c:forEach items="${candidat}" var="candidat">
-                <tr>
+                <tr class= "${candidat.name} res">
                     <td> 
                         <a class="" href="<c:url value="/elastic/get/${candidat.id}" />">${candidat.name}</a></td>
                     <td> ${candidat.email}</td>
@@ -55,3 +66,29 @@
     </div>
     <div class="col-md-1"></div>
 </div>
+
+<script type="text/javascript" src="/site/resources/js/jquery-ui/jquery-ui.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.res').hide();
+        $('#recherche').autocomplete({
+            source: function (requete, reponse) { // les deux arguments représentent les données nécessaires au plugin
+                $.ajax({
+                    url: '<c:url value="/candidat/get/"/>' + requete.term, // on appelle le script JSON
+                    dataType: 'json', // on spécifie bien que le type de données est en JSON
+
+                    success: function (donnee) {
+                          $('.res').hide();
+                        reponse($.map(donnee, function (objet) {
+                             $('.'+objet.name).show();
+//                            return objet.name;
+                        }));
+                    }
+                });
+            }
+        });
+    });
+
+
+</script>

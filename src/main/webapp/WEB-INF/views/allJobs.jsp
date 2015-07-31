@@ -10,16 +10,17 @@
             <tr>
                 <th>Titre</th>
                  <th>Description</th>
+                 <th>Critères de recherche</th>
                
             </tr>
             <c:forEach items="${allJobs}" var="jobs">
                 <tr>
                     <td>${jobs.title}</td>
-                    <td>${jobs.desc}</td><!--
+                    <td>${jobs.desc}</td>
                     
-<!--                  <td>  <a class="glyphicon glyphicon-pencil" href="<c:url value="/client/update/${client.id}" />"></a></td>
+                  <!--<td>  <a class="glyphicon glyphicon-pencil" href="<c:url value="/client/update/${client.id}" />"></a></td>-->
                     <td>  <a class="glyphicon glyphicon-plus" href="<c:url value="/client/job/add/${client.id}" />"></a></td>
-                </tr>-->
+                </tr>
 
             </c:forEach>
         </table>

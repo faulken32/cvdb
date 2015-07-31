@@ -25,6 +25,33 @@
             </div>
             <input  class="btn btn-default"  type="submit" value="Ok" />
         </form>
+
+
+        
+        <div class="col-md-6">
+            <h2>Ajouter un critere de recherche</h2>
+            <form id="criteria" name="criteria" method="post" action="<c:url value="/client/criteria/add/${client}" />">
+
+
+                <div class="form-group ">
+                    <label>Nom du profile recherché</label>
+                    <input  class="form-control"  name="profileName" type="text" value=""/>  
+                </div>
+                <div class="form-group ">
+                    <label>Type de profile</label>
+                    <input  class="form-control"  name="profiType" type="text" value=""/>
+                </div>
+                <div class="form-group ">
+                    <label>Nombre d'année d'exprérience total</label>
+                    <input  class="form-control"  name="expTotal" type="number" value=""/>
+                </div>
+
+                <input  class="btn btn-default"  type="submit" value="Ok"/>
+
+            </form>
+        </div>
+
+
     </div>   
     <div class="col-md-1"></div>
 </div>

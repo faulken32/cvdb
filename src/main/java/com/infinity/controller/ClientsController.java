@@ -7,6 +7,7 @@ package com.infinity.controller;
 
 import com.api.dto.ClientOffers;
 import com.api.dto.Clients;
+
 import com.api.dto.PartialsClients;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infinity.service.ClientsJobsService;
@@ -97,10 +98,12 @@ public class ClientsController {
      * @return
      */
     @RequestMapping(value = {"/client/job/add/{clienId}"}, method = RequestMethod.GET)
-    public ModelAndView addJobs(@PathVariable String clienId) {
-
+    public ModelAndView addJobs(@PathVariable String clienId) throws IOException {
+        
+    
         ModelAndView mv = new ModelAndView("addJob");
-
+        mv.addObject("client",  clienId);
+        
         return mv;
     }
 
@@ -149,5 +152,12 @@ public class ClientsController {
         
         return mv;
     }
-
+    
+  
+    
+    
+    
+    
+  
+    
 }
