@@ -38,19 +38,21 @@
                 <label>Nombre d'année d'exprérience total</label>
                 <input  class="form-control"  name="expTotal" type="number" value=""/>
             </div>
-            <div id="add" class="btn btn-default"> plus</div>
+
             <div class="row">
-            
-                <div id="list" class="col-md-4">
+                
+                <c:forEach items="${techno}" var="techno">
+                <div id="" class="col-md-4">
                     <div class="form-group">
                         <label>Technologie recherché</label>
-                        <input  class="form-control"  name="expName" type="text" value=""/>
+                        <input  class="form-control"  name="expName" type="text" value="${techno.key}"/>
                     </div>
                     <div class="form-group">
                         <label>Nombre d'année</label>
-                        <input  class="form-control"  name="expRange" type="text" value="" placeholder="1 to 6"/>
+                        <input  class="form-control"  name="expRange" type="text" value="${techno.value}" placeholder="1 to 6"/>
                     </div>
                 </div>
+                </c:forEach>
             </div>
             <input  class="btn btn-default"  type="submit" value="Ok"/>
 
@@ -64,25 +66,14 @@
 
 <script src="<c:url value="/resources/ckeditor/ckeditor.js"/>"></script>
 <script>
-    
     $(document).ready(function () {
-        
-         
-       
-        
-        
+
         CKEDITOR.replace('editor1');
         
-         $('#add').click(function () {
-            $('#list').append('<div class="form-group">' +
-                        '<label>Technologie recherché</label>'+
-                        '<input  class="form-control"  name="expName" type="text" value=""/>'+
-                    '</div>'+
-                    '<div class="form-group">'+
-                        '<label>Nombre d\'année</label>'+
-                        '<input  class="form-control"  name="expRange" type="text" value="" placeholder="1 to 6"/>'+
-                    '</div>');
-        });
         
+        
+        $('#add').click(function () {
+            $('.c').append('<input class="form-control" type="text" name="mobilite" />');
+        });
     });
 </script>

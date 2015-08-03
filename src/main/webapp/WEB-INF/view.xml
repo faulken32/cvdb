@@ -64,8 +64,8 @@
         <put-attribute name="title" value="tous les clients"/>
         <put-attribute name="body" value="/WEB-INF/views/allJobs.jsp" />
     </definition>
-<!--    <definition name="addUpdateCriteria" extends="default">
+    <definition name="updateJobs" extends="default">
         <put-attribute name="title" value="tous les clients"/>
-        <put-attribute name="body" value="/WEB-INF/views/addUpdateCriteria.jsp" />
-    </definition>             -->
+        <put-attribute name="body" value="/WEB-INF/views/updateJobs.jsp" />
+    </definition>             
 </tiles-definitions>

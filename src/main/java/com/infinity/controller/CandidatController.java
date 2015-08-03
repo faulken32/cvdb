@@ -65,7 +65,7 @@ public class CandidatController {
     }
     
     
-      @RequestMapping(value = {"/candidat/get/{candidatName}"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/candidat/get/{candidatName}"}, method = RequestMethod.GET, produces = "application/json")
     public  ResponseEntity<ArrayList<Candidat>> getByName(@PathVariable String candidatName)  {
 
          ArrayList<Candidat> byName = null;

@@ -87,25 +87,27 @@ public class ClientsJobsService {
         return version;
     }
 
-//    public Clients getById(String id) throws IOException {
-//
-//        client = elasticClientConf.getClient();
-//        Clients readValue = null;
-//        try {
-//
-//            GetResponse response = client.
-//                    prepareGet("cvdb", "client", id)
-//                    .execute()
-//                    .actionGet();
-//
-//            ObjectMapper mapper = new ObjectMapper();
-//            readValue = mapper.readValue(response.getSourceAsString(), Clients.class);
-//        } catch (NullPointerException e) {
-//
-//            return null;
-//        }
-//        return readValue;
-//    }
+    public ClientOffers getById(String id) throws IOException {
+
+        client = elasticClientConf.getClient();
+        ClientOffers readValue = null;
+        try {
+
+            GetResponse response = client.
+                    prepareGet("cvdb", "jobs", id)
+                    .execute()
+                    .actionGet();
+
+            ObjectMapper mapper = new ObjectMapper();
+            readValue = mapper.readValue(response.getSourceAsString(), ClientOffers.class);
+        } catch (NullPointerException e) {
+
+            return null;
+        }
+        return readValue;
+    }
+    
+    
 
     public ArrayList<ClientOffers> getAll() throws IOException {
 
