@@ -5,7 +5,7 @@
  */
 package com.infinity.controller;
 
-import com.api.dto.Candidat;
+import com.infinity.dto.Candidat;
 import com.infinity.service.CandidatService;
 import java.io.IOException;
 import java.text.SimpleDateFormat;

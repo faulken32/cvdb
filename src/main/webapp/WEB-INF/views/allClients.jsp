@@ -1,11 +1,13 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+
 <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-10">
         <h1>Liste des clients</h1>
-        
-       <a class="glyphicon glyphicon-plus" href="<c:url value="/client/add" />"></a>
-        
+
+        <a class="glyphicon glyphicon-plus" href="<c:url value="/client/add" />"></a>
+
         <table class="table table-striped">
             <tr>
                 <th>Nom</th>
@@ -29,4 +31,4 @@
         </table>
     </div>
     <div class="col-md-1"></div>
-</div>
+</div>           

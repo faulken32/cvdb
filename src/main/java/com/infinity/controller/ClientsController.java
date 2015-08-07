@@ -5,17 +5,15 @@
  */
 package com.infinity.controller;
 
-import com.api.dto.ClientOffers;
-import com.api.dto.Clients;
-
-import com.api.dto.PartialsClients;
-import com.api.dto.partialFromModel.PartialClientOffers;
+import com.infinity.dto.ClientOffers;
+import com.infinity.dto.Clients;
+import com.infinity.dto.PartialsClients;
+import com.infinity.dto.TechnoCriteria;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infinity.service.ClientsJobsService;
 import com.infinity.service.ClientsService;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,9 +85,10 @@ public class ClientsController {
 
     @RequestMapping(value = {"/client/all"}, method = RequestMethod.GET)
     public ModelAndView allClient() throws IOException {
-
-        ModelAndView mv = new ModelAndView("allClient");
-        mv.addObject("client", clientsService.getAll());
+        ArrayList<Clients> all = clientsService.getAll();
+        LOG.debug("all : " + Integer.toString(all.size()));
+        ModelAndView mv = new ModelAndView("allClients");
+        mv.addObject("client", all);
 
         return mv;
     }
@@ -104,7 +103,8 @@ public class ClientsController {
     public ModelAndView addJobs(@PathVariable String clienId) throws IOException {
 
         ModelAndView mv = new ModelAndView("addJob");
-        mv.addObject("client", clienId);
+        clientsJobsService.getById(clienId);
+//        mv.addObject("jobs", clienId);
 
         return mv;
     }
@@ -112,6 +112,7 @@ public class ClientsController {
     /**
      *
      *
+     * @param clientOffers
      * @param partialClientOffers
      * @param clienId
      * @return @throws IOException
@@ -119,35 +120,28 @@ public class ClientsController {
      * @throws ExecutionException
      */
     @RequestMapping(value = {"/client/job/add/{clienId}"}, method = RequestMethod.POST)
-    public ModelAndView addJobs(@ModelAttribute PartialClientOffers partialClientOffers, @PathVariable String clienId) throws IOException, InterruptedException, ExecutionException {
+    public ModelAndView addJobs(@ModelAttribute ClientOffers clientOffers, @PathVariable String clienId) throws IOException, InterruptedException, ExecutionException {
 
         Clients c = clientsService.getById(clienId);
+
         PartialsClients partialsClients = new PartialsClients();
         partialsClients.setId(c.getId());
         partialsClients.setName(c.getName());
 
-        ArrayList<String> technolist = new ArrayList<>();
-        String[] splitExpName = partialClientOffers.getExpName().split(",");
-        
-//        for (String splitExpName1 : splitExpName) {
-//              technolist.add(partialClientOffers.getExpName() + ":" + partialClientOffers.getExpRange());
-//        }
-//        
-//        
-      
+        TechnoCriteria technoCriteria = new TechnoCriteria();
+        technoCriteria.setTechnoName("java");
+        technoCriteria.setExpDurationEnd(1);
+        technoCriteria.setExpDurationStart(0);
 
-        ClientOffers clientOffers = new ClientOffers();
-        clientOffers.setDesc(partialClientOffers.getDesc());
-        clientOffers.setExpTotal(partialClientOffers.getExpTotal());
-        clientOffers.setProfiType(partialClientOffers.getProfiType());
-        clientOffers.setProfileName(partialClientOffers.getProfileName());
-        clientOffers.setTechnoList(technolist);
+        ArrayList<TechnoCriteria> arrayList = new ArrayList<>();
+        arrayList.add(technoCriteria);
         clientOffers.setPartialsClients(partialsClients);
-
-        String jobsId = clientsJobsService.addJobs(clientOffers);
-        clientOffers.setId(jobsId);
+        clientOffers.setTechnoCriterias(arrayList);
+        String addJobs = clientsJobsService.addJobs(clientOffers);
+        clientOffers.setId(addJobs);
         clientsJobsService.updateOneById(clientOffers);
-        ModelAndView mv = new ModelAndView("redirect:/client/all");
+
+        ModelAndView mv = new ModelAndView("redirect:/client/job/update/" + clienId + "/" + addJobs);
         return mv;
     }
 
@@ -168,26 +162,94 @@ public class ClientsController {
         return mv;
     }
 
-    @RequestMapping(value = {"/client/job/update/{offerId}"}, method = RequestMethod.GET)
-    public ModelAndView updateJobs(@PathVariable String offerId) throws IOException {
+    @RequestMapping(value = {"/client/job/update/{offerId}/{clienId}"}, method = RequestMethod.GET)
+    public ModelAndView updateJobs(@PathVariable String clienId, @PathVariable String offerId) throws IOException {
 
-        ModelAndView mv = new ModelAndView("updateJobs");
+        ModelAndView mv = new ModelAndView("addJob");
+
         ClientOffers jobs = clientsJobsService.getById(offerId);
-        
-        if (jobs.getTechnoList() != null) {
-
-            ArrayList<String> technoList = jobs.getTechnoList();
-            HashMap<String, String> hashTechno = new HashMap<>();
-
-            for (String value : technoList) {
-                String[] split = value.split(":");
-                hashTechno.put(split[0], split[1]);
-            }
-            mv.addObject("techno", hashTechno);
-        }
         mv.addObject("jobs", jobs);
-        
+
         return mv;
+    }
+
+    /**
+     *
+     * @param clientOffers
+     * @param clienId
+     * @param offerId
+     * @param redirectAttrs
+     * @return
+     * @throws IOException
+     * @throws java.lang.InterruptedException
+     * @throws java.util.concurrent.ExecutionException
+     */
+    @RequestMapping(value = {"/client/job/update/{offerId}/{clienId}"}, method = RequestMethod.POST)
+    public String updateJobs(@ModelAttribute ClientOffers clientOffers,
+            @PathVariable String clienId,
+            @PathVariable String offerId) throws IOException, InterruptedException, ExecutionException {
+
+//        ClientOffers clientOffers1 = clientsJobsService.getById(offerId);
+        clientOffers.setId(offerId);
+        ClientOffers offerFromDb = clientsJobsService.getById(offerId);
+        if (offerFromDb != null) {
+            ArrayList<TechnoCriteria> technoCriterias = offerFromDb.getTechnoCriterias();
+            clientOffers.setTechnoCriterias(technoCriterias);
+        }
+        
+        Clients byId = clientsService.getById(clienId);
+                       
+        
+        PartialsClients partialsClients = new PartialsClients();
+        partialsClients.setId(clienId);
+        partialsClients.setName(byId.getName());
+        clientOffers.setPartialsClients(partialsClients);
+
+        clientsJobsService.updateOneById(clientOffers);
+
+
+        return "redirect:/client/job/update/{offerId}/{clienId}";
+    }
+
+    @RequestMapping(value = {"/client/job/criteria/updateAdd/{offerId}/{clienId}"}, method = RequestMethod.POST)
+    public String addOrUpdateCriteria(@ModelAttribute ClientOffers clientOffers,
+            @PathVariable String clienId,
+            @PathVariable String offerId, @ModelAttribute TechnoCriteria technoCriteria) throws IOException, InterruptedException, ExecutionException {
+
+        ClientOffers jobs = clientsJobsService.getById(offerId);
+
+        if (jobs != null && jobs.getTechnoCriterias() == null) {
+            technoCriteria.setId("1");
+            ArrayList<TechnoCriteria> technoList = new ArrayList<>();
+            technoList.add(technoCriteria);
+            
+            jobs.setTechnoCriterias(technoList);
+            clientsJobsService.updateOneById(jobs);
+
+        } else {
+            
+            ArrayList<TechnoCriteria> technoCriteriasList = jobs.getTechnoCriterias();
+            if (technoCriteria.getId() == null) {
+                int size = technoCriteriasList.size();
+                technoCriteria.setId(Integer.toString(size+1));
+                technoCriteriasList.add(technoCriteria);
+                clientsJobsService.updateOneById(jobs);
+            } else {
+                for (TechnoCriteria criteriaFromList : technoCriteriasList) {
+                    
+                    if(criteriaFromList.getId().equals(technoCriteria.getId())){
+                        
+                        criteriaFromList = technoCriteria;
+                        technoCriteriasList.remove(criteriaFromList);
+                        technoCriteriasList.add(technoCriteria);
+                    }
+                    
+                }
+            }
+           
+        }
+
+        return "redirect:/client/job/update/{offerId}/{clienId}";
     }
 
 }

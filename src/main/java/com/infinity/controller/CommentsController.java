@@ -5,9 +5,9 @@
  */
 package com.infinity.controller;
 
-import com.api.dto.Candidat;
-import com.api.dto.Comments;
-import com.api.dto.PartialCandidat;
+import com.infinity.dto.Candidat;
+import com.infinity.dto.Comments;
+import com.infinity.dto.PartialCandidat;
 import com.infinity.service.CandidatService;
 import com.infinity.service.CommentsService;
 import java.io.IOException;

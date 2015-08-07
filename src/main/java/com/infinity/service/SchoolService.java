@@ -6,7 +6,7 @@
 package com.infinity.service;
 
 
-import com.api.dto.School;
+import com.infinity.dto.School;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;

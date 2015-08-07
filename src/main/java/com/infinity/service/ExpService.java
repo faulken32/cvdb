@@ -1,6 +1,6 @@
 package com.infinity.service;
 
-import com.api.dto.Experiences;
+import com.infinity.dto.Experiences;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;

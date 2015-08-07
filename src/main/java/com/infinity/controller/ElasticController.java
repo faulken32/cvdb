@@ -5,11 +5,11 @@
  */
 package com.infinity.controller;
 
-import com.api.dto.Candidat;
-import com.api.dto.Comments;
-import com.api.dto.Experiences;
-import com.api.dto.PartialCandidat;
-import com.api.dto.School;
+import com.infinity.dto.Candidat;
+import com.infinity.dto.Comments;
+import com.infinity.dto.Experiences;
+import com.infinity.dto.PartialCandidat;
+import com.infinity.dto.School;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import com.infinity.service.CandidatService;

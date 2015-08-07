@@ -8,8 +8,8 @@
             <tr>
                 <th>Titre</th>
                 <th>Description</th>
-                <th>Critères de recherche</th>
-                <th>Modifiez</th>
+              
+                <th>Ajouter/Modifier</th>
 
             </tr>
             <c:forEach items="${allJobs}" var="jobs">
@@ -17,9 +17,9 @@
                     <td>${jobs.title}</td>
                     <td>${jobs.desc}</td>
 
-                    <td>${jobs.technoList}</td>
+<!--                    <td></td>-->
 
-                    <td>  <a class="glyphicon glyphicon-plus" href="<c:url value="/client/job/update/${jobs.id}" />"></a></td>
+                    <td><a class="glyphicon glyphicon-plus" href="<c:url value="/client/job/update/${jobs.id}/${jobs.partialsClients.id}" />"></a></td>
                 </tr>
 
             </c:forEach>

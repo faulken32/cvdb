@@ -12,20 +12,22 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.ResourceBundleViewResolver;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesView;
-import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = {"com.infinity"})
 
-@PropertySource("classpath:application.properties")
+//@PropertySource("classpath:application.properties")
 
 public class MvcConfiguration extends WebMvcConfigurerAdapter {
 
@@ -65,10 +67,26 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
         return new StandardServletMultipartResolver();
     }
     
+//     @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor( new DisableBrowserCachingInterceptor());
+//       
+//    }
+    
+//    @Bean
+//    public InternalResourceViewResolver getInternalResourceViewResolver() {
+//        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+//
+//        resolver.setPrefix("/WEB-INF/views/");
+//        resolver.setSuffix(".jsp");
+//        return resolver;
+//    }
+    
     @Bean
     public UrlBasedViewResolver viewResolver(){
     
         UrlBasedViewResolver urlBasedViewResolver = new UrlBasedViewResolver();
+        urlBasedViewResolver.setCache(false);
         urlBasedViewResolver.setViewClass(TilesView.class);
         
         return urlBasedViewResolver;

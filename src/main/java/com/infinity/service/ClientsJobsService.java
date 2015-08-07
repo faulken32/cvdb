@@ -5,8 +5,7 @@
  */
 package com.infinity.service;
 
-import com.api.dto.ClientOffers;
-import com.api.dto.Clients;
+import com.infinity.dto.ClientOffers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -57,6 +56,7 @@ public class ClientsJobsService {
                 .actionGet();
 
         String id = response.getId();
+        client.admin().indices().prepareRefresh().execute().actionGet();
         return id;
     }
     
@@ -83,6 +83,7 @@ public class ClientsJobsService {
 
         UpdateResponse get = client.update(updateRequest).get();
         long version = get.getVersion();
+         client.admin().indices().prepareRefresh().execute().actionGet();
 
         return version;
     }
@@ -135,4 +136,32 @@ public class ClientsJobsService {
         return ClientOffersList;
 
     }
+    
+    
+//     public ClientOffers getByClientId() throws IOException {
+//
+//        client = elasticClientConf.getClient();
+////        QueryBuilder qb = QueryBuilders.queryStringQuery(id);
+//        QueryBuilder qb = QueryBuilders.matchAllQuery();
+//        SearchResponse response = client.prepareSearch("cvdb")
+//                .setTypes("jobs")
+//                .setQuery(qb) // Query
+//                .execute()
+//                .actionGet();
+//
+//        SearchHit[] hits = response.getHits().getHits();
+//        ObjectMapper mapper = new ObjectMapper();
+//        ArrayList<ClientOffers> ClientOffersList = new ArrayList<>();
+//
+//        if (hits.length > 0) {
+//            for (int i = 0; i < hits.length; i++) {
+//                ClientOffers readValue = mapper.readValue(hits[i].getSourceAsString(), ClientOffers.class);
+//                readValue.setId(hits[i].getId());
+//                ClientOffersList.add(readValue);
+//
+//            }
+//        }
+//        return ClientOffersList;
+//
+//    }
 }

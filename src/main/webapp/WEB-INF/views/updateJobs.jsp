@@ -1,8 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-
-
-
 <div div="row">
     <div class="col-md-1"></div>
     <div class="col-md-10">
@@ -38,28 +35,24 @@
                 <label>Nombre d'année d'exprérience total</label>
                 <input  class="form-control"  name="expTotal" type="number" value=""/>
             </div>
-
-            <div class="row">
-                
-                <c:forEach items="${techno}" var="techno">
-                <div id="" class="col-md-4">
+            <input  class="btn btn-default"  type="submit" value="Ok"/>
+        </form>
+        <div class="row">
+            <c:forEach items="${techno}" var="techno">
+                <div id="" class="col-md-2">
                     <div class="form-group">
                         <label>Technologie recherché</label>
-                        <input  class="form-control"  name="expName" type="text" value="${techno.key}"/>
-                    </div>
-                    <div class="form-group">
-                        <label>Nombre d'année</label>
-                        <input  class="form-control"  name="expRange" type="text" value="${techno.value}" placeholder="1 to 6"/>
+                        <input  class="form-control"  name="expName" type="text" value="${techno.technoName}" disabled/>
                     </div>
                 </div>
-                </c:forEach>
-            </div>
-            <input  class="btn btn-default"  type="submit" value="Ok"/>
-
-        </form>
-
-
-
+                <div id="" class="col-md-2">
+                    <div class="form-group">
+                        <label>Nombre d'année</label>
+                        <input  class="form-control"  name="expRange" type="text" value="${techno.expDurationEnd}" placeholder="1 to 6" disabled/>
+                    </div>
+                </div>
+            </c:forEach>
+        </div>
     </div>   
     <div class="col-md-1"></div>
 </div>
@@ -69,11 +62,11 @@
     $(document).ready(function () {
 
         CKEDITOR.replace('editor1');
-        
-        
-        
-        $('#add').click(function () {
-            $('.c').append('<input class="form-control" type="text" name="mobilite" />');
-        });
+
+
+
+//        $('#add').click(function () {
+//            $('.c').append('<input class="form-control" type="text" name="mobilite" />');
+//        });
     });
 </script>

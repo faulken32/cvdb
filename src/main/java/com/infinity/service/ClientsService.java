@@ -5,13 +5,14 @@
  */
 package com.infinity.service;
 
-import com.api.dto.Clients;
+import com.infinity.dto.Clients;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
+import org.elasticsearch.action.admin.indices.refresh.RefreshResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
@@ -21,6 +22,8 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +37,9 @@ public class ClientsService {
     @Autowired
     private ElasticClientConf elasticClientConf;
     private TransportClient client;
-
+    private static final Logger LOG = LoggerFactory.getLogger(ClientsService.class);
+    
+    
     public String addClient(Clients clientDto) throws JsonProcessingException {
 
         client = elasticClientConf.getClient();
@@ -47,8 +52,11 @@ public class ClientsService {
                 .setSource(json)
                 .execute()
                 .actionGet();
-
+        
         String id = response.getId();
+        client.admin().indices().prepareRefresh().execute().actionGet();
+        
+      
         return id;
     }
 
@@ -67,6 +75,7 @@ public class ClientsService {
 
         UpdateResponse get = client.update(updateRequest).get();
         long version = get.getVersion();
+        RefreshResponse actionGet = client.admin().indices().prepareRefresh().execute().actionGet();
 
         return version;
     }
@@ -107,9 +116,9 @@ public class ClientsService {
         ArrayList<Clients> clientList = new ArrayList<>();
 
         if (hits.length > 0) {
-            for (int i = 0; i < hits.length; i++) {
-                Clients readValue = mapper.readValue(hits[i].getSourceAsString(), Clients.class);
-                readValue.setId(hits[i].getId());
+            for (SearchHit hit : hits) {
+                Clients readValue = mapper.readValue(hit.getSourceAsString(), Clients.class);
+                readValue.setId(hit.getId());
                 clientList.add(readValue);
             }
         }

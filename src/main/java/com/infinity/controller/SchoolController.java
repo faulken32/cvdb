@@ -6,9 +6,9 @@
 package com.infinity.controller;
 
 
-import com.api.dto.Candidat;
-import com.api.dto.PartialCandidat;
-import com.api.dto.School;
+import com.infinity.dto.Candidat;
+import com.infinity.dto.PartialCandidat;
+import com.infinity.dto.School;
 import com.infinity.service.CandidatService;
 import com.infinity.service.SchoolService;
 import java.io.IOException;

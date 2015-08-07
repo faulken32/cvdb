@@ -48,7 +48,7 @@
         <put-attribute name="title" value="ajouter un client"/>
         <put-attribute name="body" value="/WEB-INF/views/addClient.jsp" />
     </definition>
-    <definition name="allClient" extends="default">
+    <definition name="allClients" extends="default">
         <put-attribute name="title" value="tous les clients"/>
         <put-attribute name="body" value="/WEB-INF/views/allClients.jsp" />
     </definition>     
