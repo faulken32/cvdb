@@ -19,13 +19,23 @@ public class ClientOffers {
     private String id;
     private String title;
     private String desc;
-    private int expTotal;
+    private int expTotalMin;
+    private int expTotalMax;
+    private String dep;
     private String profileName;
     private String profiType;
     private PartialsClients partialsClients;
     private ArrayList<TechnoCriteria> technoCriterias;
-    
 
+    public String getDep() {
+        return dep;
+    }
+
+    public void setDep(String dep) {
+        this.dep = dep;
+    }
+    
+    
 
     public String getId() {
         return id;
@@ -51,13 +61,23 @@ public class ClientOffers {
         this.desc = desc;
     }
 
-    public int getExpTotal() {
-        return expTotal;
+    public int getExpTotalMin() {
+        return expTotalMin;
     }
 
-    public void setExpTotal(int expTotal) {
-        this.expTotal = expTotal;
+    public void setExpTotalMin(int expTotalMin) {
+        this.expTotalMin = expTotalMin;
     }
+
+    public int getExpTotalMax() {
+        return expTotalMax;
+    }
+
+    public void setExpTotalMax(int expTotalMax) {
+        this.expTotalMax = expTotalMax;
+    }
+
+  
 
     public String getProfileName() {
         return profileName;

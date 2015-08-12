@@ -3,6 +3,9 @@ package com.infinity.service;
 import com.infinity.dto.Experiences;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.infinity.dto.Candidat;
+import com.infinity.dto.ClientOffers;
+import com.infinity.dto.TechnoCriteria;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -15,6 +18,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -37,6 +41,8 @@ public class ExpService {
     @Autowired
     private ElasticClientConf elasticClientConf;
     private TransportClient client;
+    @Autowired
+    private ClientsJobsService clientsJobsService;
 
     public ArrayList<Experiences> getByIdSearhText(String id) throws IOException {
 
@@ -45,10 +51,10 @@ public class ExpService {
 //        QueryBuilder qb = QueryBuilders.queryStringQuery(id);
         QueryBuilder qb = QueryBuilders.matchQuery("partialCandidat.id", id);
         SearchResponse response = client.prepareSearch("cvdb")
-                .setTypes("exp")               
+                .setTypes("exp")
                 .setQuery(qb)
-                .setFrom(0).setSize(100).setExplain(true) 
-                 .addSort(fieldSort("end").order(DESC).missing("_last"))// Query
+                .setFrom(0).setSize(100).setExplain(true)
+                .addSort(fieldSort("end").order(DESC).missing("_last"))// Query
                 .execute()
                 .actionGet();
 
@@ -72,7 +78,6 @@ public class ExpService {
      *
      * @param id
      * @return
-     * @throws java.io.IOException
      */
     public Experiences getById(String id) {
 
@@ -142,9 +147,85 @@ public class ExpService {
         DeleteResponse response = client.prepareDelete("cvdb", "exp", id)
                 .execute()
                 .actionGet();
-        
-       return  response.getVersion();
-        
-        
+
+        return response.getVersion();
+
+    }
+
+    public ArrayList<String> searchEngine(String jobOfferId) throws IOException {
+
+        client = elasticClientConf.getClient();
+        ClientOffers criteriaFromDb = clientsJobsService.getById(jobOfferId);
+        ArrayList<Experiences> exp = new ArrayList<>();
+        ArrayList<Candidat> candidatList = new ArrayList<>();
+
+//      QueryBuilder qb = QueryBuilders.queryStringQuery("");
+        BoolQueryBuilder qb = QueryBuilders.boolQuery();
+        if (criteriaFromDb != null && criteriaFromDb.getExpTotalMin() != 0) {
+
+            qb.must(QueryBuilders.rangeQuery("nbYearExp").from(criteriaFromDb.getExpTotalMin()).to(criteriaFromDb.getExpTotalMax()));
+            qb.must(QueryBuilders.termQuery("mobilite", criteriaFromDb.getDep()));
+            qb.mustNot(QueryBuilders.termQuery("status", "nosearch"));
+
+            SearchResponse response = client.prepareSearch("cvdb")
+                    .setTypes("candidat")
+                    .setQuery(qb)
+                    .setFrom(0).setSize(100).setExplain(true)
+                    //                 .addSort(fieldSort("end").order(DESC).missing("_last"))// Query
+                    .execute()
+                    .actionGet();
+
+            SearchHit[] hits = response.getHits().getHits();
+            ObjectMapper mapper = new ObjectMapper();
+
+            if (hits.length > 0) {
+                for (SearchHit hit : hits) {
+                    Candidat readValue = mapper.readValue(hit.getSourceAsString(), Candidat.class);
+                    candidatList.add(readValue);
+                }
+            }
+
+            if (!candidatList.isEmpty() && criteriaFromDb != null) {
+                if (!criteriaFromDb.getTechnoCriterias().isEmpty()) {
+                    BoolQueryBuilder qbExpCriteria = QueryBuilders.boolQuery();
+
+                    for (TechnoCriteria technoCriteria : criteriaFromDb.getTechnoCriterias()) {
+
+                        qbExpCriteria.should(QueryBuilders.queryStringQuery(technoCriteria.getTechnoName()));
+                        qbExpCriteria.must(QueryBuilders.rangeQuery("duration")
+                                .from(technoCriteria.getExpDurationStart())
+                                .to(technoCriteria.getExpDurationEnd()));
+
+                    }
+
+                    SearchResponse responseCritetia = client.prepareSearch("cvdb")
+                            .setTypes("exp")
+                            .setQuery(qbExpCriteria)
+                            .setFrom(0).setSize(100).setExplain(true)
+                            //                 .addSort(fieldSort("end").order(DESC).missing("_last"))// Query
+                            .execute()
+                            .actionGet();
+
+                    SearchHit[] hits1 = responseCritetia.getHits().getHits();
+
+                    if (hits1.length > 0) {
+                        for (SearchHit hits11 : hits1) {
+                            Experiences readValue = mapper.readValue(hits11.getSourceAsString(), Experiences.class);
+                            exp.add(readValue);
+                        }
+                    }
+                }
+            }
+        }
+        ArrayList<String> candidatIdRes = new ArrayList<> ();
+        if (!candidatList.isEmpty()) {
+            for (Candidat candidat : candidatList) {
+                
+                candidatIdRes.add(candidat.getId());
+            }
+        }
+
+        return candidatIdRes;
+
     }
 }

@@ -5,6 +5,8 @@
  */
 package com.infinity.dto;
 
+
+
 /**
  *
  * @author t311372
@@ -13,20 +15,14 @@ public class TechnoCriteria {
 
     
     
-    private String id;
+    
     private String  technoName;
     private int expDurationStart;
     private int expDurationEnd;
    
     
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+  
 
     public String getTechnoName() {
         return technoName;

@@ -14,7 +14,10 @@ import com.infinity.service.ClientsJobsService;
 import com.infinity.service.ClientsService;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,20 +131,13 @@ public class ClientsController {
         partialsClients.setId(c.getId());
         partialsClients.setName(c.getName());
 
-        TechnoCriteria technoCriteria = new TechnoCriteria();
-        technoCriteria.setTechnoName("java");
-        technoCriteria.setExpDurationEnd(1);
-        technoCriteria.setExpDurationStart(0);
-
-        ArrayList<TechnoCriteria> arrayList = new ArrayList<>();
-        arrayList.add(technoCriteria);
         clientOffers.setPartialsClients(partialsClients);
-        clientOffers.setTechnoCriterias(arrayList);
+
         String addJobs = clientsJobsService.addJobs(clientOffers);
         clientOffers.setId(addJobs);
         clientsJobsService.updateOneById(clientOffers);
 
-        ModelAndView mv = new ModelAndView("redirect:/client/job/update/" + clienId + "/" + addJobs);
+        ModelAndView mv = new ModelAndView("redirect:/client/job/update/" + addJobs + "/" + clienId);
         return mv;
     }
 
@@ -178,7 +174,6 @@ public class ClientsController {
      * @param clientOffers
      * @param clienId
      * @param offerId
-     * @param redirectAttrs
      * @return
      * @throws IOException
      * @throws java.lang.InterruptedException
@@ -196,17 +191,15 @@ public class ClientsController {
             ArrayList<TechnoCriteria> technoCriterias = offerFromDb.getTechnoCriterias();
             clientOffers.setTechnoCriterias(technoCriterias);
         }
-        
+
         Clients byId = clientsService.getById(clienId);
-                       
-        
+
         PartialsClients partialsClients = new PartialsClients();
         partialsClients.setId(clienId);
         partialsClients.setName(byId.getName());
         clientOffers.setPartialsClients(partialsClients);
 
         clientsJobsService.updateOneById(clientOffers);
-
 
         return "redirect:/client/job/update/{offerId}/{clienId}";
     }
@@ -217,39 +210,69 @@ public class ClientsController {
             @PathVariable String offerId, @ModelAttribute TechnoCriteria technoCriteria) throws IOException, InterruptedException, ExecutionException {
 
         ClientOffers jobs = clientsJobsService.getById(offerId);
-
-        if (jobs != null && jobs.getTechnoCriterias() == null) {
-            technoCriteria.setId("1");
-            ArrayList<TechnoCriteria> technoList = new ArrayList<>();
-            technoList.add(technoCriteria);
+        
+        if(jobs != null && jobs.getTechnoCriterias() == null){
+           
             
-            jobs.setTechnoCriterias(technoList);
-            clientsJobsService.updateOneById(jobs);
-
-        } else {
+            jobs.setTechnoCriterias(new ArrayList<>());
+        }
+        
+        
+        if (jobs != null && jobs.getTechnoCriterias() != null) {                                                             
             
-            ArrayList<TechnoCriteria> technoCriteriasList = jobs.getTechnoCriterias();
-            if (technoCriteria.getId() == null) {
-                int size = technoCriteriasList.size();
-                technoCriteria.setId(Integer.toString(size+1));
-                technoCriteriasList.add(technoCriteria);
+            if (jobs.getTechnoCriterias().isEmpty()) {
+
+                ArrayList<TechnoCriteria> technoList = new ArrayList<>();
+
+                technoList.add(technoCriteria);
+                jobs.setTechnoCriterias(technoList);
                 clientsJobsService.updateOneById(jobs);
             } else {
-                for (TechnoCriteria criteriaFromList : technoCriteriasList) {
-                    
-                    if(criteriaFromList.getId().equals(technoCriteria.getId())){
-                        
-                        criteriaFromList = technoCriteria;
-                        technoCriteriasList.remove(criteriaFromList);
-                        technoCriteriasList.add(technoCriteria);
-                    }
-                    
-                }
-            }
-           
-        }
 
+                ArrayList<TechnoCriteria> technoCriterias = jobs.getTechnoCriterias();
+                technoCriterias.add(technoCriteria);
+                jobs.setTechnoCriterias(technoCriterias);
+                clientsJobsService.updateOneById(jobs);
+            }
+
+            
+        } 
         return "redirect:/client/job/update/{offerId}/{clienId}";
     }
 
+    @RequestMapping(value = {"/client/job/criteria/techno/update/{offerId}/{clienId}"}, method = RequestMethod.POST)
+    public String UpdateCriteriaTechnoList(HttpServletRequest request, HttpServletResponse httpServletResponse, @PathVariable String offerId) throws IOException, InterruptedException, ExecutionException {
+
+        Map<String, String[]> parameterMap = request.getParameterMap();
+        ArrayList<TechnoCriteria> technoList = new ArrayList<>();
+
+        for (int i = 0; i < parameterMap.size(); i++) {
+            TechnoCriteria technoCriteria = new TechnoCriteria();
+
+            if (parameterMap.containsKey("technoName-" + i)) {
+
+                technoCriteria.setTechnoName(parameterMap.get("technoName-" + i)[0]);
+
+            }
+            if (parameterMap.containsKey("expDurationStart-" + i)) {
+
+                technoCriteria.setExpDurationStart(Integer.valueOf(parameterMap.get("expDurationStart-" + i)[0]));
+
+            }
+            if (parameterMap.containsKey("expDurationEnd-" + i)) {
+
+                technoCriteria.setExpDurationEnd(Integer.valueOf(parameterMap.get("expDurationEnd-" + i)[0]));
+
+            }
+            if (technoCriteria.getTechnoName() != null) {
+                technoList.add(technoCriteria);
+            }
+
+        }
+        ClientOffers fromDb = clientsJobsService.getById(offerId);
+        fromDb.setTechnoCriterias(technoList);
+        clientsJobsService.updateOneById(fromDb);
+
+        return "redirect:/client/job/update/{offerId}/{clienId}";
+    }
 }

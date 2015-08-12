@@ -16,7 +16,7 @@ and open the template in the editor.
     </encoder>
   </appender>
 
-  <root level="debug">
+  <root level="ERROR">
     <appender-ref ref="STDOUT" />
   </root>
 </configuration>

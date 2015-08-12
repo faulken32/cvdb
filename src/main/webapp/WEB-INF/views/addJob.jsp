@@ -1,5 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@taglib prefix="spring"  uri="http://www.springframework.org/tags"%>
 
 
 
@@ -24,6 +24,11 @@
             <h2>Ajouter un critere de recherche</h2>
 
             <div class="form-group ">
+                <label>département de travail</label>
+                <input  class="form-control"  name="dep" type="text" value="${jobs.dep}"/>  
+            </div>
+
+            <div class="form-group ">
                 <label>Nom du profile recherché</label>
                 <input  class="form-control"  name="profileName" type="text" value="${jobs.profileName}"/>  
             </div>
@@ -32,8 +37,12 @@
                 <input  class="form-control"  name="profiType" type="text" value="${jobs.profiType}"/>
             </div>
             <div class="form-group">
-                <label>Nombre d'année d'exprérience total</label>
-                <input  class="form-control"  name="expTotal" type="number" value="${jobs.expTotal}"/>
+                <label>Nombre d'année d'exprérience minimum</label>
+                <input  class="form-control"  name="expTotalMin" type="number" value="${jobs.expTotalMin}"/>
+            </div>
+            <div class="form-group">
+                <label>Nombre d'année d'exprérience max</label>
+                <input  class="form-control"  name="expTotalMax" type="number" value="${jobs.expTotalMax}"/>
             </div>
             <input  class="btn btn-default"  type="submit" value="Ok"/>
         </form>
@@ -41,6 +50,9 @@
         <c:if test="${jobs.id != null}">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".fade">
                 Ajouter un critrere de recherche
+            </button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".change">
+                Modidiez un critrere de recherche
             </button>
         </c:if>
         <div class="modal fade">
@@ -81,6 +93,8 @@
                 </div>
             </div>
         </div>
+
+
         <table class="table table-striped">
             <tr>
                 <th>Nom</th>
@@ -95,11 +109,61 @@
                     <td>${c.expDurationStart}</td>
                     <td>${c.expDurationEnd}</td>
 
-                    <!--<td><a class="glyphicon glyphicon-plus" href="<c:url value="/client/job/update/${jobs.id}/${jobs.partialsClients.id}" />"></a></td>-->
+
                 </tr>            
             </c:forEach>   
         </table>
 
+        <!--form de modification-->                      
+        <div class="modal change">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Modifiez les criteres</h4>
+                    </div>
+
+                    <form id="criteria" method="post" action="<c:url value="/client/job/criteria/techno/update/${jobs.id}/${jobs.partialsClients.id}"  />">
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-12">
+
+                                        <c:forEach items="${jobs.technoCriterias}" var="c" varStatus="gridRow" begin="0" step="1"> 
+
+
+                                            <div class="row">
+
+                                                <div class="form-group col-md-4">
+                                                    <label>Technologie recherché</label>
+
+                                                    <input  class="form-control"  name="technoName-${gridRow.index}" type="text" value="${c.technoName}"/>
+
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label>Nombre d'année</label>
+                                                    <input  class="form-control"  name="expDurationStart-${gridRow.index}" type="number" value="${c.expDurationStart}" placeholder="1 to 6"/>
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label>Nombre d'année</label>
+                                                    <input  class="form-control"  name="expDurationEnd-${gridRow.index}" type="number" value="${c.expDurationEnd}" placeholder="1 to 6"/>
+                                                </div>
+                                            </div>
+
+                                        </c:forEach>   
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+
+                            <input class="btn btn-default" type="submit" value="OK"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>                   
     </div>   
     <div class="col-md-1"></div>
 </div>

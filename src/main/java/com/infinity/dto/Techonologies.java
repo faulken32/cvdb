@@ -12,49 +12,37 @@ import java.io.Serializable;
  * @author Utilisateur
  */
 public class Techonologies implements Serializable {
-    
-    private String _id;
-    private String name;
-    private Float nbYears;
-    private PartialCandidat partialCandidat;
 
-   
+    private String technoName;
+    private int expDurationStart;
+    private int expDurationEnd;
 
     public Techonologies() {
-     
+
     }
 
-    public String getName() {
-        return name;
+    public String getTechnoName() {
+        return technoName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTechnoName(String technoName) {
+        this.technoName = technoName;
     }
 
-    public Float getNbYears() {
-        return nbYears;
+    public int getExpDurationStart() {
+        return expDurationStart;
     }
 
-    public void setNbYears(Float nbYears) {
-        this.nbYears = nbYears;
+    public void setExpDurationStart(int expDurationStart) {
+        this.expDurationStart = expDurationStart;
     }
 
-    public PartialCandidat getPartialCandidat() {
-        return partialCandidat;
+    public int getExpDurationEnd() {
+        return expDurationEnd;
     }
 
-    public void setPartialCandidat(PartialCandidat partialCandidat) {
-        this.partialCandidat = partialCandidat;
+    public void setExpDurationEnd(int expDurationEnd) {
+        this.expDurationEnd = expDurationEnd;
     }
-
-    public String getId() {
-        return _id;
-    }
-
-    public void setId(String Id) {
-        this._id = Id;
-    }
-
 
 }

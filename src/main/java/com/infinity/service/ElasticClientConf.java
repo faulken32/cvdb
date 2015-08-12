@@ -33,7 +33,8 @@ public class ElasticClientConf  implements InitializingBean, DisposableBean {
 
         client = new TransportClient()
                 .addTransportAddress(new InetSocketTransportAddress("10.60.198.75", 9300))
-                .addTransportAddress(new InetSocketTransportAddress("10.60.198.75", 9301));
+                .addTransportAddress(new InetSocketTransportAddress("10.60.198.75", 9301))
+                .addTransportAddress(new InetSocketTransportAddress("10.60.198.75", 9302));
 //                .addTransportAddress(new InetSocketTransportAddress("192.168.0.12", 9302));
         
         
