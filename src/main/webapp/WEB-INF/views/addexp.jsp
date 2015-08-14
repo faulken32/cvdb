@@ -2,12 +2,12 @@
 
 
 <a  href="<c:url value="/elastic/get/${exp.partialCandidat.id}"/>"> retour au candidat </a>
-  
+
 <div div="row">
     <form id="addexp" method="post" action="<c:url value="/elastic/exp/add/${exp.partialCandidat.id}"/>">
-        
+
         <input type="hidden" name="candidatid" value="${exp.partialCandidat.id}">
-        
+
         <div class="form-group">
             <label for="compagny">
                 Compagnie
@@ -38,15 +38,25 @@
             </label>
 
 
-            <textarea  class="form-control" name="expContend" form="addexp" row="10">${exp.expContend}</textarea>
+            <textarea  id="editor1" class="form-control" name="expContend" form="addexp" row="10">${exp.expContend}</textarea>
         </div>
         <div class="form-group">
             <label> Technologie séparé par des virgules</label>
             <input class="form-control" type="text" name="technoListblock" />
         </div>
-     
+
         <input  class="btn btn-default"  type="submit" value="Validez" />
     </form>
-    
+
 
 </div>
+
+<script src="<c:url value="/resources/ckeditor/ckeditor.js"/>"></script>
+<script>
+    $(document).ready(function () {
+
+        CKEDITOR.replace('editor1');
+
+    
+    });
+</script>

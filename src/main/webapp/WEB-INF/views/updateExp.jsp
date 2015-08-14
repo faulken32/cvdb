@@ -44,7 +44,7 @@
                     Contenue
                 </label>
 
-                <textarea class="form-control" name="expContend" form="updateExp" row="20">${exp.expContend}</textarea>
+                <textarea id="editor1" class="form-control" name="expContend" form="updateExp" row="20">${exp.expContend}</textarea>
             </div>
 
 
@@ -65,8 +65,13 @@
     </div>
     <div class="col-md-1"></div>
 </div>
+            
+<script src="<c:url value="/resources/ckeditor/ckeditor.js"/>"></script>
 <script>
     $(document).ready(function () {
+        
+        CKEDITOR.replace('editor1');
+        
         $('#add').click(function () {
             $('.containerT').append('<input class="form-control" type="text" name="tecnoList" />');
         });

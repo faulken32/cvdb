@@ -63,10 +63,7 @@ public class Experiences implements Serializable{
     private float duration;
     private PartialCandidat partialCandidat;
     private List<String> tecnoList;
-    
- 
-    
-    
+       
     
     
     public Experiences() {

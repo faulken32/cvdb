@@ -5,7 +5,6 @@
  */
 package com.infinity.service;
 
-
 import com.infinity.dto.School;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -111,6 +110,7 @@ public class SchoolService {
 
         UpdateResponse get = client.update(updateRequest).get();
         long version = get.getVersion();
+        client.admin().indices().prepareRefresh().execute().actionGet();
 
         return version;
     }
@@ -129,6 +129,7 @@ public class SchoolService {
                 .actionGet();
 
         long version = response.getVersion();
+        client.admin().indices().prepareRefresh().execute().actionGet();
         return version;
     }
 }

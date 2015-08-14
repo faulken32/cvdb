@@ -35,7 +35,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-
 @Controller
 public class ElasticController {
 
@@ -94,6 +93,8 @@ public class ElasticController {
     @RequestMapping(value = {"/elastic/update"}, method = RequestMethod.POST)
     public ModelAndView updateCandidat(@ModelAttribute("candidat") Candidat candidat) throws IOException, InterruptedException, ExecutionException {
 
+        Candidat candidatFromDb = candidatService.getById(candidat.getId());
+
         float nbYearExp = 0;
         ArrayList<Experiences> byId1 = expService.getByIdSearhText(candidat.getId());
         for (Experiences byId11 : byId1) {
@@ -127,6 +128,11 @@ public class ElasticController {
                 }
             }
             lang.removeAll(remove);
+        }
+        
+        if (candidatFromDb != null) {
+            
+            candidat.setSendTo(candidatFromDb.getSendTo());
         }
 
         candidat.setNbYearExp(nbYearExp);
@@ -213,7 +219,7 @@ public class ElasticController {
         if (!technoListblock.isEmpty()) {
 
             String[] split = technoListblock.split(",");
-            List<String> tecnoList =new ArrayList<>();
+            List<String> tecnoList = new ArrayList<>();
             tecnoList.addAll(Arrays.asList(split));
             exp.setTecnoList(tecnoList);
 
@@ -228,19 +234,19 @@ public class ElasticController {
 
         Candidat candidat = candidatService.getById(candidatid);
         candidat.setId(candidatid);
-        
+
         PartialCandidat partialCandidat = new PartialCandidat();
         partialCandidat.setId(candidat.getId());
         partialCandidat.setName(candidat.getName());
-        
+
         exp.setDuration(nbYear);
         exp.setPartialCandidat(partialCandidat);
 
         expService.addExp(exp);
 //        timeExpService.addTimeExpOrUpdate(candidat);
-         ModelAndView mv = new ModelAndView("addexp");
+        ModelAndView mv = new ModelAndView("addexp");
         mv.addObject("exp", exp);
-    
+
         return mv;
     }
 }

@@ -19,6 +19,11 @@
                     Clients    
                 </a>
             </li>
+            <li>
+                    <a href="<spring:url value="/res"></spring:url>">
+                    Résultats    
+                </a>
+            </li>
         </ul>
     </div>
 </nav>

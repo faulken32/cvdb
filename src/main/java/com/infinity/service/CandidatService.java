@@ -50,6 +50,7 @@ public class CandidatService {
                 .actionGet();
 
         String id = response.getId();
+          client.admin().indices().prepareRefresh().execute().actionGet();
         return id;
     }
 
@@ -88,6 +89,7 @@ public class CandidatService {
 
         UpdateResponse get = client.update(updateRequest).get();
         long version = get.getVersion();
+//        client.admin().indices().prepareRefresh().execute().actionGet();
 
         return version;
     }
@@ -141,11 +143,10 @@ public class CandidatService {
         ArrayList<Candidat> candidat = new ArrayList<>();
 
         if (hits.length > 0) {
-            for (int i = 0; i < hits.length; i++) {
-                Candidat readValue = mapper.readValue(hits[i].getSourceAsString(), Candidat.class);
-                readValue.setId(hits[i].getId());
+            for (SearchHit hit : hits) {
+                Candidat readValue = mapper.readValue(hit.getSourceAsString(), Candidat.class);
+                readValue.setId(hit.getId());
                 candidat.add(readValue);
-
             }
         }
         return candidat;

@@ -43,6 +43,7 @@ public class Candidat  implements Serializable{
     private float nbYearExp;
     @Nullable
     private ArrayList<String> language;
+    private ArrayList<SendTo> sendTo;
     
    
 
@@ -170,7 +171,6 @@ public class Candidat  implements Serializable{
     }
 
    
-
     public String getStatus() {
         return status;
     }
@@ -185,6 +185,14 @@ public class Candidat  implements Serializable{
 
     public void setLanguage(ArrayList<String> language) {
         this.language = language;
+    }
+
+    public ArrayList<SendTo> getSendTo() {
+        return sendTo;
+    }
+
+    public void setSendTo(ArrayList<SendTo> sendTo) {
+        this.sendTo = sendTo;
     }
 
     
