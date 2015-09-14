@@ -16,7 +16,7 @@
                         ${c.name}
                     </div>
                      <div class="row">
-                         <a href="<c:url value="/candidat/export/${c.id}" />">Envoyer par email</a>
+                         <a href="<c:url value="/candidat/export/${clist.key.partialsClients.id}/${c.id}" />">Envoyer par email</a>
                         
                     </div>
                 </c:forEach>

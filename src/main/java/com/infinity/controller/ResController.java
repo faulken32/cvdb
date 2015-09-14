@@ -7,11 +7,9 @@ package com.infinity.controller;
 
 import com.infinity.dto.Candidat;
 import com.infinity.dto.ClientOffers;
-import com.infinity.service.ClientsService;
 import com.infinity.service.SearchEngineServices;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

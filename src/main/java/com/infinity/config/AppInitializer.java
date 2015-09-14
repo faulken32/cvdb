@@ -26,7 +26,7 @@ public class AppInitializer implements WebApplicationInitializer {
             throws ServletException {
 
         AnnotationConfigWebApplicationContext dispatcherServlet = new AnnotationConfigWebApplicationContext();
-        dispatcherServlet.register(MvcConfiguration.class);
+        dispatcherServlet.register(MvcConfiguration.class,SecurityConfig.class);
 
          FilterRegistration.Dynamic charEncodingfilter = servletContext.addFilter(FILTER_ENCODING_NAME, new CharacterEncodingFilter());
 
