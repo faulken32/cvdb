@@ -6,6 +6,7 @@
 package com.infinity.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  *
  * @author t311372
  */
+@Configuration
 @EnableWebSecurity
 public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
@@ -22,7 +24,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .inMemoryAuthentication()
-                .withUser("user").password("password").roles("USER");
+                .withUser("faulken").password("kanekane32").roles("USER");
 
     }
     
@@ -30,11 +32,10 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 	
-        http.csrf().disable().authorizeRequests()
-                .antMatchers("/site") 
-               .access("hasRole('ROLE_USER')")
-                .anyRequest().authenticated()               
-                .and().formLogin();
+          http.csrf().disable().authorizeRequests()
+		.antMatchers("/**").access("hasRole('ROLE_USER')")
+		
+		.and().formLogin();
                 
 		
 }

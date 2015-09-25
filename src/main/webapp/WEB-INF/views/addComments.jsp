@@ -4,8 +4,8 @@
 
 <div class="row">
     <div class="col-md-10">
-
-        <form id="comments" method="post" action="/site/comments/add/${comments.id}">
+        
+        <form id="comments" method="post" action="<c:url value="/comments/add/${comments.id}" />">
 
           
                 <input type="hidden" name="partialCandidat.id" value="${comments.partialCandidat.id}"/>

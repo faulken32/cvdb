@@ -8,8 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -22,8 +23,8 @@ import org.springframework.web.servlet.view.tiles3.TilesView;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = {"com.infinity"})
-
-//@PropertySource("classpath:application.properties")
+@Import({ SecurityConfig.class })
+@PropertySource("classpath:application.properties")
 
 public class MvcConfiguration extends WebMvcConfigurerAdapter {
 
@@ -54,12 +55,6 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
         return new PropertySourcesPlaceholderConfigurer();
     }
 
-    @Bean(name = "multipartResolver")
-    public StandardServletMultipartResolver multipartResolver() {
-
-        return new StandardServletMultipartResolver();
-    }
-    
 
     @Bean
     public UrlBasedViewResolver viewResolver(){

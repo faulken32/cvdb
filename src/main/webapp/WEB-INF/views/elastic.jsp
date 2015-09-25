@@ -12,7 +12,7 @@
 
 
 
-                <form id="candidat" class="form-horizontal" method="post" action="/site/elastic/update">
+                <form id="candidat" class="form-horizontal" method="post" action=" <c:url value="/elastic/update" />">
 
                     <div class="form-group">
                         <div class="checkbox">
@@ -98,10 +98,10 @@
                         </c:forEach>
                     </div> 
                     <div class="containerL">
-                          Langues
+                        Langues
                         <div class="glyphicon glyphicon-plus" id="addL"></div>
                         <div class="form-group">
-                          
+
                             <c:forEach items="${candidat.language}" var="lang">
                                 <input class="form-control" name="language" type="text" value="${lang}"/>
                             </c:forEach>
@@ -272,7 +272,7 @@
         $('#add').click(function () {
             $('.containerM').append('<input class="form-control" type="text" name="mobilite" />');
         });
-          $('#addL').click(function () {
+        $('#addL').click(function () {
             $('.containerL').append('<input class="form-control" type="text" name="language" />');
         });
 

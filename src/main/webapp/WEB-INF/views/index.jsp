@@ -62,12 +62,12 @@
 <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-10">
-        <iframe src="http://localhost:5601/#/dashboard/all?embed&_g=(refreshInterval:(display:Off,pause:!f,section:0,value:0),time:(from:'2010-07-29T07:36:17.657Z',mode:absolute,to:'2013-10-12T04:29:25.443Z'))&_a=(filters:!(),panels:!((col:1,id:techno-exp,row:1,size_x:12,size_y:4,type:visualization)),query:(query_string:(analyze_wildcard:!t,query:'*')),title:all)" height="600" width="1200"></iframe>
+        <!--<iframe src="http://localhost:5601/#/dashboard/all?embed&_g=(refreshInterval:(display:Off,pause:!f,section:0,value:0),time:(from:'2010-07-29T07:36:17.657Z',mode:absolute,to:'2013-10-12T04:29:25.443Z'))&_a=(filters:!(),panels:!((col:1,id:techno-exp,row:1,size_x:12,size_y:4,type:visualization)),query:(query_string:(analyze_wildcard:!t,query:'*')),title:all)" height="600" width="1200"></iframe>-->
     </div>
     <div class="col-md-1"></div>
 </div>
 
-<script type="text/javascript" src="/site/resources/js/jquery-ui/jquery-ui.js"></script>
+<script type="text/javascript" src="<c:url value="/resources/js/jquery-ui/jquery-ui.js" />"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
