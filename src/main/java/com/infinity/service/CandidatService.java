@@ -31,20 +31,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class CandidatService {
 //
-
+    
     @Autowired
     private ElasticClientConf elasticClientConf;
     private TransportClient client;
-
+    
+   
+    
+    
     public String addCandidat(Candidat candidat) throws JsonProcessingException {
-
+        
+        
+        
         client = elasticClientConf.getClient();
 
         ObjectMapper mapper = new ObjectMapper();
 
         byte[] json = mapper.writeValueAsBytes(candidat);
 
-        IndexResponse response = client.prepareIndex("cvdb", "candidat")
+        IndexResponse response = client.prepareIndex(ElasticClientConf.INDEX_NAME, "candidat")
                 .setSource(json)
                 .execute()
                 .actionGet();
@@ -61,7 +66,7 @@ public class CandidatService {
         try {
 
             GetResponse response = client.
-                    prepareGet("cvdb", "candidat", id)
+                    prepareGet(ElasticClientConf.INDEX_NAME, "candidat", id)
                     .execute()
                     .actionGet();
 
@@ -82,7 +87,7 @@ public class CandidatService {
         byte[] json = mapper.writeValueAsBytes(candidat);
 
         UpdateRequest updateRequest = new UpdateRequest();
-        updateRequest.index("cvdb");
+        updateRequest.index(ElasticClientConf.INDEX_NAME);
         updateRequest.type("candidat");
         updateRequest.id(candidat.getId());
         updateRequest.doc(json);
@@ -100,7 +105,7 @@ public class CandidatService {
         client = elasticClientConf.getClient();
 
         QueryBuilder qb = QueryBuilders.matchAllQuery();
-        SearchResponse response = client.prepareSearch("cvdb")
+        SearchResponse response = client.prepareSearch(ElasticClientConf.INDEX_NAME)
                 .setTypes("candidat")
                 .setQuery(qb) // Query
                 .setFrom(0).setSize(100).setExplain(true)
@@ -130,7 +135,7 @@ public class CandidatService {
         client = elasticClientConf.getClient();
 //        QueryBuilder qb = QueryBuilders.queryStringQuery(name);
        QueryBuilder qb = QueryBuilders.prefixQuery("name", name);
-        SearchResponse response = client.prepareSearch("cvdb")
+        SearchResponse response = client.prepareSearch(ElasticClientConf.INDEX_NAME)
                 .setTypes("candidat")               
                 .setQuery(qb)
                 .setFrom(0).setSize(100).setExplain(true) 

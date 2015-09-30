@@ -20,16 +20,11 @@
             </div> 
             <div  class="form-group">
                 <label for="start">
-                    Début
+                    Date
                 </label>
-                <input  class="form-control"  id="start" name="start" type="text" value="${school.start}"/>  
+                <input  class="form-control"  id="start" name="start" type="text" value="${school.date}"/>  
             </div> 
-            <div  class="form-group">
-                <label for="end">
-                    Fin
-                </label>
-                <input  class="form-control"  id="end" name="end" type="text" value="${school.end}"/>  
-            </div>
+           
             <div class="form-group">
                 <label for="updateSchool">
                     Contenue

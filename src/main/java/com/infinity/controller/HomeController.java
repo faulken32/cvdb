@@ -1,7 +1,6 @@
 package com.infinity.controller;
 
 import com.infinity.service.CandidatService;
-import com.infinity.service.mail.SendMail;
 import java.io.IOException;
 import javax.mail.MessagingException;
 import org.slf4j.Logger;
@@ -20,8 +19,8 @@ public class HomeController {
     @Autowired
     private CandidatService candidatService;
     
-    @Autowired
-    private SendMail sendMail;
+//    @Autowired
+//    private SendMail sendMail;
 
     /**
      * Handle the main page
@@ -34,8 +33,8 @@ public class HomeController {
     @RequestMapping(value = {"/"})
     public ModelAndView getIndex() throws IOException, MessagingException {
         
-        sendMail.send();
-        
+//        sendMail.send();
+//        new ChangeIndex();
         ModelAndView mv = new ModelAndView("index");
         mv.addObject("candidat", candidatService.getAll());
         return mv;

@@ -9,7 +9,7 @@
         <h2>Ajouter une école</h2>
         <form id="addexp" method="post" action="<c:url value="/school/add" />">
 
-            <input type="hidden" name="id" value="${candidat.id}">
+            <input type="hidden" name="candidatId" value="${candidat.id}">
 
             <div class="form-group">
                 <label for="compagny">
@@ -24,17 +24,12 @@
                 <input  class="form-control"  id="title" name="title" type="text" value=""/>  
             </div> 
             <div  class="form-group">
-                <label for="start">
+                <label for="date">
                     Début
                 </label>
-                <input  class="form-control"  id="start" name="start" type="text" value=""/>  
+                <input  class="form-control"  id="start" name="date" type="text" value=""/>  
             </div> 
-            <div  class="form-group">
-                <label for="end">
-                    Fin
-                </label>
-                <input  class="form-control"  id="end" name="end" type="text" value=""/>  
-            </div>
+            
             <div class="form-group">
                 <label for="sContend">
                     Contenue

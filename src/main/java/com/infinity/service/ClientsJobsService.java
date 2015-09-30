@@ -50,7 +50,7 @@ public class ClientsJobsService {
 
         byte[] json = mapper.writeValueAsBytes(clientOffers);
 
-        IndexResponse response = client.prepareIndex("cvdb", "jobs")
+        IndexResponse response = client.prepareIndex(ElasticClientConf.INDEX_NAME, "jobs")
                 .setSource(json)
                 .execute()
                 .actionGet();
@@ -76,7 +76,7 @@ public class ClientsJobsService {
         byte[] json = mapper.writeValueAsBytes(jobs);
 
         UpdateRequest updateRequest = new UpdateRequest();
-        updateRequest.index("cvdb");
+        updateRequest.index(ElasticClientConf.INDEX_NAME);
         updateRequest.type("jobs");
         updateRequest.id(jobs.getId());
         updateRequest.doc(json);
@@ -95,7 +95,7 @@ public class ClientsJobsService {
         try {
 
             GetResponse response = client.
-                    prepareGet("cvdb", "jobs", id)
+                    prepareGet(ElasticClientConf.INDEX_NAME, "jobs", id)
                     .execute()
                     .actionGet();
 
@@ -115,7 +115,7 @@ public class ClientsJobsService {
         client = elasticClientConf.getClient();
 //        QueryBuilder qb = QueryBuilders.queryStringQuery(id);
         QueryBuilder qb = QueryBuilders.matchAllQuery();
-        SearchResponse response = client.prepareSearch("cvdb")
+        SearchResponse response = client.prepareSearch(ElasticClientConf.INDEX_NAME)
                 .setTypes("jobs")
                 .setQuery(qb) // Query
                 .execute()

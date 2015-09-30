@@ -21,13 +21,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class ElasticClientConf implements InitializingBean, DisposableBean {
 
+    
+    public static  String  INDEX_NAME = "cvdb2";
+    
     private TransportClient client;
     private static final Logger LOG = LoggerFactory
             .getLogger(ElasticClientConf.class);
 
     @Value("${ES_IP1}")
     private String ES_IP1;
-
+    
+    
+   
+    
     public ElasticClientConf() {
 
 //        client = new TransportClient()
@@ -58,8 +64,8 @@ public class ElasticClientConf implements InitializingBean, DisposableBean {
 //        client =   new TransportClient(settings)
 //                .addTransportAddress(new InetSocketTransportAddress("10.60.12.44", 9300));
         client = new TransportClient()
-                .addTransportAddress(new InetSocketTransportAddress("127.0.0.1", 9300));
-//                .addTransportAddress(new InetSocketTransportAddress("127.0.0.1", 9301));
+                .addTransportAddress(new InetSocketTransportAddress("127.0.0.1", 9300))
+                .addTransportAddress(new InetSocketTransportAddress("127.0.0.1", 9301));
                
 
         LOG.info("client created");

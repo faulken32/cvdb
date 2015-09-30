@@ -100,10 +100,19 @@ public class CandidatController {
     }
 
     @RequestMapping(value = {"/candidat/export/{id}/{clientId}"}, method = RequestMethod.POST)
-    public ModelAndView getByNameForExportFrom(@PathVariable String id ,@PathVariable String clientId) throws IOException {
-
+    public ModelAndView getByNameForExportFrom(@PathVariable String id ,@PathVariable String clientId, String contends) throws IOException {
+        
+        
+      contends =  " <!DOCTYPE html><html>\n" +
+"         <head>\n" +
+"            <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>\n" +
+"           \n" +
+"         </head>" + contends + "</html>";
+        
         ModelAndView modelAndView = new ModelAndView("export");
-
+        
+        
+        
         return modelAndView;
     }
 }

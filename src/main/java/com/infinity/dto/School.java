@@ -16,6 +16,7 @@ public class School {
     private String school;
     private String start;
     private String end;
+    private String date;
     private String sContend;
     private PartialCandidat partialCandidat;
 
@@ -25,6 +26,14 @@ public class School {
 
     public void setId(String _id) {
         this._id = _id;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     

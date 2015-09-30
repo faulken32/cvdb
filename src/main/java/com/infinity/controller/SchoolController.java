@@ -41,9 +41,9 @@ public class SchoolController {
     
     
      @RequestMapping(value = {"/school/get/{id}"}, method = RequestMethod.GET)
-    public ModelAndView getUpdateFormSchool(@PathVariable String id) {
+    public ModelAndView getUpdateFormSchool(@PathVariable String id) throws IOException, InterruptedException, ExecutionException {
         
-       
+//       schoolService.changeMap();
         School byId = schoolService.getById(id);
         
         ModelAndView modelAndView = new ModelAndView("updateSchool");
@@ -73,15 +73,15 @@ public class SchoolController {
     }
     
        @RequestMapping(value = {"/school/add"}, method = RequestMethod.POST)
-    public String addSchoolForm(@ModelAttribute("school") School school , String id) throws IOException, InterruptedException, ExecutionException {
+    public String addSchoolForm(@ModelAttribute("school") School school , String candidatId) throws IOException, InterruptedException, ExecutionException {
         
         
         
-        Candidat byId = candidatService.getById(id);
+        Candidat candidat = candidatService.getById(candidatId);
         
         PartialCandidat partialCandidat1 = new PartialCandidat();
-        partialCandidat1.setId(byId.getId());
-        partialCandidat1.setName(byId.getName());
+        partialCandidat1.setId(candidat.getId());
+        partialCandidat1.setName(candidat.getName());
         
     
         school.setPartialCandidat(partialCandidat1);

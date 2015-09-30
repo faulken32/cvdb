@@ -3,9 +3,6 @@ package com.infinity.service;
 import com.infinity.dto.Experiences;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.infinity.dto.Candidat;
-import com.infinity.dto.ClientOffers;
-import com.infinity.dto.TechnoCriteria;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -18,7 +15,6 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -50,7 +46,7 @@ public class ExpService {
         client = elasticClientConf.getClient();
 //        QueryBuilder qb = QueryBuilders.queryStringQuery(id);
         QueryBuilder qb = QueryBuilders.matchQuery("partialCandidat.id", id);
-        SearchResponse response = client.prepareSearch("cvdb")
+        SearchResponse response = client.prepareSearch(ElasticClientConf.INDEX_NAME)
                 .setTypes("exp")
                 .setQuery(qb)
                 .setFrom(0).setSize(100).setExplain(true)
@@ -82,7 +78,7 @@ public class ExpService {
 
         client = elasticClientConf.getClient();
         GetResponse response = client.
-                prepareGet("cvdb", "exp", id)
+                prepareGet(ElasticClientConf.INDEX_NAME, "exp", id)
                 .execute()
                 .actionGet();
 
@@ -113,7 +109,7 @@ public class ExpService {
         byte[] ptext = convert.getBytes("UTF-8");
 
         UpdateRequest updateRequest = new UpdateRequest();
-        updateRequest.index("cvdb");
+        updateRequest.index(ElasticClientConf.INDEX_NAME);
         updateRequest.type("exp");
         updateRequest.id(exp.getId());
         updateRequest.doc(ptext);
@@ -132,7 +128,7 @@ public class ExpService {
 
         byte[] json = mapper.writeValueAsBytes(exp);
 
-        IndexResponse response = client.prepareIndex("cvdb", "exp")
+        IndexResponse response = client.prepareIndex(ElasticClientConf.INDEX_NAME, "exp")
                 .setSource(json)
                 .execute()
                 .actionGet();
@@ -143,7 +139,7 @@ public class ExpService {
 
     public long deleteById(String id) {
 
-        DeleteResponse response = client.prepareDelete("cvdb", "exp", id)
+        DeleteResponse response = client.prepareDelete(ElasticClientConf.INDEX_NAME, "exp", id)
                 .execute()
                 .actionGet();
 

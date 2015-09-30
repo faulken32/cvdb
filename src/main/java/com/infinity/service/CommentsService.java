@@ -45,7 +45,7 @@ public class CommentsService {
         client = elasticClientConf.getClient();
 
         QueryBuilder qb = QueryBuilders.matchQuery("partialCandidat.id", id);
-        SearchResponse response = client.prepareSearch("cvdb")
+        SearchResponse response = client.prepareSearch(ElasticClientConf.INDEX_NAME)
                 .setTypes("comments")
                 .setQuery(qb) // Query
                 .execute()
@@ -74,7 +74,7 @@ public class CommentsService {
         byte[] json = mapper.writeValueAsBytes(comments);
 
         UpdateRequest updateRequest = new UpdateRequest();
-        updateRequest.index("cvdb");
+        updateRequest.index(ElasticClientConf.INDEX_NAME);
         updateRequest.type("comments");
         updateRequest.id(comments.getId());
         updateRequest.doc(json);
@@ -90,7 +90,7 @@ public class CommentsService {
         client = elasticClientConf.getClient();
 
         GetResponse response = client.
-                prepareGet("cvdb", "comments", id)
+                prepareGet(ElasticClientConf.INDEX_NAME, "comments", id)
                 .execute()
                 .actionGet();
 
@@ -108,7 +108,7 @@ public class CommentsService {
 
         byte[] json = mapper.writeValueAsBytes(comments);
 
-        IndexResponse response = client.prepareIndex("cvdb", "comments")
+        IndexResponse response = client.prepareIndex(ElasticClientConf.INDEX_NAME, "comments")
                 .setSource(json)
                 .execute()
                 .actionGet();

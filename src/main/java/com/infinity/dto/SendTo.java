@@ -5,6 +5,8 @@
  */
 package com.infinity.dto;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author t311372
@@ -14,7 +16,9 @@ public class SendTo {
     
     
     private String clientId;
+    private ArrayList<String> email;
     private String date;
+    private String candidatId;
 
     public String getClientId() {
         return clientId;
