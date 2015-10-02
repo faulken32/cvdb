@@ -22,8 +22,8 @@ import org.springframework.stereotype.Service;
 public class ElasticClientConf implements InitializingBean, DisposableBean {
 
     
-    public static  String  INDEX_NAME = "cvdb2";
-    
+//    public static  String  INDEX_NAME = "cvdb2";
+//    
     private TransportClient client;
     private static final Logger LOG = LoggerFactory
             .getLogger(ElasticClientConf.class);
@@ -31,7 +31,8 @@ public class ElasticClientConf implements InitializingBean, DisposableBean {
     @Value("${ES_IP1}")
     private String ES_IP1;
     
-    
+    @Value("${INDEX_NAME}")
+    private String INDEX_NAME;
    
     
     public ElasticClientConf() {
@@ -56,6 +57,8 @@ public class ElasticClientConf implements InitializingBean, DisposableBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
+        
+        
 //           Settings settings = ImmutableSettings.settingsBuilder()
 //                .put("client.transport.sniff", true)
 //                .put("cluster.name", "recetteES")
@@ -63,9 +66,11 @@ public class ElasticClientConf implements InitializingBean, DisposableBean {
 
 //        client =   new TransportClient(settings)
 //                .addTransportAddress(new InetSocketTransportAddress("10.60.12.44", 9300));
+        
+        LOG.debug("ES_IP1 : " + this.ES_IP1);
         client = new TransportClient()
-                .addTransportAddress(new InetSocketTransportAddress("127.0.0.1", 9300))
-                .addTransportAddress(new InetSocketTransportAddress("127.0.0.1", 9301));
+                .addTransportAddress(new InetSocketTransportAddress(this.ES_IP1, 9300));
+            
                
 
         LOG.info("client created");
@@ -76,4 +81,10 @@ public class ElasticClientConf implements InitializingBean, DisposableBean {
 
         client.close();
     }
+
+    public String getINDEX_NAME() {
+        return INDEX_NAME;
+    }
+    
+    
 }

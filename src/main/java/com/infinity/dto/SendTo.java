@@ -20,6 +20,23 @@ public class SendTo {
     private String date;
     private String candidatId;
 
+    public ArrayList<String> getEmail() {
+        return email;
+    }
+
+    public void setEmail(ArrayList<String> email) {
+        this.email = email;
+    }
+
+    public String getCandidatId() {
+        return candidatId;
+    }
+
+    public void setCandidatId(String candidatId) {
+        this.candidatId = candidatId;
+    }
+
+        
     public String getClientId() {
         return clientId;
     }

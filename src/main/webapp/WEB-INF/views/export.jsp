@@ -16,18 +16,20 @@
                 ${candidat.nbYearExp}<br><br>
             <strong>Mobilité : </strong>
                 ${candidat.mobilite}<br><br>
-            <label>Langues</label>
+            <strong>Langues</strong>
                 ${candidat.language}<br><br>
         </div>
         <div>
-            Expériences
+            <strong>   Expériences </strong>
                 <c:forEach items="${exp}" var="e">
-                    ${e.title} <br><br>
-                    ${e.compagny} <br><br>
-                    ${e.start} : ${e.end}  /  ${e.duration} ans <br><br>
+                  Entreprise :  ${e.compagny} <br><br>
+                  Titre : ${e.title} <br><br>
+                    
+                    ${e.start} : ${e.end}  durré  ${e.duration} ans <br><br>
                     ${e.expContend}<br><br>
                 Environement Technique : <br>
                     ${e.tecnoList}<br>
+                    <hr />
                 </c:forEach>
         </div>
 
@@ -35,29 +37,25 @@
             <h1>Education</h1>
                 <c:forEach items="${school}" var="school">
                 <div>
-                    <label>
-                        école
-                    </label>
+                    <strong>  école </strong>                  
                     <p>
                             ${school.school}
                     </p>
                 </div>
                 <div>
-                    <label>
-                        Date
-                    </label>
+                      <strong>Date </strong>                  
                     <p>
                         De ${school.start} à ${school.end}
                     </p>
                 </div>
                 <div>
-                    <label> Titre de la formation</label>
+                    <strong> Titre de la formation</strong>
                     <p>
                             ${school.title}
                     </p>
                 </div>
                 <div>
-                    <label>Desciption</label>
+                    <strong>Desciption</strong>
                     <br>
                         ${school.sContend}
 
@@ -65,7 +63,7 @@
                 </c:forEach>
 
         </div>
-        </html>
+      
     </textarea>
 
     <div class="row">

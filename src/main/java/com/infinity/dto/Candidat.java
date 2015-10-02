@@ -43,8 +43,17 @@ public class Candidat  implements Serializable{
     private float nbYearExp;
     @Nullable
     private ArrayList<String> language;
- 
-    
+    private ArrayList<SendTo> sendTo;
+
+    public ArrayList<SendTo> getSendTo() {
+        return sendTo;
+    }
+
+    public void setSendTo(ArrayList<SendTo> sendTo) {
+        this.sendTo = sendTo;
+    }
+
+   
    
 
     public boolean isAutoMaticProfiled() {

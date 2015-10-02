@@ -51,7 +51,7 @@ public class SearchEngineServices {
             qb.must(QueryBuilders.termQuery("mobilite", criteriaFromDb.getDep()));
             qb.mustNot(QueryBuilders.termQuery("status", "nosearch"));
 
-            SearchResponse response = client.prepareSearch(ElasticClientConf.INDEX_NAME)
+            SearchResponse response = client.prepareSearch(elasticClientConf.getINDEX_NAME())
                     .setTypes("candidat")
                     .setQuery(qb)
                     .setFrom(0).setSize(100).setExplain(true)
@@ -131,7 +131,7 @@ public class SearchEngineServices {
                             .to(technoCriteria.getExpDurationEnd()));
 
                 }
-                SearchResponse responseCritetia = client.prepareSearch(ElasticClientConf.INDEX_NAME)
+                SearchResponse responseCritetia = client.prepareSearch(elasticClientConf.getINDEX_NAME())
                         .setTypes("exp")
                         .setQuery(qbExpCriteria)
                         .setFrom(0).setSize(100).setExplain(true)

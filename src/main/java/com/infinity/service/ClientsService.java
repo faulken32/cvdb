@@ -48,7 +48,7 @@ public class ClientsService {
 
         byte[] json = mapper.writeValueAsBytes(clientDto);
 
-        IndexResponse response = client.prepareIndex(ElasticClientConf.INDEX_NAME, "client")
+        IndexResponse response = client.prepareIndex(elasticClientConf.getINDEX_NAME(), "client")
                 .setSource(json)
                 .execute()
                 .actionGet();
@@ -68,7 +68,7 @@ public class ClientsService {
         byte[] json = mapper.writeValueAsBytes(clients);
 
         UpdateRequest updateRequest = new UpdateRequest();
-        updateRequest.index(ElasticClientConf.INDEX_NAME);
+        updateRequest.index(elasticClientConf.getINDEX_NAME());
         updateRequest.type("client");
         updateRequest.id(clients.getId());
         updateRequest.doc(json);
@@ -87,7 +87,7 @@ public class ClientsService {
         try {
 
             GetResponse response = client.
-                    prepareGet(ElasticClientConf.INDEX_NAME, "client", id)
+                    prepareGet(elasticClientConf.getINDEX_NAME(), "client", id)
                     .execute()
                     .actionGet();
 
@@ -105,7 +105,7 @@ public class ClientsService {
         client = elasticClientConf.getClient();
 //        QueryBuilder qb = QueryBuilders.queryStringQuery(id);
         QueryBuilder qb = QueryBuilders.matchAllQuery();
-        SearchResponse response = client.prepareSearch(ElasticClientConf.INDEX_NAME)
+        SearchResponse response = client.prepareSearch(elasticClientConf.getINDEX_NAME())
                 .setTypes("client")
                 .setQuery(qb) // Query
                 .execute()

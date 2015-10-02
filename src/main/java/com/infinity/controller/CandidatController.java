@@ -6,15 +6,25 @@
 package com.infinity.controller;
 
 import com.infinity.dto.Candidat;
+import com.infinity.dto.ClientOffers;
+import com.infinity.dto.Clients;
 import com.infinity.dto.Experiences;
 import com.infinity.dto.School;
+import com.infinity.dto.SendTo;
 import com.infinity.service.CandidatService;
+import com.infinity.service.ClientsService;
 import com.infinity.service.ExpService;
+import com.infinity.service.PowerSearchEngine;
 import com.infinity.service.SchoolService;
+import com.infinity.service.mail.SendMail;
+import com.infinity.tools.DateTools;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +52,15 @@ public class CandidatController {
     private ExpService expService;
     @Autowired
     private SchoolService schoolService;
+
+    @Autowired
+    private ClientsService clientsService;
+
+    @Autowired
+    private SendMail sendMailService;
+
+    @Autowired
+    private PowerSearchEngine powerSearchEngine;
 
     @RequestMapping(value = {"/candidat"}, method = RequestMethod.GET)
     public ModelAndView addOne() throws IOException {
@@ -100,19 +119,77 @@ public class CandidatController {
     }
 
     @RequestMapping(value = {"/candidat/export/{id}/{clientId}"}, method = RequestMethod.POST)
-    public ModelAndView getByNameForExportFrom(@PathVariable String id ,@PathVariable String clientId, String contends) throws IOException {
-        
-        
-      contends =  " <!DOCTYPE html><html>\n" +
-"         <head>\n" +
-"            <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>\n" +
-"           \n" +
-"         </head>" + contends + "</html>";
-        
+    public String getByNameForExportFrom(@PathVariable String id, @PathVariable String clientId, String contends) throws IOException, InterruptedException, ExecutionException {
+
+        contends = " <!DOCTYPE html><html>\n"
+                + "         <head>\n"
+                + "            <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>\n"
+                + "           \n"
+                + "         </head>" + contends + "</html>";
+
         ModelAndView modelAndView = new ModelAndView("export");
-        
-        
-        
+
+        Clients client = clientsService.getById(clientId);
+
+        Candidat candidat = candidatService.getById(id);
+        ArrayList<SendTo> sendToList = candidat.getSendTo();
+        SendTo sendTo = new SendTo();
+        sendTo.setCandidatId(id);
+        sendTo.setClientId(clientId);
+        sendTo.setDate(DateTools.getDateNow());
+
+        ArrayList<String> emailListSended = new ArrayList<>();
+        emailListSended.add(client.getEmail());
+        sendTo.setEmail(emailListSended);
+        sendTo.setDate(new Date().toString());
+
+        if (sendToList == null) {
+            ArrayList<SendTo> newsendToList = new ArrayList<>();
+            newsendToList.add(sendTo);
+            candidat.setSendTo(newsendToList);
+        } else {
+
+            sendToList.add(sendTo);
+            candidat.setSendTo(sendToList);
+        }
+        candidatService.updateOneById(candidat);
+
+        sendMailService.send(client.getEmail(), contends);
+        return "redirect:/res";
+    }
+
+    @RequestMapping(value = {"/power"}, method = RequestMethod.GET)
+    public ModelAndView powerSearch() {
+
+        HashMap<ClientOffers, ArrayList<Candidat>> matchCandidat = powerSearchEngine.matchCandidat();
+
+        ModelAndView modelAndView = new ModelAndView("power");
+
         return modelAndView;
+
+    }
+
+    @RequestMapping(value = {"/power"}, method = RequestMethod.POST)
+    public ModelAndView powerSearchPost(String cvContends, String mobilite) throws IOException {
+
+        ArrayList<Candidat> powerSearch = candidatService.powerSearch(mobilite, cvContends);
+
+        ModelAndView modelAndView = new ModelAndView("power");
+
+        modelAndView.addObject("candidat", powerSearch);
+
+        return modelAndView;
+
+    }
+
+    @RequestMapping(value = {"/power/res"}, method = RequestMethod.GET)
+    public ModelAndView powerSearchRes() {
+
+        HashMap<ClientOffers, ArrayList<Candidat>> matchCandidat = powerSearchEngine.matchCandidat();
+
+        ModelAndView modelAndView = new ModelAndView("searchResults");
+        modelAndView.addObject("candidat",matchCandidat);
+        return modelAndView;
+
     }
 }

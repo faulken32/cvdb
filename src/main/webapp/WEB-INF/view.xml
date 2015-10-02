@@ -75,6 +75,11 @@
     <definition name="export" extends="default">
         <put-attribute name="title" value="tous les clients"/>
         <put-attribute name="body" value="/WEB-INF/views/export.jsp" />
-    </definition>   
+    </definition>  
+  
+    <definition name="power" extends="default">
+        <put-attribute name="title" value="power search"/>
+        <put-attribute name="body" value="/WEB-INF/views/power.jsp" />
+    </definition> 
               
 </tiles-definitions>

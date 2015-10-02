@@ -46,7 +46,7 @@ public class ExpService {
         client = elasticClientConf.getClient();
 //        QueryBuilder qb = QueryBuilders.queryStringQuery(id);
         QueryBuilder qb = QueryBuilders.matchQuery("partialCandidat.id", id);
-        SearchResponse response = client.prepareSearch(ElasticClientConf.INDEX_NAME)
+        SearchResponse response = client.prepareSearch(elasticClientConf.getINDEX_NAME())
                 .setTypes("exp")
                 .setQuery(qb)
                 .setFrom(0).setSize(100).setExplain(true)
@@ -78,7 +78,7 @@ public class ExpService {
 
         client = elasticClientConf.getClient();
         GetResponse response = client.
-                prepareGet(ElasticClientConf.INDEX_NAME, "exp", id)
+                prepareGet(elasticClientConf.getINDEX_NAME(), "exp", id)
                 .execute()
                 .actionGet();
 
@@ -109,7 +109,7 @@ public class ExpService {
         byte[] ptext = convert.getBytes("UTF-8");
 
         UpdateRequest updateRequest = new UpdateRequest();
-        updateRequest.index(ElasticClientConf.INDEX_NAME);
+        updateRequest.index(elasticClientConf.getINDEX_NAME());
         updateRequest.type("exp");
         updateRequest.id(exp.getId());
         updateRequest.doc(ptext);
@@ -128,7 +128,7 @@ public class ExpService {
 
         byte[] json = mapper.writeValueAsBytes(exp);
 
-        IndexResponse response = client.prepareIndex(ElasticClientConf.INDEX_NAME, "exp")
+        IndexResponse response = client.prepareIndex(elasticClientConf.getINDEX_NAME(), "exp")
                 .setSource(json)
                 .execute()
                 .actionGet();
@@ -139,7 +139,7 @@ public class ExpService {
 
     public long deleteById(String id) {
 
-        DeleteResponse response = client.prepareDelete(ElasticClientConf.INDEX_NAME, "exp", id)
+        DeleteResponse response = client.prepareDelete(elasticClientConf.getINDEX_NAME(), "exp", id)
                 .execute()
                 .actionGet();
 

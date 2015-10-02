@@ -47,7 +47,7 @@ public class SchoolService {
         client = elasticClientConf.getClient();
 //        QueryBuilder qb = QueryBuilders.queryStringQuery(id);
         QueryBuilder qb = QueryBuilders.matchQuery("partialCandidat.id", id);
-        SearchResponse response = client.prepareSearch(ElasticClientConf.INDEX_NAME)
+        SearchResponse response = client.prepareSearch(elasticClientConf.getINDEX_NAME())
                 .setTypes(SchoolService.CURENT_TYPE)
                 .setQuery(qb) // Query
                 .execute()
@@ -79,7 +79,7 @@ public class SchoolService {
 
         client = elasticClientConf.getClient();
         GetResponse response = client.
-                prepareGet(ElasticClientConf.INDEX_NAME, SchoolService.CURENT_TYPE, id)
+                prepareGet(elasticClientConf.getINDEX_NAME(), SchoolService.CURENT_TYPE, id)
                 .execute()
                 .actionGet();
 
@@ -106,7 +106,7 @@ public class SchoolService {
         byte[] json = mapper.writeValueAsBytes(school);
 
         UpdateRequest updateRequest = new UpdateRequest();
-        updateRequest.index(ElasticClientConf.INDEX_NAME);
+        updateRequest.index(elasticClientConf.getINDEX_NAME());
         updateRequest.type(SchoolService.CURENT_TYPE);
         updateRequest.id(school.getId());
         updateRequest.doc(json);
@@ -126,7 +126,7 @@ public class SchoolService {
 
         byte[] json = mapper.writeValueAsBytes(school);
 
-        IndexResponse response = client.prepareIndex(ElasticClientConf.INDEX_NAME, SchoolService.CURENT_TYPE)
+        IndexResponse response = client.prepareIndex(elasticClientConf.getINDEX_NAME(), SchoolService.CURENT_TYPE)
                 .setSource(json)
                 .execute()
                 .actionGet();
@@ -143,7 +143,7 @@ public class SchoolService {
         ObjectMapper mapper = new ObjectMapper();
 
         QueryBuilder qb = QueryBuilders.matchAllQuery();
-        SearchResponse response = client.prepareSearch(ElasticClientConf.INDEX_NAME)
+        SearchResponse response = client.prepareSearch(elasticClientConf.getINDEX_NAME())
                 .setTypes(SchoolService.CURENT_TYPE)
                 .setQuery(qb) // Query
                 .setFrom(0).setSize(1000).setExplain(true)
@@ -177,7 +177,7 @@ public class SchoolService {
                 byte[] json = mapper.writeValueAsBytes(readValue);
 
                 UpdateRequest updateRequest = new UpdateRequest();
-                updateRequest.index(ElasticClientConf.INDEX_NAME);
+                updateRequest.index(elasticClientConf.getINDEX_NAME());
                 updateRequest.type(SchoolService.CURENT_TYPE);
                 updateRequest.id(readValue.getId());
                 updateRequest.doc(json);

@@ -7,10 +7,13 @@ package com.infinity.controller;
 
 import com.infinity.dto.Candidat;
 import com.infinity.dto.ClientOffers;
+import com.infinity.dto.SendTo;
+import com.infinity.service.CandidatService;
 import com.infinity.service.SearchEngineServices;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,19 +33,43 @@ public class ResController {
     @Autowired
     private SearchEngineServices searchEngineServices;
 
- 
+    @Autowired
+    private CandidatService candidatService;
 
     @RequestMapping(value = {"/res"})
     public ModelAndView getIndex() throws IOException {
 
         HashMap<ClientOffers, ArrayList<Candidat>> searchEngine = searchEngineServices.searchEngine();
+       
+//        for (Map.Entry<ClientOffers, ArrayList<Candidat>> entrySet : searchEngine.entrySet()) {
+//            ClientOffers key = entrySet.getKey();
+//            ArrayList<Candidat> value = entrySet.getValue();
+//            for (Candidat candidat : value) {
+//
+//                if (candidat.getSendTo() != null) {
+//
+//                    ArrayList<SendTo> sendToList = candidat.getSendTo();
+//                    for (SendTo sendTo1 : sendToList) {
+//                        LOG.debug("client id : " +sendTo1.getClientId());
+//                        LOG.debug("candidat id : " +sendTo1.getCandidatId());
+//                    if( key.getPartialsClients().getId() == null ? sendTo1.getClientId() == null : key.getPartialsClients().getId().equals(sendTo1.getClientId()))    
+//                        
+//                         toRemove.add(key);
+//                    
+//                    }
+//                }
+//            }
+//
+//        }
         
-//        Collection<ArrayList<Candidat>> values = searchEngine.values();
-        
+//        for (ClientOffers toRemove1 : toRemove) {
+//            
+//            
+//        }
         
         ModelAndView mv = new ModelAndView("searchResults");
-      
-        mv.addObject("candidat",searchEngine);
+
+        mv.addObject("candidat", searchEngine);
         return mv;
     }
 }

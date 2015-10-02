@@ -6,6 +6,8 @@
 package com.infinity.service.mail;
 
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -14,12 +16,13 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author t311372
  */
-//@Service
+@Service
 public class SendMail {
     
     
@@ -30,12 +33,17 @@ public class SendMail {
     private String dest;
     private String contends;
 
-    public void send(final String dest,final  String contends) throws MessagingException {
+    public void send(final String dest,final  String contends) {
         
         this.dest = dest;
         this.contends = contends;
         this.setProps();
-        Transport.send(message);
+        
+        try {
+            Transport.send(message);
+        } catch (MessagingException ex) {
+            LOG.error(ex.getMessage());
+        }
 
     }
 
@@ -60,13 +68,14 @@ public class SendMail {
                 });
         try {
             message = new MimeMessage(session);
+    
             message.setFrom(new InternetAddress("contact@infinity-web.fr"));
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(this.dest));
+        
             message.setSubject("Nouveau profil");
-            message.setText(this.contends);
-
-            Transport.send(message);
+            message.setContent(this.contends, "text/html; charset=utf-8");
+       
 
         } catch (MessagingException ex) {
             LOG.error(ex.getMessage());

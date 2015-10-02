@@ -132,7 +132,7 @@ public class ElasticController {
         
         if (candidatFromDb != null) {
             
-//            candidat.setSendTo(candidatFromDb.getSendTo());
+            candidat.setSendTo(candidatFromDb.getSendTo());
         }
 
         candidat.setNbYearExp(nbYearExp);

@@ -24,6 +24,12 @@
                     Résultats    
                 </a>
             </li>
+            
+             <li>
+                    <a href="<spring:url value="/power"></spring:url>">
+                    Power Search
+                </a>
+            </li>
         </ul>
     </div>
 </nav>
