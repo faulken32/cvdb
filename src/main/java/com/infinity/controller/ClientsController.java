@@ -150,7 +150,7 @@ public class ClientsController {
     @RequestMapping(value = {"/client/job/all/{clienId}"}, method = RequestMethod.GET)
     public ModelAndView getAllJobs(@PathVariable String clienId) throws IOException {
 
-        ArrayList<ClientOffers> all = clientsJobsService.getAll();
+        ArrayList<ClientOffers> all = clientsJobsService.getAllByClientId(clienId);
 
         ModelAndView mv = new ModelAndView("allJobs");
         mv.addObject("allJobs", all);

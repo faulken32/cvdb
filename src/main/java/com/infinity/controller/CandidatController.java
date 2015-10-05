@@ -161,7 +161,7 @@ public class CandidatController {
     @RequestMapping(value = {"/power"}, method = RequestMethod.GET)
     public ModelAndView powerSearch() {
 
-        HashMap<ClientOffers, ArrayList<Candidat>> matchCandidat = powerSearchEngine.matchCandidat();
+//        HashMap<ClientOffers, ArrayList<Candidat>> matchCandidat = powerSearchEngine.matchCandidat();
 
         ModelAndView modelAndView = new ModelAndView("power");
 
@@ -187,9 +187,22 @@ public class CandidatController {
 
         HashMap<ClientOffers, ArrayList<Candidat>> matchCandidat = powerSearchEngine.matchCandidat();
 
-        ModelAndView modelAndView = new ModelAndView("searchResults");
+        ModelAndView modelAndView = new ModelAndView("searchResultsPower");
         modelAndView.addObject("candidat",matchCandidat);
         return modelAndView;
 
+    }
+    
+    
+    @RequestMapping(value = {"/candidat/exportPower/{id}/{clientId}"}, method = RequestMethod.GET)
+    public ModelAndView getByNameForExportPower(@PathVariable String id, @PathVariable String clientId) throws IOException {
+
+        ModelAndView modelAndView = new ModelAndView("exportPower");
+
+        Candidat byId = candidatService.getById(id);
+    
+        modelAndView.addObject("candidat", byId);
+    
+        return modelAndView;
     }
 }

@@ -26,7 +26,7 @@
             </li>
             
              <li>
-                    <a href="<spring:url value="/power"></spring:url>">
+                    <a href="<spring:url value="/power/res"></spring:url>">
                     Power Search
                 </a>
             </li>
