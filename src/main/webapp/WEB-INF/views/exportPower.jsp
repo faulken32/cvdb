@@ -6,7 +6,10 @@
 
 
     <textarea name="contends" id="editor1">
-       
+        Pour obtenir les coordonnées de ce candidat répondez à ce mails 
+        avec cette références  : ${candidat.id} 
+        <br> les 5 premiers sont gratuit
+
         <div>
             <h1>Civilité</h1>    
         

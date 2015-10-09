@@ -45,7 +45,8 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+        
+        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(31556926);;
     }
 
 
@@ -60,7 +61,7 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
     public UrlBasedViewResolver viewResolver(){
     
         UrlBasedViewResolver urlBasedViewResolver = new UrlBasedViewResolver();
-        urlBasedViewResolver.setCache(false);
+        urlBasedViewResolver.setCache(true);
         urlBasedViewResolver.setViewClass(TilesView.class);
         
         return urlBasedViewResolver;

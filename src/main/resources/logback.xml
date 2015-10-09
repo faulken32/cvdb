@@ -22,8 +22,8 @@ and open the template in the editor.
             <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
         </encoder>
     </appender>
-    <root level="DEBUG">
-        <appender-ref ref="STDOUT" />
-<!--         <appender-ref ref="FILE" />-->
+    <root level="ERROR">
+<!--        <appender-ref ref="STDOUT" />-->
+         <appender-ref ref="FILE" />
     </root>
 </configuration>

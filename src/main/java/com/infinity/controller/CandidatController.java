@@ -205,4 +205,52 @@ public class CandidatController {
     
         return modelAndView;
     }
+    
+     @RequestMapping(value = {"/candidat/exportPower/{id}/{clientId}"}, method = RequestMethod.POST)
+    public String getByNameForExportPowerPost(@PathVariable String id, @PathVariable String clientId ,String contends) throws IOException {
+
+   
+      
+        
+          contends = " <!DOCTYPE html><html>\n"
+                + "         <head>\n"
+                + "            <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>\n"
+                + "           \n"
+                + "         </head>" + contends + "</html>";
+
+    
+
+        Clients client = clientsService.getById(clientId);
+
+        Candidat candidat = candidatService.getById(id);
+        ArrayList<SendTo> sendToList = candidat.getSendTo();
+        SendTo sendTo = new SendTo();
+        sendTo.setCandidatId(id);
+        sendTo.setClientId(clientId);
+        sendTo.setDate(DateTools.getDateNow());
+
+        ArrayList<String> emailListSended = new ArrayList<>();
+        emailListSended.add(client.getEmail());
+        sendTo.setEmail(emailListSended);
+        sendTo.setDate(new Date().toString());
+
+        if (sendToList == null) {
+            ArrayList<SendTo> newsendToList = new ArrayList<>();
+            newsendToList.add(sendTo);
+            candidat.setSendTo(newsendToList);
+        } else {
+
+            sendToList.add(sendTo);
+            candidat.setSendTo(sendToList);
+        }
+        
+        candidatService.updateOneById(candidat);
+
+        sendMailService.send(client.getEmail(), contends);
+        return "redirect:/power/res";
+        
+        
+        
+       
+    }
 }
