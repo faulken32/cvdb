@@ -281,7 +281,7 @@ public class ClientsController {
     }
     
     /**
-     *
+     * return jobs anounce to validate
      * @return
      * @throws IOException
      */

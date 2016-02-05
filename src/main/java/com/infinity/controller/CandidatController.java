@@ -201,7 +201,14 @@ public class CandidatController {
 
         return modelAndView;
     }
-
+    /**
+     * 
+     * @param id
+     * @param clientId
+     * @param contends
+     * @return
+     * @throws IOException 
+     */
     @RequestMapping(value = {"/candidat/exportPower/{id}/{clientId}"}, method = RequestMethod.POST)
     public String getByNameForExportPowerPost(@PathVariable String id, @PathVariable String clientId, String contends) throws IOException {
 

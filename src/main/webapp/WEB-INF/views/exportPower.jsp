@@ -6,22 +6,16 @@
 
 
     <textarea name="contends" id="editor1">
-        Pour obtenir les coordonnées de ce candidat répondez à ce mails 
-        avec cette références  : ${candidat.id} 
-        <br> les 5 premiers sont gratuit
-
-        <div>
-            <h1>Civilité</h1>    
+     
+           <div>
+            <h2>Civilité</h2>    
+            
+           <p>${candidat.name} ${candidat.surname} </p>            
+           <p>${candidat.email}</p> 
+           <p>${candidat.phone}</p> 
+           <p>${candidat.cvContends}</p>                               
         
-                ${candidat.cvContends}
-                
-                
-        
-        </div>
-       
-        
-
-      
+        </div>     
     </textarea>
 
     <div class="row">

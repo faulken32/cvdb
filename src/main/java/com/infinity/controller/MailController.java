@@ -66,7 +66,7 @@ public class MailController {
      * @throws IOException
      * @throws Exception
      */
-    @Scheduled(cron="*/10 * * * * *")
+    @Scheduled(cron="0 * * * * ?")
     public void SendEmailToInactiveCandidate() throws IOException, Exception {
 
         List<Candidat> findLastMonthOfInavtivity = candidatService.findLastMonthOfInavtivity();
@@ -78,7 +78,7 @@ public class MailController {
             candidatService.updateOneById(findLastMonthOfInavtivity1);
             if (findLastMonthOfInavtivity1.getEmail() != null) {
                         String loadTemplateFromVelocity = this.loadTemplateFromVelocity(findLastMonthOfInavtivity1);
-                        mailService.send(findLastMonthOfInavtivity1.getEmail(), loadTemplateFromVelocity, MailController.MAIL_UPDATE_STATUS);
+//                        mailService.send(findLastMonthOfInavtivity1.getEmail(), loadTemplateFromVelocity, MailController.MAIL_UPDATE_STATUS);
             }
         }
 

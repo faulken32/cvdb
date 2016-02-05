@@ -8,7 +8,7 @@
     <textarea name="contends" id="editor1">
        
         <div>
-            <h1>Civilité</h1>    
+            <h2>Civilité</h2>    
 
             <strong>Préavis :</strong>
                 ${candidat.preavis} mois<br>
