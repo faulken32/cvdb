@@ -23,6 +23,29 @@
 
             <h2>Ajouter un critere de recherche</h2>
 
+            <div class="form-group">
+                <label for="compagny">
+                    Annonces valide ? 
+                </label>
+                <input  class="checkbox"  name="adminValidate" type="checkbox" 
+                        <c:if test="${jobs.adminValidate}">
+                            checked
+                        </c:if>
+                        />  
+            </div> 
+            <div class="form-group">
+                <label for="compagny">
+                    Annonces publier ? 
+                </label>
+                <input  class="checkbox"  name="publish" type="checkbox" 
+                        <c:if test="${jobs.publish}">
+                            checked
+                        </c:if>
+                        />  
+            </div> 
+
+
+            publish
             <div class="form-group ">
                 <label>département de travail</label>
                 <input  class="form-control"  name="dep" type="text" value="${jobs.dep}"/>  

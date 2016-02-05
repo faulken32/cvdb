@@ -1,0 +1,14 @@
+<html>
+    <body>
+        <h3>bonjour ${candidat.surname} ${candidat.name}, </h3>
+
+        <div>
+            Vous n'avez pas mise à jour votre profil depuis un mois 
+            Ete vous 
+            <a href="${url}/active/${candidat.id}">En recherche active  ?</a> 
+            <a href="${url}/listen/${candidat.id}">A l'écoute du marché ?</a>
+            <a href="${url}/nosearch/${candidat.id}">Pas en recherche ?</a> 
+
+        </div>
+    </body>
+</html>

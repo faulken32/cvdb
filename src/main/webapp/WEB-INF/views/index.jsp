@@ -34,6 +34,7 @@
                 <th>Ajouté une exp</th>
                 <th>List des exp</th>
                 <th>Status</th>
+                <th>Envoyer un email de satut</th>
 
             </tr>
             <c:forEach items="${candidat}" var="candidat">
@@ -45,6 +46,7 @@
                     <td>   <a class="glyphicon glyphicon-plus" href="<c:url value="/elastic/exp/add/${candidat.id}" />"></a></td>
                     <td>   <a class="glyphicon glyphicon-plus" href="<c:url value="/exp/all/${candidat.id}" />"></a></td>
                     <td>  ${candidat.status}   </td>
+                     <td><a class="glyphicon glyphicon-asterisk" href="<c:url value="/candidat/sendMail/${candidat.id}" />"></a></td>
                 </tr>
 
             </c:forEach>

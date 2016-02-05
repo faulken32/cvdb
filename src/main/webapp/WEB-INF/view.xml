@@ -88,6 +88,18 @@
     <definition name="searchResultsPower" extends="default">
         <put-attribute name="title" value="power search"/>
         <put-attribute name="body" value="/WEB-INF/views/searchResultsPower.jsp" />
+    </definition>        
+    <definition name="mail" extends="default">
+        <put-attribute name="title" value="mail template"/>
+        <put-attribute name="body" value="/WEB-INF/views/mail.jsp" />
+    </definition>
+    <definition name="sendToAll" extends="default">
+        <put-attribute name="title" value="power search"/>
+        <put-attribute name="body" value="/WEB-INF/views/sendToAll.jsp" />
+    </definition>
+    <definition name="valide" extends="default">
+        <put-attribute name="title" value="Announces à validé"/>
+        <put-attribute name="body" value="/WEB-INF/views/valide.jsp" />
     </definition>
              
 </tiles-definitions>

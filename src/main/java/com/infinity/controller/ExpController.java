@@ -48,7 +48,7 @@ public class ExpController {
 
         ResponseEntity<String> responseEntity = null;
         try {
-              long deleteById = expService.deleteById(expId);
+               expService.deleteById(expId);
               responseEntity = new ResponseEntity<>("OK ",HttpStatus.OK);
         } catch (Exception e) {
              LOG.error(e.getMessage());

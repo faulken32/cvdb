@@ -7,13 +7,10 @@ package com.infinity.controller;
 
 import com.infinity.dto.Candidat;
 import com.infinity.dto.ClientOffers;
-import com.infinity.dto.SendTo;
-import com.infinity.service.CandidatService;
 import com.infinity.service.SearchEngineServices;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +30,18 @@ public class ResController {
     @Autowired
     private SearchEngineServices searchEngineServices;
 
-    @Autowired
-    private CandidatService candidatService;
+//    @Autowired
+//    private CandidatService candidatService;
 
     @RequestMapping(value = {"/res"})
     public ModelAndView getIndex() throws IOException {
-
-        HashMap<ClientOffers, ArrayList<Candidat>> searchEngine = searchEngineServices.searchEngine();
+        
+        
+        
+        HashMap<ClientOffers, ArrayList<Candidat>> searchEngine = null;
+       
+            searchEngine = searchEngineServices.searchEngine();
+       
        
 //        for (Map.Entry<ClientOffers, ArrayList<Candidat>> entrySet : searchEngine.entrySet()) {
 //            ClientOffers key = entrySet.getKey();

@@ -1,7 +1,10 @@
 package com.infinity.config;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
+import org.apache.velocity.app.VelocityEngine;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +14,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.ui.velocity.VelocityEngineFactoryBean;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -25,6 +30,7 @@ import org.springframework.web.servlet.view.tiles3.TilesView;
 @ComponentScan(basePackages = {"com.infinity"})
 @Import({ SecurityConfig.class })
 @PropertySource("classpath:application.properties")
+@EnableScheduling
 
 public class MvcConfiguration extends WebMvcConfigurerAdapter {
 
@@ -82,7 +88,10 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
     
    
 
-    
+    /**
+     * 
+     * @return 
+     */
     @Bean
     public TilesConfigurer tilesConfigurer() {
 
@@ -90,5 +99,23 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
         tilesConfigurer.setDefinitions(DEFAULT_TILES_DEFINITIONS.toArray(new String[DEFAULT_TILES_DEFINITIONS.size()]));
 
         return tilesConfigurer;
+    }
+    /**
+     * 
+     * @return
+     * @throws IOException 
+     */
+    @Bean
+    public VelocityEngine velocityEngineFactoryBean() throws IOException{
+        
+        VelocityEngineFactoryBean velocityEngineFactoryBean = new VelocityEngineFactoryBean();
+        Properties props = new Properties();
+        props.put("resource.loader", "class");
+	props.put("class.resource.loader.class", 
+			  "org.apache.velocity.runtime.resource.loader." + 
+			  "ClasspathResourceLoader");
+	velocityEngineFactoryBean.setVelocityProperties(props);
+    
+        return velocityEngineFactoryBean.createVelocityEngine();
     }
 }

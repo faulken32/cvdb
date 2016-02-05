@@ -16,7 +16,7 @@ import com.infinity.service.ClientsService;
 import com.infinity.service.ExpService;
 import com.infinity.service.PowerSearchEngine;
 import com.infinity.service.SchoolService;
-import com.infinity.service.mail.SendMail;
+import com.infinity.service.mail.MailService;
 import com.infinity.tools.DateTools;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -46,19 +46,18 @@ public class CandidatController {
 
     private static final Logger LOG = LoggerFactory.getLogger(CandidatController.class);
 
+    private static final String MAIL_SUBJECT = "Nouveaux profil";
+
     @Autowired
     private CandidatService candidatService;
     @Autowired
     private ExpService expService;
     @Autowired
     private SchoolService schoolService;
-
     @Autowired
     private ClientsService clientsService;
-
     @Autowired
-    private SendMail sendMailService;
-
+    private MailService sendMailService;
     @Autowired
     private PowerSearchEngine powerSearchEngine;
 
@@ -127,8 +126,7 @@ public class CandidatController {
                 + "           \n"
                 + "         </head>" + contends + "</html>";
 
-        ModelAndView modelAndView = new ModelAndView("export");
-
+//        ModelAndView modelAndView = new ModelAndView("export");
         Clients client = clientsService.getById(clientId);
 
         Candidat candidat = candidatService.getById(id);
@@ -154,7 +152,7 @@ public class CandidatController {
         }
         candidatService.updateOneById(candidat);
 
-        sendMailService.send(client.getEmail(), contends);
+        sendMailService.send(client.getEmail(), contends, CandidatController.MAIL_SUBJECT);
         return "redirect:/res";
     }
 
@@ -162,7 +160,6 @@ public class CandidatController {
     public ModelAndView powerSearch() {
 
 //        HashMap<ClientOffers, ArrayList<Candidat>> matchCandidat = powerSearchEngine.matchCandidat();
-
         ModelAndView modelAndView = new ModelAndView("power");
 
         return modelAndView;
@@ -188,37 +185,31 @@ public class CandidatController {
         HashMap<ClientOffers, ArrayList<Candidat>> matchCandidat = powerSearchEngine.matchCandidat();
 
         ModelAndView modelAndView = new ModelAndView("searchResultsPower");
-        modelAndView.addObject("candidat",matchCandidat);
+        modelAndView.addObject("candidat", matchCandidat);
         return modelAndView;
 
     }
-    
-    
+
     @RequestMapping(value = {"/candidat/exportPower/{id}/{clientId}"}, method = RequestMethod.GET)
     public ModelAndView getByNameForExportPower(@PathVariable String id, @PathVariable String clientId) throws IOException {
 
         ModelAndView modelAndView = new ModelAndView("exportPower");
 
         Candidat byId = candidatService.getById(id);
-    
+
         modelAndView.addObject("candidat", byId);
-    
+
         return modelAndView;
     }
-    
-     @RequestMapping(value = {"/candidat/exportPower/{id}/{clientId}"}, method = RequestMethod.POST)
-    public String getByNameForExportPowerPost(@PathVariable String id, @PathVariable String clientId ,String contends) throws IOException {
 
-   
-      
-        
-          contends = " <!DOCTYPE html><html>\n"
+    @RequestMapping(value = {"/candidat/exportPower/{id}/{clientId}"}, method = RequestMethod.POST)
+    public String getByNameForExportPowerPost(@PathVariable String id, @PathVariable String clientId, String contends) throws IOException {
+
+        contends = " <!DOCTYPE html><html>\n"
                 + "         <head>\n"
                 + "            <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>\n"
                 + "           \n"
                 + "         </head>" + contends + "</html>";
-
-    
 
         Clients client = clientsService.getById(clientId);
 
@@ -243,14 +234,13 @@ public class CandidatController {
             sendToList.add(sendTo);
             candidat.setSendTo(sendToList);
         }
-        
+
         candidatService.updateOneById(candidat);
 
-        sendMailService.send(client.getEmail(), contends);
+        sendMailService.send(client.getEmail(), contends, CandidatController.MAIL_SUBJECT);
         return "redirect:/power/res";
-        
-        
-        
-       
+
     }
+
+    
 }

@@ -14,6 +14,7 @@ import com.infinity.service.ClientsJobsService;
 import com.infinity.service.ClientsService;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import javax.servlet.http.HttpServletRequest;
@@ -55,6 +56,8 @@ public class ClientsController {
      * @param clients
      * @return
      * @throws com.fasterxml.jackson.core.JsonProcessingException
+     * @throws java.util.concurrent.ExecutionException
+     * @throws java.lang.InterruptedException
      */
     @RequestMapping(value = {"/client/add"}, method = RequestMethod.POST)
     public ModelAndView addClient(@ModelAttribute("clients") Clients clients) throws JsonProcessingException, IOException, ExecutionException, InterruptedException {
@@ -116,7 +119,7 @@ public class ClientsController {
      *
      *
      * @param clientOffers
-     * @param partialClientOffers
+
      * @param clienId
      * @return @throws IOException
      * @throws InterruptedException
@@ -134,6 +137,7 @@ public class ClientsController {
         clientOffers.setPartialsClients(partialsClients);
 
         String addJobs = clientsJobsService.addJobs(clientOffers);
+        
         clientOffers.setId(addJobs);
         clientsJobsService.updateOneById(clientOffers);
 
@@ -275,4 +279,23 @@ public class ClientsController {
 
         return "redirect:/client/job/update/{offerId}/{clienId}";
     }
+    
+    /**
+     *
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = {"/valide"}, method = RequestMethod.GET)
+    public ModelAndView getAnnounceToValidate() throws IOException{
+        
+        List<ClientOffers> findNonValidClientOffers = clientsJobsService.findNonValidClientOffers();
+        
+        ModelAndView modelAndView = new ModelAndView("valide");
+        modelAndView.addObject("jobsList", findNonValidClientOffers);
+        
+        return modelAndView;
+            
+    
+    }
+    
 }
