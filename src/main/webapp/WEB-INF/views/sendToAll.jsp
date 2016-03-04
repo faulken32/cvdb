@@ -26,9 +26,9 @@
                 <input type="submit" value="Valider"/>
             </form>
 
-            <c:forEach items="${missing}" var="m">
-                ${m.name}        
-            </c:forEach>
+         <!--   <c:forEach items="${missing}" var="m">
+                ${m.name}  
+            </c:forEach>-->      
         </c:otherwise>
     </c:choose>
 

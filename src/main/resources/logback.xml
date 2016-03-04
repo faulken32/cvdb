@@ -22,8 +22,22 @@ and open the template in the editor.
             <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
         </encoder>
     </appender>
+    
+     <appender name="MAILFILE" class="ch.qos.logback.core.FileAppender">
+        <file>/home/logs/mail.log</file>
+        <encoder>
+            <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+    
+    <logger name="MAIL" level="INFO" additivity="false">
+        <appender-ref ref="MAILFILE"/>
+    </logger>
+    
+    
     <root level="ERROR">
-<!--        <appender-ref ref="STDOUT" />-->
+        <!--<appender-ref ref="STDOUT" />-->
          <appender-ref ref="FILE" />
     </root>
 </configuration>

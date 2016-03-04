@@ -3,12 +3,16 @@
         <h3>bonjour ${candidat.surname} ${candidat.name}, </h3>
 
         <div>
-            Vous n'avez pas mise à jour votre profil depuis un mois 
+            Vous n'avez pas mise à jour votre profil depuis un mois ou vous n'avez pas de comptes sur cerebros-jobs.com 
             Ete vous 
-            <a href="${url}/active/${candidat.id}">En recherche active  ?</a> 
-            <a href="${url}/listen/${candidat.id}">A l'écoute du marché ?</a>
-            <a href="${url}/nosearch/${candidat.id}">Pas en recherche ?</a> 
+            <p><a href="${url}/active/${candidat.id}">En recherche active  ?</a></p> 
+            <p><a href="${url}/listen/${candidat.id}">A l'écoute du marché ?</a></p>
+            <p><a href="${url}/nosearch/${candidat.id}">Pas en recherche ?</a> </p>
 
+	
+            <p>Cerebros jobs est un moteur de recherche d'emplois dédié à l'IT.</p>
+	    <p><a href="${url}/unsubscribe/${candidat.id}" style="font-size: 10px;">Ne plus recevoir cet email</a></p>
+		
         </div>
     </body>
 </html>

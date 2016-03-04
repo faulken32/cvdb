@@ -42,10 +42,11 @@ import org.springframework.web.servlet.ModelAndView;
 public class MailController {
 
     private static final Logger LOG = LoggerFactory.getLogger(MailController.class);
+    private static final Logger MAIL = LoggerFactory.getLogger("MAIL");
     @Autowired
     private CandidatService candidatService;
     private static final String SEND_TO_ALL_JSP = "sendToAll";
-    private static final String MAIL_UPDATE_STATUS = "Ou en ête vous ?";
+    private static final String MAIL_UPDATE_STATUS = "Ou en ête vous dans votre carrière ?";
     @Autowired
     private VelocityEngine velocityEngine;
     @Autowired
@@ -201,6 +202,7 @@ public class MailController {
 
         ModelAndView modelAndView = new ModelAndView("sendToAll");
         modelAndView.addObject("candidat", candidat);
+       
         return modelAndView;
     }
 
@@ -225,6 +227,8 @@ public class MailController {
             error = "pas de candidat ou pas d'adresse email";
         } 
         
+        
+      
         
         
 
